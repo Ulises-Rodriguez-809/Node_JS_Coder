@@ -3,24 +3,45 @@ class ProductManager {
         this.products = []
     }
 
+    #keys = ["title",
+        "descripcion",
+        "price",
+        "thumbnail",
+        "code",
+        "stock"
+    ] 
+
     addProduct(product){
 
         const productKeys = Object.keys(product);
+        const sameProps = this.#keys.map(element => productKeys.includes(element));
+        
 
-        productKeys.forEach(key => {
-            if (key.trim() === "" || key === undefined || key === null) {
-                return `El campo ${key} se ecnuentra vacio, igrese correctamente su valor`;
+        //comprobacion de la misma cantidad de elementos y q todos las keys esten
+        if (!sameProps.includes(false) && this.#keys.length === productKeys.length) {
+            
+            const productValues = Object.values(product);
+            
+            const allValuesValid = productValues.map(element => {
+                if (element === "" || element === undefined || element === null) {
+                    return true;
+                }
+            })
+            
+            //comprobacion de q todos los values estan completos o no son undefined, etc
+            if (!allValuesValid.includes(true)) {
+                //si todo se cumple agregamos el producto
+                const productoEncontrado = this.products.find(element => element.code === product.code);
+        
+                if (productoEncontrado === undefined) {
+                    this.products.push({
+                        ...product,
+                        id : this.products.length
+                    });
+                }
             }
-        })
-
-        const productoEncontrado = this.products.find(element => element.code === product.code);
-
-        if (productoEncontrado === undefined) {
-            this.products.push({
-                ...product,
-                id : this.products.length
-            });
         }
+        
     }
 
     getProducts(){
@@ -64,8 +85,8 @@ const productosArr = [
         stock : 15
     },
     {
-        title : "                  ",
-        descripcion : "probar q no se agrega tiene algun key-value sin completar",
+        pepe : "pepe",
+        descripcion : "probar q no se agrega key diferente a los aceptados",
         price : 450,
         thumbnail : "https://acdn.mitiendanube.com/stores/001/448/812/products/energy-ultra-mosnter1-641988d832c190fedf16276771317278-640-0.jpg",
         code : 345345435347,
@@ -81,6 +102,14 @@ const productosArr = [
     },
     {
         title : undefined,
+        descripcion : "probar q no se agrega si tiene algun key-value sin completar",
+        price : 450,
+        thumbnail : "https://acdn.mitiendanube.com/stores/001/448/812/products/energy-ultra-mosnter1-641988d832c190fedf16276771317278-640-0.jpg",
+        code : 489089098017,
+        stock : 15
+    },
+    {
+        title : "",
         descripcion : "probar q no se agrega si tiene algun key-value sin completar",
         price : 450,
         thumbnail : "https://acdn.mitiendanube.com/stores/001/448/812/products/energy-ultra-mosnter1-641988d832c190fedf16276771317278-640-0.jpg",
