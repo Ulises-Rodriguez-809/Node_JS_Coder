@@ -126,8 +126,7 @@ export default class ProductManager {
     }
 
     updateProduct = async (idProducto, obj) => {
-        const productoModificar = this.getProductById(idProducto);
-
+        const productoModificar = await this.getProductById(idProducto);
 
         if (typeof productoModificar === "string") {
             return productoModificar;
@@ -148,7 +147,9 @@ export default class ProductManager {
                 productsList[productoIndex] = {
                     ...productoModificar,
                     ...obj
-                }
+                };
+
+                await fs.promises.writeFile(this.path, JSON.stringify(productsList, null, '\t'));
 
                 return "El producto se actualizo con exito";
             }
@@ -156,6 +157,3 @@ export default class ProductManager {
 
     }
 }
-
-
-

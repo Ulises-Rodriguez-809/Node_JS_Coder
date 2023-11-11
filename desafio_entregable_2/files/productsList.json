@@ -18,12 +18,12 @@
 		"id": 1
 	},
 	{
-		"title": "Pepitos",
+		"title": "alfajor",
 		"descripcion": "Masitas de trigo y chocolate",
-		"price": 100,
+		"price": 150,
 		"thumbnail": "https://d3ugyf2ht6aenh.cloudfront.net/stores/001/750/456/products/galletitas-pepitos1-997665b2ca5ad112c016255133287229-640-0.jpeg",
 		"code": "ddas5f465sd4f65sdf",
-		"stock": 10,
+		"stock": 20,
 		"id": 2
 	}
 ]

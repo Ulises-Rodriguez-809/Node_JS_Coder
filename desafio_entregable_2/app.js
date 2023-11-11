@@ -92,6 +92,12 @@ const eliminarProductoPorId = async (obj,id)=>{
     return msg
 }
 
+const actualizarProducto = async (obj,id,newProps)=>{
+    const msg = await obj.updateProduct(id,newProps); 
+
+    return msg;
+}
+
 
 const env = async()=>{
     // await añadirProductos(productosArr,productos);
@@ -114,10 +120,11 @@ const env = async()=>{
     // const productsList = await obtenerProductos(productos);
     // console.log(productsList);
 
-    
+    const res = await actualizarProducto(productos,2,{title : "alfajor", price : 150 ,stock : 20});
+    console.log(res);
 
 }
 
-env()
+env();
 
 // console.log(productos.updateProduct(1,{title : "alfajor", price : 150 ,stock : 20}));
