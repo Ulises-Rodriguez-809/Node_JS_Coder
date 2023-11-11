@@ -13,11 +13,6 @@ export default class ProductManager {
         "stock"
     ]
 
-    /*FALTA: 
-    FALTA Q ESTO SE GUARDE EN UN .JSON USANDO EL MODULO FS --> hacelo con async await try catch --> cuando lo trabjaes con FS ponele a las funciones async await todas
-    CAPAZ PODES HACER UNA FUNCION Q TE OBTENGA LAS KEYS XQ YA LO REPETISTE 2 VECES
-    TENES Q MODIFICAR LA FORMA DE ASIGNAR ID --> usuario.id = usuarios[usuarios.length - 1].id + 1; --> xq cuando elimines un producto del medio por ejem cuando agreges un nuevo producto y asignes el id por el length del array te va a dar id repetidos
-    */
     addProduct = async (product) => {
         try {
             const productKeys = Object.keys(product);
