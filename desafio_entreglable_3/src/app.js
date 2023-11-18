@@ -80,15 +80,6 @@ const env = async()=>{
 
     // const producto = await obtenerProductoPorId(productos,3);
     // console.log(producto)
-    
-    // await añadirProductos([{
-	// 	title: "Monster Blanco",
-	// 	descripcion: "Bebida energetica sin azucar",
-	// 	price: 450,
-	// 	thumbnail: "https://acdn.mitiendanube.com/stores/001/448/812/products/energy-ultra-mosnter1-641988d832c190fedf16276771317278-640-0.jpg",
-	// 	code: "48aec566",
-	// 	stock: 15
-	// }],productos);
 
     const productsList = await obtenerProductos(productos);
     console.log(productsList);
