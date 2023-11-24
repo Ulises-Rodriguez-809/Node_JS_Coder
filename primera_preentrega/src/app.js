@@ -1,5 +1,3 @@
-import {productosArr} from './productsList/productsArray.js';
-import {añadirProductos, obtenerProductos, obtenerProductoPorId, eliminarProductoPorId, actualizarProducto} from './functions/funtionsProducts.js';
 import express from 'express';
 import productsRouter from './routes/productsRoutes.js';
 import cartsRouter from './routes/cartRoutes.js';
@@ -20,32 +18,17 @@ app.get("/",async (req,res)=>{
     res.send(`
     <h1>Desafio entregable 3</h1>
     <h2>Ejemplos:</h2>
-    <h3>http://localhost:8080/products para ver todos los productos</h3>
-    <h3>http://localhost:8080/products/2 para ver el producto con el id 2</h3>
-    <h3>http://localhost:8080/products?limit=5 para ver los primeros 5 productos</h3>
+    <h3>http://localhost:8080/api/products para ver todos los productos</h3>
+    <h3>http://localhost:8080/api/products/2 para ver el producto con el id 2</h3>
+    <h3>http://localhost:8080/api/products?limit=5 para ver los primeros 5 productos</h3>
+    <br>
+    <h3>http://localhost:8080/api/carts para ver todos los carritos de compra</h3>
+    <h3>http://localhost:8080/api/carts/0 para ver la info del carrito con el id 0</h3>
+    <h3>http://localhost:8080/api/carts/0/products para ver solo la lista de productos del carrito con el id 0</h3>
+    <h3>http://localhost:8080/api/carts/0/products/2 para ver el producto con el id 2 del carrito con el id 0</h3>
     `)
 });
 
-app.use('/products',productsRouter);
-app.use('/carts',cartsRouter);
-
-
-const env = async()=>{
-    await añadirProductos(productosArr,productos);
-    
-    // const respuesta = await eliminarProductoPorId(productos,0);
-    // console.log(respuesta);
-
-    // const producto = await obtenerProductoPorId(productos,3);
-    // console.log(producto)
-
-    const productsList = await obtenerProductos(productos);
-    console.log(productsList);
-
-    // const res = await actualizarProducto(productos,2,{title : "alfajor", price : 150 ,stock : 20});
-    // console.log(res);
-
-}
-
-// env();
+app.use('/api/products',productsRouter);
+app.use('/api/carts',cartsRouter);
 

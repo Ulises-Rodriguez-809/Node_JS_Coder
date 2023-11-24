@@ -1,9 +1,17 @@
 import fs from 'fs';
+import path from 'path';
+import __dirname from '../utlis.js';
 
 export default class CartManager {
-    constructor(path){
-        this.path = path
+    constructor(pathFile){
+        this.path = path.join(__dirname,`/files/${pathFile}`);
     }
+
+    //FALTA: 
+    //NUEVO CARRITO
+    //DELETE CARRITO
+    //DELETE PRODUCT
+    //ACTULIZAR CARRITO
 
     getCarts = async()=>{
         try {
@@ -51,5 +59,27 @@ export default class CartManager {
         } catch (error) {
             console.log(error);
         }
+    }
+
+    addCart = async()=>{
+        const carts = await this.getCarts();
+
+        const newCart = {
+            id : 0,
+            products : []
+        }
+
+        if (carts.length === 0) {
+            newCart.id = 0;
+        } else {
+            newCart.id = carts[carts.length - 1].id + 1;
+        }
+
+        carts.push(newCart);
+
+        await fs.promises.writeFile(this.path,JSON.stringify(carts,null,'\t'));
+
+        return carts;
+
     }
 }

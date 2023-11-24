@@ -1,21 +1,39 @@
 import fs from 'fs';
+import path from 'path';
+import __dirname from '../utlis.js';
 
 export default class ProductManager {
-    constructor(path) {
-        this.path = path
+    constructor(pathFile) {
+        this.path = path.join(__dirname, `/files/${pathFile}`);
     }
 
-    #keys = ["title",
-        "descripcion",
-        "price",
-        "thumbnail",
+    #keys = [
+        "title",
+        "description",
         "code",
-        "stock"
+        "price",
+        "status",
+        "stock",
+        "category",
+        "thumbnails"
     ]
 
     addProduct = async (product) => {
+
         try {
             const productKeys = Object.keys(product);
+
+            if (!productKeys.includes("thumbnails")) {
+                product.thumbnails = [];
+                productKeys.push("thumbnails");
+            }
+
+            if (!productKeys.includes("status")) {
+                product.status = true;
+                productKeys.push("status");
+            }
+
+            // const sameProps = this.#keys.map(element => productKeys.includes(element));
             const sameProps = this.#keys.map(element => productKeys.includes(element));
 
             //comprobacion de la misma cantidad de elementos y q todos las keys esten
@@ -54,11 +72,16 @@ export default class ProductManager {
                         // productsList.push(product);
 
                         await fs.promises.writeFile(this.path, JSON.stringify(productsList, null, '\t'));
+
+                        return productsList;
                     }
                 }
             }
+            else{
+                return "no se pudo añadir el producto"
+            }
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
     }
 
@@ -84,7 +107,7 @@ export default class ProductManager {
         try {
             const productsList = await this.getProducts();
 
-            let productoEncontrado = productsList.find(product => product.id === idProducto);
+            let productoEncontrado = productsList.find(product => product.id === parseInt(idProducto));
 
             productoEncontrado ? productoEncontrado : productoEncontrado = `No se encontro el porducto con el con el ID : ${idProducto}`;
 
@@ -98,18 +121,18 @@ export default class ProductManager {
 
     deleteProduct = async (idProducto) => {
         try {
-            
+
             let productoEncontrado = await this.getProductById(idProducto);
-            
+
             if (typeof productoEncontrado !== "string") {
                 let productsList = await this.getProducts();
 
-                const newProductsList = productsList.filter(product => product.id !== idProducto);
-    
+                const newProductsList = productsList.filter(product => product.id !== parseInt(idProducto));
+
                 await fs.promises.writeFile(this.path, JSON.stringify(newProductsList, null, '\t'));
-    
+
                 return `El producto con el id: ${idProducto} fue eliminado con exito`;
-                
+
             } else {
                 return `No se encontro el producto con el id: ${idProducto}`;
             }
@@ -137,7 +160,7 @@ export default class ProductManager {
 
                 const productsList = await this.getProducts();
 
-                let productoIndex = productsList.findIndex(product => product.id === idProducto);
+                let productoIndex = productsList.findIndex(product => product.id === parseInt(idProducto));
 
                 productsList[productoIndex] = {
                     ...productoModificar,
