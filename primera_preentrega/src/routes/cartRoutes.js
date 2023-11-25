@@ -1,11 +1,16 @@
 import {Router} from 'express';
 import CartManager from '../manager/cartManager.js';
+import ProductManager from '../manager/productManager.js';
 
 
 const router = Router();
 
 const PATH = "carts.json";
 const cart = new CartManager(PATH);
+
+const PATHPRODUCTS = "productsList.json";
+const products = new ProductManager(PATHPRODUCTS);
+
 
 router.get('/', async (req,res)=>{
 
@@ -38,21 +43,59 @@ router.get('/:cartId', async (req,res)=>{
     }
 })
 
-router.post('/', async (req,res)=>{ //creo
+router.post('/', async (req,res)=>{
+    const allCarts = await cart.createCart();
+
     res.send({
         status:"succes",
-        msg:"Ruta POST CART"
+        allCarts
     })
 })
 
-router.post('/:cid/product/:pid', async (req,res)=>{ //creo
-    const cid = req.params.cid;
-    const pid = req.params.pid;
+router.post('/:cartId/product/:productId', async (req,res)=>{
+    try {
+        const cartId = req.params.cartId;
+        const productId = req.params.productId;
 
-    res.send({
-        status:"succes",
-        msg:`Ruta POST CART - Agrego producto al carrito. CID: ${cid} - PID: ${pid}`
-    })
+        const {quantity} = req.body;
+        
+        const product = await products.getProductById(productId);
+
+        if (typeof product === "object") {
+
+            //si no pasamos una cantidad especifica por defecto aumenta en 1 el quantity
+            if (quantity !== undefined) {
+                const cartEncontrado = await cart.addProductToCart(cartId,productId,quantity);
+                
+            } else {
+                
+            }
+
+
+        
+            //traete el json de product y con un find buscas el id de ese producto
+            //solo agrega id del producto y quantity
+            //si en primera agregacion pusiste quantity = 2 y despues queres agregar otro solo se modifica el quantity de ese cart, NO crees uno nuevo
+        
+            res.send({
+                status:"succes",
+                msg : "se agrego el producto con exito",
+                cartEncontrado
+            })
+            
+        } else {
+            res.send({
+                status:"error",
+                product
+            })
+        }
+    
+    
+        
+    } catch (error) {
+        console.log(error);
+    }
+    
 })
 
 // router.put('/:cid', async (req,res)=>{
