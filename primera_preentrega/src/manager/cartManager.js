@@ -66,7 +66,8 @@ export default class CartManager {
 
     }
 
-    addProductToCart = async (idCart,idProduct,quantity = 1) => {
+    addProductToCart = async (idCart, idProduct, quantity = 1) => {
+
         try {
             //obtengo todos los carts para poder modificar el json lugo
             const allCarts = await this.getCarts();
@@ -78,22 +79,18 @@ export default class CartManager {
             //productIndex para modificar el quantity en caso de q el producto ya este agregado
             const productIndex = cartEncontrado["products"].findIndex(product => product.id === parseInt(idProduct));
 
-            
             //caso en el q el producto ya se encuentre agregado
-            if (productIndex > -1) { 
-                cartEncontrado["products"][productIndex].quantity = quantity;
+            if (productIndex > -1) {
+                cartEncontrado["products"][productIndex].quantity += quantity;
 
-                
-                cartEncontrado["products"].push(newProduct);
-                
                 //reemplazamos el cart q coicida con el id con por si mismo pero con los el array de productos modificado
                 allCarts[cartIndex] = cartEncontrado;
-                
+
             }
             //caso nuevo producto
-            else{
+            else {
                 const newProduct = {
-                    id : parseInt(idProduct),
+                    id: parseInt(idProduct),
                     quantity
                 }
 
@@ -102,9 +99,32 @@ export default class CartManager {
                 allCarts[cartIndex] = cartEncontrado;
             }
 
-            await fs.promises.writeFile(this.path,JSON.stringify(allCarts,null,'\t'));
+            await fs.promises.writeFile(this.path, JSON.stringify(allCarts, null, '\t'));
 
             return cartEncontrado;
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    deleteCart = async (idCart) => {
+        try {
+            const allCarts = await this.getCarts();
+            const cartIndex = allCarts.indexOf(parseInt(idCart));
+            const cartEncontrado = await this.getCart(idCart)
+
+            if (typeof cartEncontrado === "object") {
+                allCarts.splice(cartIndex,1);
+                
+                await fs.promises.writeFile(this.path, JSON.stringify(allCarts, null, '\t'));
+    
+                return allCarts;
+
+            } else {
+                return `No se encontro el cart con el id : ${idCart}`;
+            }
+
         } catch (error) {
             console.log(error);
         }

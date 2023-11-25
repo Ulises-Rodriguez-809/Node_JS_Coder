@@ -1,4 +1,4 @@
-import {Router} from 'express';
+import { Router } from 'express';
 import CartManager from '../manager/cartManager.js';
 import ProductManager from '../manager/productManager.js';
 
@@ -12,90 +12,89 @@ const PATHPRODUCTS = "productsList.json";
 const products = new ProductManager(PATHPRODUCTS);
 
 
-router.get('/', async (req,res)=>{
+router.get('/', async (req, res) => {
 
     try {
         const carts = await cart.getCarts();
-    
+
         res.send({
-            status:"succes",
+            status: "succes",
             carritos: carts
         })
-        
+
     } catch (error) {
         console.log(error);
     }
 })
 
-router.get('/:cartId', async (req,res)=>{
+router.get('/:cartId', async (req, res) => {
     try {
         const id = req.params.cartId;
-    
+
         const cartEncontrado = await cart.getCart(id);
-    
+
+        const { products } = cartEncontrado;
+
         res.send({
-            status:"succes",
-            msg:cartEncontrado
+            status: "succes",
+            products
         })
-        
+
     } catch (error) {
         console.log(error);
     }
 })
 
-router.post('/', async (req,res)=>{
+router.post('/', async (req, res) => {
     const allCarts = await cart.createCart();
 
     res.send({
-        status:"succes",
+        status: "succes",
         allCarts
     })
 })
 
-router.post('/:cartId/product/:productId', async (req,res)=>{
+router.post('/:cartId/product/:productId', async (req, res) => {
     try {
         const cartId = req.params.cartId;
         const productId = req.params.productId;
 
-        const {quantity} = req.body;
-        
+        const { quantity } = req.body;
+
+        let cartEncontrado = {};
         const product = await products.getProductById(productId);
 
+        //caso se encontro el producto
         if (typeof product === "object") {
 
-            //si no pasamos una cantidad especifica por defecto aumenta en 1 el quantity
-            if (quantity !== undefined) {
-                const cartEncontrado = await cart.addProductToCart(cartId,productId,quantity);
-                
+            //caso se define un valor para quantity
+            if (typeof quantity === "number") {
+                cartEncontrado = await cart.addProductToCart(cartId, productId, quantity);
+
+                //caso no se define ningun valor para quantity (por defecto 1)
             } else {
-                
+                cartEncontrado = await cart.addProductToCart(cartId, productId);
             }
 
-
-        
-            //traete el json de product y con un find buscas el id de ese producto
-            //solo agrega id del producto y quantity
-            //si en primera agregacion pusiste quantity = 2 y despues queres agregar otro solo se modifica el quantity de ese cart, NO crees uno nuevo
-        
             res.send({
-                status:"succes",
-                msg : "se agrego el producto con exito",
+                status: "success",
+                msg: "el porducto se agrego con exito",
                 cartEncontrado
-            })
-            
-        } else {
-            res.send({
-                status:"error",
-                product
-            })
+            });
+
         }
-    
-    
-        
+        //caso id de producto q no exite en el json
+        else {
+            res.send({
+                status: "error",
+                msg: `El producto con el id: ${productId}`
+            });
+        }
+
     } catch (error) {
         console.log(error);
     }
-    
+
 })
 
 // router.put('/:cid', async (req,res)=>{
@@ -106,12 +105,30 @@ router.post('/:cartId/product/:productId', async (req,res)=>{
 //     })
 // })
 
-// router.delete('/:cid', async (req,res)=>{
-//     const cid = req.params.cid;
-//     res.send({
-//         status:"succes",
-//         msg:`Ruta DELETE de CART con ID: ${cid}`
-//     })
-// })
+router.delete('/:cartId', async (req, res) => {
+
+    try {
+        const id = req.params.cartId;
+
+        const allCarts = await cart.deleteCart(id);
+
+        if (typeof allCarts === "string") {
+            res.send({
+                status: "error",
+                msg: allCarts
+            });
+
+        } else {
+            res.send({
+                status: "succes",
+                msg: `El cart con el id: ${id} se elimino con exito`,
+                allCarts
+            });
+        }
+
+    } catch (error) {
+        console.log(error);
+    }
+})
 
 export default router;
