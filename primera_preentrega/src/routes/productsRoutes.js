@@ -61,17 +61,27 @@ router.get("/:idProducto", async (req, res) => {
     }) : res.send(`<h1>No se encontro el producto con el id: ${id}</h1>`);
 });
 
+//añadir un nuevo producto
 router.post("/", async (req, res) => {
     try {
 
         const product = req.body;
 
-        const products = await productos.addProduct(product);
+        const newProduct = await productos.addProduct(product);
 
-        res.send({
-            status: "success",
-            productos: products
-        })
+        if (typeof newProduct === "object") {
+            res.send({
+                status: "success",
+                productos: newProduct
+            })
+            
+        } else {
+            res.send({
+                status: "error",
+                msg: newProduct
+            })
+        }
+
 
     } catch (error) {
         console.log(error);
@@ -79,6 +89,7 @@ router.post("/", async (req, res) => {
 
 });
 
+//modificar las props de un producto
 router.put("/:idProducto", async (req, res) => {
     try {
         const id = req.params.idProducto;
@@ -97,6 +108,7 @@ router.put("/:idProducto", async (req, res) => {
 
 });
 
+//eliminar un producto
 router.delete("/:idProducto", async (req, res) => {
     try {
         const id = req.params.idProducto;

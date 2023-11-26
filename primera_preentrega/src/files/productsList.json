@@ -37,5 +37,34 @@
 		"thumbnails": [],
 		"status": true,
 		"id": 2
+	},
+	{
+		"title": "helado",
+		"description": "helado de grido",
+		"code": "1da8s7f",
+		"price": "1200",
+		"stock": "23",
+		"category": "comida",
+		"thumbnails": [
+			"url1",
+			"url2",
+			"url3"
+		],
+		"status": true,
+		"id": 3
+	},
+	{
+		"title": "alfajor",
+		"description": "alfajor tatin",
+		"code": "ds45f64ds5f",
+		"price": "30",
+		"stock": "6",
+		"category": "comida",
+		"thumbnails": [
+			"url1dsfdsfdsfdsf",
+			"urlgfhfghfghf2"
+		],
+		"status": "dale pibe",
+		"id": 4
 	}
 ]

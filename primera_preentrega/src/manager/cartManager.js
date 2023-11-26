@@ -33,7 +33,7 @@ export default class CartManager {
         try {
             const allCarts = await this.getCarts();
 
-            const cartEncontrado = allCarts.find(cart => cart.id === parseInt(idCart));
+            let cartEncontrado = allCarts.find(cart => cart.id === parseInt(idCart));
 
             cartEncontrado ? cartEncontrado : cartEncontrado = `No se encontro el cart con el id ${idCart}`
 
@@ -111,8 +111,8 @@ export default class CartManager {
     deleteCart = async (idCart) => {
         try {
             const allCarts = await this.getCarts();
-            const cartIndex = allCarts.indexOf(parseInt(idCart));
             const cartEncontrado = await this.getCart(idCart)
+            const cartIndex = allCarts.indexOf(parseInt(idCart));
 
             if (typeof cartEncontrado === "object") {
                 allCarts.splice(cartIndex,1);

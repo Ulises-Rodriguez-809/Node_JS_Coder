@@ -75,6 +75,9 @@ export default class ProductManager {
 
                         return productsList;
                     }
+                    else{
+                        return `Code : ${product.code} invalido`
+                    }
                 }
             }
             else{

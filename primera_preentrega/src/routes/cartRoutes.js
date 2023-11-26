@@ -11,22 +11,30 @@ const cart = new CartManager(PATH);
 const PATHPRODUCTS = "productsList.json";
 const products = new ProductManager(PATHPRODUCTS);
 
-
+//obtener todos los carts
 router.get('/', async (req, res) => {
 
     try {
         const carts = await cart.getCarts();
 
-        res.send({
-            status: "succes",
-            carritos: carts
-        })
+        if (typeof carts === "object") {
+            res.send({
+                status: "succes",
+                carritos: carts
+            })
+        } else {
+            res.send({
+                status: "error",
+                msg : carts
+            })
+        }
 
     } catch (error) {
         console.log(error);
     }
 })
 
+//obtener 1 cart por el id
 router.get('/:cartId', async (req, res) => {
     try {
         const id = req.params.cartId;
@@ -35,16 +43,25 @@ router.get('/:cartId', async (req, res) => {
 
         const { products } = cartEncontrado;
 
-        res.send({
-            status: "succes",
-            products
-        })
+        if (typeof products === "object") {
+            res.send({
+                status: "succes",
+                products
+            })
+        } else {
+            res.send({
+                status: "error",
+                msg : cartEncontrado
+            })
+        }
+        
 
     } catch (error) {
         console.log(error);
     }
 })
 
+//crear un nuevo cart y añadirlo al json de carts
 router.post('/', async (req, res) => {
     const allCarts = await cart.createCart();
 
@@ -54,6 +71,7 @@ router.post('/', async (req, res) => {
     })
 })
 
+//añadir un producto (id y quantity) a un cart (por el id)
 router.post('/:cartId/product/:productId', async (req, res) => {
     try {
         const cartId = req.params.cartId;
@@ -97,14 +115,7 @@ router.post('/:cartId/product/:productId', async (req, res) => {
 
 })
 
-// router.put('/:cid', async (req,res)=>{
-//     const cid = req.params.cid;
-//     res.send({
-//         status:"succes",
-//         msg:`Ruta PUT de CART con ID: ${cid}`
-//     })
-// })
-
+//eliminar un cart
 router.delete('/:cartId', async (req, res) => {
 
     try {
