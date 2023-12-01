@@ -1,7 +1,26 @@
 <h1>{{text}}</h1>
 <div>
-    <ul class="ul_products_container"></ul>
+    <ul>
+        {{!--11- con un each itero todo el objeto q me llega del views.router.js--}}
+        {{#each products}}
+        <li>
+            {{!-- 12- si usas {{this}} esto te va a dar objetc[objetc] xq estamos intentando excribir en un html algo q
+            viene con notacion de JS
+            para solucinarlo mientras voy iterando accedo a las props de los productos (q vienen como objetos JS) y le
+            digo a handlebars q se quede con el value cuya key coincida con el valor q ponga entre {{}}
+            --}}
+            id : {{id}}<br>
+            titulo : {{title}}<br>
+            descripcion : {{description}}<br>
+            codigo : {{code}}<br>
+            precio : {{price}}<br>
+            status : {{status}}<br>
+            categoria : {{category}}<br>
+            miniaturas : {{thumbnails}}<br>
+        </li><br>
+        {{/each}}
+    </ul>
 </div>
 {{!-- 6- ponemos los scripts --}}
-<script src="/socket.io/socket.io.js"></script>
-<script src="/js/index.js"></script>
+{{!-- <script src="/socket.io/socket.io.js"></script>
+<script src="/js/index.js"></script> --}}

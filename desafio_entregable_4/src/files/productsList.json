@@ -66,5 +66,19 @@
 		],
 		"status": "dale pibe",
 		"id": 4
+	},
+	{
+		"title": "vino",
+		"description": "alto vino pa",
+		"code": "ju4fn65df1sh86d",
+		"price": "4000",
+		"status": true,
+		"stock": "14",
+		"category": "bebida",
+		"thumbnails": [
+			"urlVinito1",
+			"urlVinito2"
+		],
+		"id": 5
 	}
 ]
