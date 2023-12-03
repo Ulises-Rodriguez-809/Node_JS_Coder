@@ -67,5 +67,38 @@ io.on("connection",async (socket) => {
     const allProducts = await productos.getProducts();
 
     // 15- creamos el evento "mostrar-productos" y con io.emit le mostramos a todos los clientes la lista de productos
-    socket.emit("mostrar-productos", allProducts)
+    socket.emit("mostrar-productos", allProducts);
+
+    //20-recivimos el evento emitido en el front de eliminar un producto
+    socket.on("eliminar-producto",async (data)=>{
+
+        //veo si el producto con el id mandado desde el front existe
+        const productoEncontrado = await productos.getProductById(data);
+        
+        if (typeof productoEncontrado === "object") {
+            //elimino el producto del json
+            const productoEliminado = await productos.deleteProduct(data);
+            //obtengo de nuevo todos los productos de nuevo (para asi obtener la info del json actualizado)
+            const allProductsUpdate = await productos.getProducts();
+            //mando al front la lista de productos 
+            //fijate q lo tenes q trabajar con io ya q este cambio lo tiene q ver todos los usuarios conectados
+            io.emit("producto-eliminado",{allProductsUpdate, id : data});
+        } else {
+            socket.emit("no-se-logro-eliminar-producto",`No se logro eliminar el producto con el id: ${data}`);
+        }
+
+    });
+
+    // 24- recivo el evento de añadir-producto del front
+    socket.on("añadir-producto",async (data)=>{
+        const añadirProducto = await productos.addProduct(data);
+
+        if (typeof añadirProducto === "object") {
+            const allProducts = await productos.getProducts();
+
+            io.emit("producto-añadido",allProducts);
+        } else {
+            socket.emit("no-añadido","No se logro añadir el producto")
+        }
+    })
 })

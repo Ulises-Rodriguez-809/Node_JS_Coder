@@ -80,5 +80,16 @@
 			"urlVinito2"
 		],
 		"id": 5
+	},
+	{
+		"title": "productoNuevo",
+		"description": "nuevo producto",
+		"code": "12l3k21l3k12j3ughgjghjbvcbc",
+		"price": "123",
+		"stock": "6",
+		"category": "cosas nuevas",
+		"thumbnails": "url1,url2",
+		"status": true,
+		"id": 8
 	}
 ]
