@@ -7,6 +7,10 @@ import __dirname from './utlis.js';
 import { Server } from 'socket.io';
 import ProductManager from './manager/productManager.js';
 
+
+// http://localhost:8080
+// http://localhost:8080/realtimeproducts
+
 //1-inicializamos nuestro app
 const app = express();
 //2- creamos el puerto
