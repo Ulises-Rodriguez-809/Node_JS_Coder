@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import __dirname from '../utlis.js';
+import __dirname from '../../utils.js';
 
 export default class ProductManager {
     constructor(pathFile) {
