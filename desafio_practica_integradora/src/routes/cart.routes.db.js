@@ -52,6 +52,11 @@ router.post('/', async (req, res) => {
 //añadir un producto (id y quantity) a un cart (por el id)
 // router.post('/:cartId/product/:productId', async (req, res) => {
 //     try {
+
+            // ACA TRAETE EL MODAL DE PRODUCTOS
+            //TRAETE TODA LA COLLECCION DE LA DB
+            //BUSCAS EL PRODUCTO POR EL ID
+
 //         const cartId = req.params.cartId;
 //         const productId = req.params.productId;
 
