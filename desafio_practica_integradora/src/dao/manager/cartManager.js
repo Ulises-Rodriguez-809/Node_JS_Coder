@@ -7,11 +7,6 @@ export default class CartManager {
         this.path = path.join(__dirname, `/files/${pathFile}`);
     }
 
-    //FALTA: 
-    //DELETE CARRITO
-    //DELETE PRODUCT
-    //ACTULIZAR CARRITO
-
     getCarts = async () => {
         try {
             if (fs.existsSync(this.path)) {

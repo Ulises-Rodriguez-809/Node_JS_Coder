@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import productsModel from '../dao/models/productsModel.js';
 import ProductManagerDB from '../dao/managersDB/productManagerDB.js';
 
 
@@ -12,7 +11,7 @@ router.get("/", async (req, res) => {
 
         const result = await productsDB.getProducts();
 
-        if (typeof result === "string") {
+        if (typeof result !== "object") {
             res.status(400).send({
                 status: "error",
                 message: result
@@ -24,22 +23,6 @@ router.get("/", async (req, res) => {
                 message: result
             })
         }
-
-        // const products = await productsModel.find();
-
-        // if (products.length === 0) {
-        //     res.status(400).send({
-        //         status: "error",
-        //         message: "No se encontro la colleccion"
-        //     });
-
-        // } else {
-        //     res.send({
-        //         status: "success",
-        //         message: products
-        //     })
-        // }
-
 
     } catch (error) {
         console.log(error);
@@ -64,22 +47,6 @@ router.get("/:productId", async (req, res) => {
                 message: result
             })
         }
-
-        // const product = await productsModel.find({ _id: id });
-
-        // if (product.length === 0) {
-        //     res.status(400).send({
-        //         status: "error",
-        //         message: `No se encontro el producto con el id: ${id}`
-        //     });
-
-        // } else {
-        //     res.send({
-        //         status: "success",
-        //         message: product
-        //     })
-        // }
-
 
     } catch (error) {
         console.log(error);
@@ -106,66 +73,6 @@ router.post("/", async (req, res) => {
                 message: result
             })
         }
-
-        // const { title,
-        //     description,
-        //     code,
-        //     price,
-        //     status,
-        //     stock,
-        //     category,
-        //     thumbnails } = req.body;
-
-        // let newProduct = {};
-
-        // const productFind = await productsModel.findOne({ code: code });
-
-        // if (!title || !description || !code || !price || !stock || !category) {
-        //     return res.status(400).send({
-        //         status: "error",
-        //         message: "Valores incompletos"
-        //     });
-
-        // }
-        // else if (productFind) {
-        //     console.log(productFind)
-        //     return res.status(400).send({
-        //         status: "error",
-        //         message: "El codigo del producto ya se encuentra en uso"
-        //     });
-        // }
-
-        // if (!status || !thumbnails) {
-        //     newProduct = {
-        //         title,
-        //         description,
-        //         code,
-        //         price,
-        //         status: "true",
-        //         stock,
-        //         category,
-        //         thumbnails: []
-        //     }
-
-        // } else {
-        //     newProduct = {
-        //         title,
-        //         description,
-        //         code,
-        //         price,
-        //         status,
-        //         stock,
-        //         category,
-        //         thumbnails
-        //     }
-        // }
-
-        // const product = await productsModel.create(newProduct);
-
-        // res.send({
-        //     status: "success",
-        //     message: newProduct
-        // })
 
     } catch (error) {
         console.log(error);
@@ -240,22 +147,6 @@ router.delete("/:productId", async (req, res) => {
                 message: `Se logro eliminar con exito el producto con el id: ${id}`
             })
         }
-
-        // const result = await productsModel.deleteOne({ _id: id });
-
-        // if (result["deletedCount"] === 0) {
-        //     res.status(400).send({
-        //         status: "error",
-        //         message: `No se logro eliminar el producto con el id: ${id}`
-        //     });
-
-        // } else {
-        //     res.send({
-        //         status: "success",
-        //         message: `Se logro eliminar con exito el producto con el id: ${id}`
-        //     })
-        // }
-
 
     } catch (error) {
         console.log(error);

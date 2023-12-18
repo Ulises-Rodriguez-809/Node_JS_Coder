@@ -7,12 +7,7 @@ export default class ProductManagerDB {
         try {
             const products = await productsModel.find();
 
-            if (products.length === 0) {
-                return "No se encontro la colleccion";
-
-            } else {
-                return products;
-            }
+            return products;
 
         } catch (error) {
             console.log(error);
@@ -99,15 +94,20 @@ export default class ProductManagerDB {
     }
 
     deleteProduct = async (id) => {
+        try {
+            const result = await productsModel.deleteOne({ _id: id });
 
-        const result = await productsModel.deleteOne({ _id: id });
+            if (result["deletedCount"] === 0) {
+                return `No se logro eliminar el producto con el id: ${id}`;
 
-        if (result["deletedCount"] === 0) {
-            return `No se logro eliminar el producto con el id: ${id}`;
+            } else {
+                return true;
+            }
 
-        } else {
-            return true;
+        } catch (error) {
+            console.log(error);
         }
+
     }
 
 }
