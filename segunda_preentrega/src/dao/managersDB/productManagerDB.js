@@ -2,27 +2,21 @@ import productsModel from '../models/productsModel.js';
 
 export default class ProductManagerDB {
 
-    getProducts = async (query,options) => {
-        // profe
-        const products = await productsModel.paginate(
-            {
-                ...query
-            },
-            {
-                ...options
-            }
-        )
-
-        return {
-            status : "success",
-            messagge : products
-        }
-
-        // yo
+    getProducts = async (query, options) => {
         try {
-            const products = await productsModel.find();
+            const products = await productsModel.paginate(
+                {
+                    ...query
+                },
+                {
+                    ...options
+                }
+            )
 
-            return products;
+            return {
+                status: "success",
+                messagge: products
+            }
 
         } catch (error) {
             console.log(error);
@@ -30,20 +24,10 @@ export default class ProductManagerDB {
     }
 
     getProductById = async (id) => {
-        // profe 
-        const product = await productsModel.findOne({_id:id});
-
-        return {
-            status : "success",
-            messagge : product
-        }
-
-
         try {
-            const product = await productsModel.find({ _id: id });
+            const product = await productsModel.findOne({ _id: id });
 
-            // FIJATE Q ESTOS IF ELSE YA NO TE HACEN FALTA XQ LOS TRABAJAS EN EL MANAJER pero no en todos
-            if (product.length === 0) {
+            if (product === null) {
                 return `No se encontro el producto con el id: ${id}`;
 
             } else {
@@ -89,13 +73,21 @@ export default class ProductManagerDB {
             }
         }
 
-        const product = await productsModel.create(newProduct);
+        await productsModel.create(newProduct);
 
         return newProduct;
     }
 
     updateProduct = async (id, fields) => {
         try {
+
+            // otra forma seria con save
+            // const product = await productsModel.findOne({_id,id});
+            // product = {
+            //     ...product, //esto despues fijate xq capaz no es asi sino q tenes q acceder a la props dentro de prodcut
+            //     ...fields
+            // }
+            // product.save()
 
             const updateProduct = {
                 ...fields

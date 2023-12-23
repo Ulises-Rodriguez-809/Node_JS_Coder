@@ -16,111 +16,91 @@ export default class CartManagerDB {
 
     getCartById = async (id) => {
         try {
-            const cart = await cartsModel.find({ _id: id });
+            // si bien este populate podria haberlo hecho con pre en cartsModel.js, pasa q cada ves q se hace un post para añadir producto al cart se ejecuta el pre
+            // y solo pide q sea para el get
+            const cart = await cartsModel.findOne({ _id: id }).populate("products.product");
 
             return cart;
-            
+
         } catch (error) {
             console.log(error);
         }
     }
 
     createCart = async () => {
+        // hacerlo de esta forma no hace falta ya q cuando creas un cart nuevo este va a tomar la estuctura del schema
+        // si lo haces asi estas laburando el doble
         // const newCart = {
         //     products: []
         // }
-
         // const cart = await cartsModel.create(newCart);
 
-        const cart = await cartsModel.create({}); //ejem profe
-        // const cart = await cartsModel.create(); //deberia de andar
+        const cart = await cartsModel.create({});
 
         return cart;
     }
 
     addProductToCart = async (idCart, idProduct, quantity = 1) => {
         try {
-            const cart = await cartsModel.findOne({_id:idCart});
-            
-            if (!cart) {
-                return {
-                    status: "error",
-                    messagge : `el carrito con el id : ${idCart} no existe`
-                }
-            } 
+            const cart = await cartsModel.findOne({ _id: idCart });
 
-            const product = await productsModel.findOne({_id:idProduct});
+            if (!cart) {
+                return `el carrito con el id : ${idCart} no existe`;
+            }
+
+            const product = await productsModel.findOne({ _id: idProduct });
 
             if (!product) {
-                return {
-                    status: "error",
-                    messagge : `el producto con el id : ${idProduct} no existe`
-                }
+                return `el producto con el id : ${idProduct} no existe`;
             }
 
-            let productsInCart = cart.products; //este es el products de cart model
+            let productsInCart = cart.products; //este es el products q se crea a partier del cart model
 
-            const indexProduct = productsInCart.findIndex(product => product.product === idProduct);
+            const indexProduct = productsInCart.findIndex(product => product.product._id.toString() === idProduct);
 
-            if (indexProduct = -1) {
+            if (indexProduct === -1) {
                 const newProduct = {
-                    product : idProduct,
+                    product: idProduct,
                     quantity
                 }
-                
+
                 cart.products.push(newProduct);
             }
-            else{
+            else {
                 cart.products[indexProduct].quantity += quantity;
 
             }
 
             await cart.save();
 
-            return cart 
-            // {
-            //     status: "success",
-            //     messagge : `el producto con el id : ${idProduct} se agrego correctamente`
-            // }
-
-            
-            // let result = "";
-
-            // const cart = await this.getCartById(idCart);
+            return cart;
 
 
-            // if (typeof cart === "string") { //caso id del cart no encontrado
-            //     return cart;
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
-            // } else { //caso id cart encontrado
+    deleteCartProducts = async (id) => {
+        try {
+            const cart = await cartsModel.findOne({ _id: id });
 
-            //     const idProductFound = cart[0]["products"].findIndex(product => product.id === idProduct);
+            if (!cart) {
+                return `el carrito con el id : ${id} no existe`;
+            }
 
-            //     if (idProductFound > -1) { //caso producto ya agregado
-            //         console.log("producto ya agregado");
-            //         cart[0]["products"][idProductFound].quantity += quantity;
+            cart.products = [];
 
-            //         result = await cartsModel.updateOne({ _id: idCart }, { $set: {"products" : cart[0]["products"]} });
+            await cart.save();
+
+            return true
 
 
-            //     } else {
-            //         console.log("producto nuevo")
-            //         cart[0]["products"].push({
-            //             id: idProduct,
-            //             quantity
-            //         })
+            // if (result["deletedCount"] === 0) {
+            //     return `No se logro eliminar el producto con el id: ${id}`;
 
-            //         result = await cartsModel.updateOne({ _id: idCart }, { $set: {"products" : cart[0]["products"]} });
-            //     }
-
-            //     if (result.modifiedCount === 1) {
-            //         const allProducts = await this.getCartById(idCart);
-
-            //         return allProducts;
-
-            //     } else {
-            //         return `No se logro agregar el producto con el id: ${idProduct} al cart con el id: ${idCart}`
-            //     }
+            // } else {
+            //     return true;
             // }
 
         } catch (error) {
@@ -128,16 +108,40 @@ export default class CartManagerDB {
         }
     }
 
-    deleteCart = async (id) => {
+    deleteProductToCart = async (idCart, idProduct) => {
         try {
-            const result = await cartsModel.deleteOne({ _id: id });
+            const cart = await cartsModel.findOne({ _id: idCart });
 
-            if (result["deletedCount"] === 0) {
-                return `No se logro eliminar el producto con el id: ${id}`;
-
-            } else {
-                return true;
+            if (!cart) {
+                return `el carrito con el id : ${id} no existe`;
             }
+
+            const product = await productsModel.findOne({ _id: idProduct });
+
+            if (!product) {
+                return `el producto con el id : ${idProduct} no existe`;
+            }
+
+            let productsInCart = cart.products;
+
+            const indexProduct = productsInCart.findIndex(product => product.product._id.toString() === idProduct);
+
+            if (indexProduct > -1) {
+                cart.products.splice(indexProduct,1);
+
+            }
+
+            await cart.save();
+
+            return true
+
+
+            // if (result["deletedCount"] === 0) {
+            //     return `No se logro eliminar el producto con el id: ${id}`;
+
+            // } else {
+            //     return true;
+            // }
 
         } catch (error) {
             console.log(error);

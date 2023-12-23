@@ -19,13 +19,14 @@ const cartsSchema = new mongoose.Schema({
     ]
 })
 
-// const cartsSchema = new mongoose.Schema({
-//     products : Object
-// })
-
+// el pre es el middleware q te ejecuta en cada consulta (para evitar el laburo de vos en el cartManagerDB tener q poner .populate("products.product")) "find" el populate reemplaze el id del producto por toda la info del producto con ese id
 cartsSchema.pre("find",function () {
     this.populate("products.product")
 })
+
+// cartsSchema.pre("findOne",function () {
+//     this.populate("products.product")
+// })
 
 const cartsModel = mongoose.model(collection,cartsSchema);
 

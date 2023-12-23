@@ -19,10 +19,6 @@ const productsSchema = new mongoose.Schema({
         type: Number,
         require: true
     },
-    thumbnail:{
-        type: String,   
-        require: true
-    },
     code:{
         type: String,
         require: true
@@ -34,19 +30,10 @@ const productsSchema = new mongoose.Schema({
     category:{
         type : String,
         require : true
-    }
+    },
+    status : String,
+    thumbnails: Array,
 })
-
-// const productsSchema = new mongoose.Schema({
-//     title: String,
-//     description: String,
-//     code: String,
-//     price: Number,
-//     status: String || Boolean,
-//     stock: Number,
-//     category: String,
-//     thumbnails: Object,
-// })
 
 productsSchema.plugin(mongoosePaginate);
 

@@ -1,19 +1,15 @@
 import { Router } from 'express';
-import cartsModel from '../dao/models/cartsModel.js';
 import CartManagerDB from '../dao/managersDB/cartManagerDB.js';
-import ProductManagerDB from '../dao/managersDB/productManagerDB.js';
-
 
 const router = Router();
 
 const cartsDB = new CartManagerDB();
-const productsDB = new ProductManagerDB(); //esto no te va a hacer falta aca xq lo usas desde el manager
 
 //obtener todos los carts
 router.get('/', async (req, res) => {
     try {
         const result = await cartsDB.getCarts();
-        
+
         if (typeof result !== "object") {
             res.status(400).send({
                 status: "error",
@@ -27,13 +23,6 @@ router.get('/', async (req, res) => {
             })
         }
 
-        const carts = await cartsModel.find();
-
-        res.send({
-            status: "success",
-            message: carts
-        })
-
     } catch (error) {
         console.log(error);
     }
@@ -45,7 +34,7 @@ router.get('/:cartId', async (req, res) => {
         const id = req.params.cartId;
 
         const result = await cartsDB.getCartById(id);
-        
+
         if (typeof result === "string") {
             res.status(400).send({
                 status: "error",
@@ -67,14 +56,6 @@ router.get('/:cartId', async (req, res) => {
 //crear un nuevo cart y añadirlo a la DB
 router.post('/', async (req, res) => {
 
-    // profe
-    // const cart = await cartsDB.createCart();
-
-    // res.send({
-    //     status : "success",
-    //     msg : cart
-    // })
-
     const cart = await cartsDB.createCart();
 
     res.send({
@@ -90,36 +71,7 @@ router.post('/:cartId/product/:productId', async (req, res) => {
         const productId = req.params.productId;
         const { quantity } = req.body;
 
-        const product = await productsDB.getProductById(productId);
-
-        if (typeof product === "object") {
-            const result = await cartsDB.addProductToCart(cartId,productId,quantity);
-            
-            res.send({
-                status: "success",
-                message: result
-            })
-
-        }else{ //caso q no exista el producto
-            res.status(400).send({
-                status: "error",
-                message: product
-            });
-        }
-
-    } catch (error) {
-        console.log(error);
-    }
-
-})
-
-//eliminar un cart
-router.delete('/:cartId', async (req, res) => {
-
-    try {
-        const id = req.params.cartId;
-        
-        const result = await cartsDB.deleteCart(id);
+        const result = await cartsDB.addProductToCart(cartId, productId, quantity);
 
         if (typeof result === "string") {
             res.status(400).send({
@@ -130,7 +82,46 @@ router.delete('/:cartId', async (req, res) => {
         } else {
             res.send({
                 status: "success",
-                message: `Se logro eliminar con exito el cart con el id: ${id}`
+                message: result
+            })
+        }
+
+    } catch (error) {
+        console.log(error);
+    }
+
+})
+
+// ACTUALIZA EL ARRAY DE PRODUCTOS DEL CARRITO CON EL NUEVO ARRAY DE PRODUCTOS
+// este recibe un array completo con todos los nuevos ids de los productos y cantidades nuevas
+router.put('/:cartId', async (req, res) => {
+
+})
+
+// ACTUALIZAR EL QUANTITY (ESTO LO TENES EN POST, PASALO ABAJO, TAMBIEN VAS A TENER Q MODIFICAR EL MANAGER)
+// actualizar solo la cantidad q corresponda al id cart y id producto
+router.put('/:cartId/products/:productId', async (req, res) => {
+
+})
+
+//eliminar la lista de productos de un cart por id
+router.delete('/:cartId', async (req, res) => {
+
+    try {
+        const id = req.params.cartId;
+
+        const result = await cartsDB.deleteCartProducts(id);
+
+        if (typeof result === "string") {
+            res.status(400).send({
+                status: "error",
+                message: result
+            });
+
+        } else {
+            res.send({
+                status: "success",
+                message: `Los productos del cart: ${id} se eliminaron con exito`
             })
         }
 
@@ -138,5 +129,33 @@ router.delete('/:cartId', async (req, res) => {
         console.log(error);
     }
 })
+
+// ELIMINAR EL PRODUCTO DEL CARRITO
+router.delete('/:cartId/products/:productId', async (req, res) => {
+
+    try {
+        const cartId = req.params.cartId;
+        const productId = req.params.productId;
+
+        const result = await cartsDB.deleteProductToCart(cartId, productId);
+
+        if (typeof result === "string") {
+            res.status(400).send({
+                status: "error",
+                message: result
+            });
+
+        } else {
+            res.send({
+                status: "success",
+                message: `Se logro eliminar con exito el cart con el id: ${cartId}`
+            })
+        }
+
+    } catch (error) {
+        console.log(error);
+    }
+})
+
 
 export default router;
