@@ -1,0 +1,5 @@
+mirate el video explicativo de coder antes de arrancar
+fijate https://docs.google.com/spreadsheets/d/1e8V19rGv_0Zl5PjVHMJuPnYYHVwcMLDNhtbVA32RB8Q/edit#gid=1036070579
+
+La persistencia es la base de datos. Y con Mongoose la trabajan desde el codigo
+Con opcional se refiere a contemplar el caso de no recibir el patametro

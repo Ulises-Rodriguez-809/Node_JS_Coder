@@ -1,0 +1,41 @@
+<div>
+    <h1>Productos:</h1>
+    <ul>
+        {{!-- listamos todos nuestros estudiantes q nos viene dentro de docs --}}
+        {{#each products.docs}}
+            {{!-- <li>{{this.first_name}} {{this.last_name}}</li> --}}
+            <li>
+            {{!-- 12- si usas {{this}} esto te va a dar objetc[objetc] xq estamos intentando excribir en un html algo q
+            viene con notacion de JS
+            para solucinarlo mientras voy iterando accedo a las props de los productos (q vienen como objetos JS) y le
+            digo a handlebars q se quede con el value cuya key coincida con el valor q ponga entre {{}}
+            --}}
+            {{this.title}}
+            id : {{this.id}}<br>
+            titulo : {{this.title}}<br>
+            descripcion : {{this.description}}<br>
+            codigo : {{this.code}}<br>
+            precio : {{this.price}}<br>
+            status : {{this.status}}<br>
+            categoria : {{this.category}}<br>
+            miniaturas : {{this.thumbnails}}<br>
+        </li><br>
+        {{/each}}
+    </ul>
+    {{!-- si tiene pagina siguiente q muestre la pagina siguiente, si tiene anterior q muestre la anterior y q muestre el contenido de la pagina actual --}}
+    <div>
+
+        {{!-- ESTA PARTE TENES Q HACERLA EN EL ROUTER --}}
+
+        {{!-- estos metodos son de mongoose paginate v2 --}}
+        {{#if products.hasPrevPage}}
+            <a href="/api/productsDB/products?limit={{products.limit}}&page={{products.prevPage}}" >Anterior</a>
+        {{/if}}
+        {{!-- la prop page me dice en q pagina estoy --}}
+        {{!-- el totalPages la cantidad de pagina totales --}}
+        <span>Pagina {{products.page}} de {{products.totalPages}}</span>
+        {{#if products.hasNextPage}}
+            <a href="/api/productsDB/products?limit={{products.limit}}&page={{products.nextPage}}" >Siguiente</a>
+        {{/if}}
+    </div>
+</div>
