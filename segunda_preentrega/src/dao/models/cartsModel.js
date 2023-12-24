@@ -24,9 +24,9 @@ cartsSchema.pre("find",function () {
     this.populate("products.product")
 })
 
-// cartsSchema.pre("findOne",function () {
-//     this.populate("products.product")
-// })
+cartsSchema.pre("findOne",function () {
+    this.populate("products.product")
+})
 
 const cartsModel = mongoose.model(collection,cartsSchema);
 

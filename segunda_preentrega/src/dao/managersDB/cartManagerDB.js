@@ -16,9 +16,7 @@ export default class CartManagerDB {
 
     getCartById = async (id) => {
         try {
-            // si bien este populate podria haberlo hecho con pre en cartsModel.js, pasa q cada ves q se hace un post para añadir producto al cart se ejecuta el pre
-            // y solo pide q sea para el get
-            const cart = await cartsModel.findOne({ _id: id }).populate("products.product");
+            const cart = await cartsModel.findOne({ _id: id });
 
             return cart;
 
@@ -68,6 +66,65 @@ export default class CartManagerDB {
             }
             else {
                 cart.products[indexProduct].quantity += quantity;
+
+            }
+
+            await cart.save();
+
+            return cart;
+
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    updateProductsList = async (idCart,arryProducts) =>{
+        try {
+            const cart = await cartsModel.findOne({ _id: idCart });
+
+            if (!cart) {
+                return `el carrito con el id : ${idCart} no existe`;
+            }
+
+            cart.products = arryProducts;
+
+            await cart.save();
+
+            // esto para q el populate haga efecto
+            const result = await cartsModel.findOne({ _id: idCart });
+
+            return result;
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    updateQuantity = async (idCart, idProduct, quantity)=>{
+        try {
+            const cart = await cartsModel.findOne({ _id: idCart });
+
+            if (!cart) {
+                return `el carrito con el id : ${idCart} no existe`;
+            }
+
+            const product = await productsModel.findOne({ _id: idProduct });
+
+            if (!product) {
+                return `el producto con el id : ${idProduct} no existe`;
+            }
+
+            let productsInCart = cart.products; //este es el products q se crea a partier del cart model
+
+            const indexProduct = productsInCart.findIndex(product => product.product._id.toString() === idProduct);
+
+            if (indexProduct === -1) {
+                return `el producto con el id : ${idProduct} no se encuentra en el carrito`;
+
+            }
+            else {
+                cart.products[indexProduct].quantity = quantity;
 
             }
 

@@ -13,6 +13,9 @@ router.get("/", async (req, res) => {
         const { limit, page, sort, category, stock } = req.query;
         const query = {};
 
+        const auxSort = `&sort=${sort}`;
+        const auxCategory = `&category=${category}`;
+        const auxStock = `&stock=${stock}`;
 
         const options = {
             limit: limit ?? 10,
@@ -30,35 +33,34 @@ router.get("/", async (req, res) => {
 
         const result = await productsDB.getProducts(query, options);
 
+        const totalPages = result["messagge"]["totalPages"];
+
+        if (page > totalPages) {
+            // este return es para q el resto del codigo no se ejecute ya q si bien no influye en el funcionamiento por consola tira error
+            // Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+            return res.status(400).send({
+                status: "error",
+                message: `El numero de pagina ingresado: ${page} no es correcto, con el limit: ${limit} el total de paginas disponibles es de : ${totalPages}, ingresar un page que se encuentre entre los valores de paginas totales`,
+                link: `http://localhost:8080/api/productsDB?limit=${options.limit}&page=1`
+            });
+        }
+
         // tema del LINK
         if (result["messagge"].hasPrevPage) {
             console.log("tine pagina anterior");
-            
-            if (category) {
-                result["messagge"].prevLink = `http://localhost:8080/api/productsDB?limit=${options.limit}&page=${result["messagge"].prevPage}&sort=${sort}&category=${category}`
-            }
-            else if (stock) {
-                result["messagge"].prevLink = `http://localhost:8080/api/productsDB?limit=${options.limit}&page=${result["messagge"].prevPage}&sort=${sort}&stock=${stock}`
-            }
-            else {
-                result["messagge"].prevLink = `http://localhost:8080/api/productsDB?limit=${options.limit}&page=${result["messagge"].prevPage}&sort=${sort}`
-            }
+
+            console.log(`http://localhost:8080/api/productsDB?limit=${options.limit}&page=${result["messagge"].prevPage}${sort && auxSort}${category ? auxCategory : ""}${stock ? auxStock : ""}`);
+
+            result["messagge"].prevLink = `http://localhost:8080/api/productsDB?limit=${options.limit}&page=${result["messagge"].prevPage}${sort ? auxSort : ""}${category ? auxCategory : ""}${stock ? auxStock : ""}`;
+
         }
 
         if (result["messagge"].hasNextPage) {
             console.log("tiene pagina siguiente");
 
-            if (category) {
-                result["messagge"].nextLink = `http://localhost:8080/api/productsDB?limit=${options.limit}&page=${result["messagge"].nextPage}&sort=${sort}&category=${category}`
-            }
-            else if (stock) {
-                result["messagge"].nextLink = `http://localhost:8080/api/productsDB?limit=${options.limit}&page=${result["messagge"].nextPage}&sort=${sort}&stock=${stock}`
-            }
-            else {
-                result["messagge"].nextLink = `http://localhost:8080/api/productsDB?limit=${options.limit}&page=${result["messagge"].nextPage}&sort=${sort}`
-            }
+            result["messagge"].nextLink = `http://localhost:8080/api/productsDB?limit=${options.limit}&page=${result["messagge"].nextPage}${sort ? auxSort : ""}${category ? auxCategory : ""}${stock ? auxStock : ""}`;
+
         }
-        
 
         if (typeof result !== "object") {
             res.status(400).send({
@@ -72,7 +74,8 @@ router.get("/", async (req, res) => {
             })
         }
 
-    } catch (error) {
+    }
+    catch (error) {
         console.log(error);
     }
 })
