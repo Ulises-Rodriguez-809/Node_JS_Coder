@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import ProductManager from '../dao/manager/productManager.js'
 import CartManagerDB from '../dao/managersDB/cartManagerDB.js';
-import cartsModel from '../dao/models/cartsModel.js';
+import ProductManagerDB from '../dao/managersDB/productManagerDB.js';
 
 const router = Router();
 
@@ -24,15 +24,49 @@ router.get('/realtimeproducts', (req, res) => {
     res.render('realTimeProducts', { text: "Products con socket" });
 })
 
+
 // DB router
-// ACA TENES Q AGREGAR UNA VIEW NUEVA PARA
+
+// ACA CAPAZ TENGAS Q HACER Q SE INGRESE EL ID DEL CART
 router.get('/products', async (req, res) => {
-    //lo mismo q hiciste en get de products.routes lo tenes q hacer aca
-    // tambien tenes q agregar boton para añadir al carrito o ver detalle del producto, esto capaz lo tengas q hacer en idex.js
+    const productsDB = new ProductManagerDB();
+    const { limit, page} = req.query;
 
-    // el btn de añadir a carrito debe de poder enviar un post a mi endpoit de carrito sin necesidad de tener q abrir el detalle del producto
 
-    // res.render('products',{products})
+    const query = {};
+    const options = {
+        limit : limit ?? 5,
+        page : page ?? 1,
+        lean : true
+    }
+    
+    const result = await productsDB.getProducts(query,options);
+    const {messagge} = result;
+
+
+    res.render('products',{products : messagge});
+})
+
+router.post('/products', async (req, res) => {
+    try {
+        const idCart = req.body.cartId;
+        // const idProduct = req.body.id;
+        const idProduct = req.body.id
+
+        console.log(idCart);
+        console.log(idProduct);
+        // console.log(idProduct);
+
+        const result = await cartsDB.addProductToCart(idCart,idProduct);
+
+        // res.send({});
+        // return;
+        // 6585e78661847a6e6f60cd01 6585e83b61847a6e6f60cd0a
+
+    } catch (error) {
+        console.log(error);
+    }
+
 })
 
 // DB router
@@ -40,15 +74,15 @@ router.get('/carts/:cartId', async (req, res) => {
     const cartId = req.params.cartId;
 
     const cart = await cartsDB.getCartById(cartId);
-    const {products} = cart;
+    const { products } = cart;
 
     const auxArray = []
 
     products.forEach(element => {
         console.log(element);
-        const {product,quantity} = element;
+        const { product, quantity } = element;
 
-        const {_id,
+        const { _id,
             title,
             description,
             code,
@@ -56,7 +90,7 @@ router.get('/carts/:cartId', async (req, res) => {
             status,
             stock,
             category,
-            thumbnails} = product;
+            thumbnails } = product;
 
         const auxProduct = {
             _id,
@@ -73,10 +107,10 @@ router.get('/carts/:cartId', async (req, res) => {
 
         auxArray.push(auxProduct);
     });
-  
 
-    res.render("cart",{products : auxArray});
-    
+
+    res.render("cart", { products: auxArray });
+
 
 })
 

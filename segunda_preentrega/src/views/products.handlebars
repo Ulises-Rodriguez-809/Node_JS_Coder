@@ -1,35 +1,102 @@
 <div>
     <h1>Productos:</h1>
-    <ul>
-        {{!-- listamos todos nuestros estudiantes q nos viene dentro de docs --}}
-        {{#each products.docs}}
-            <li>
-            {{this.title}}
-            id : {{this.id}}<br>
-            titulo : {{this.title}}<br>
-            descripcion : {{this.description}}<br>
-            codigo : {{this.code}}<br>
-            precio : {{this.price}}<br>
-            status : {{this.status}}<br>
-            categoria : {{this.category}}<br>
-            miniaturas : {{this.thumbnails}}<br>
-        </li><br>
-        {{/each}}
-    </ul>
-    {{!-- si tiene pagina siguiente q muestre la pagina siguiente, si tiene anterior q muestre la anterior y q muestre el contenido de la pagina actual --}}
+    {{#each products.docs}}
+    <form action="http://localhost:8080/products" method="post">
+        <div>
+            <label for="cartId">Ingrese el id de su carrito</label>
+            {{!-- 6586edafb7dc291112c7f9af --}}
+            <input type="text" name="cartId" id="cartId">
+        </div>
+        <div>
+                {{!-- <label for={{this.id}}>id productos:</label><br> --}}
+                <input type="text" value={{this.id}} name="id" readonly>
+            </div>
+            <div>
+                {{!-- <label for={{this.title}}>Titulo:</label><br> --}}
+                <input type="text" value={{this.title}} name="title" readonly>
+            </div>
+            <div>
+                {{!-- <label for={{this.description}}>Descripcion:</label><br> --}}
+                <input type="text" value={{this.description}} name={{this.description}} readonly>
+            </div>
+            <div>
+                {{!-- <label for={{this.code}}>Codigo:</label><br> --}}
+                <input type="text" value={{this.code}} name={{this.code}} readonly>
+            </div>
+            <div>
+                {{!-- <label for={{this.price}}>Precio:</label><br> --}}
+                <input type="text" value={{this.price}} name={{this.price}} readonly>
+            </div>
+            <div>
+                {{!-- <label for={{this.status}}>Status:</label><br> --}}
+                <input type="text" value={{this.status}} name={{this.status}} readonly>
+            </div>
+            <div>
+                {{!-- <label for={{this.category}}>Categoria:</label><br> --}}
+                <input type="text" value={{this.category}} name={{this.category}} readonly>
+            </div>
+            <div>
+                {{!-- <label for={{this.thumbnails}}>Miniaturas:</label><br> --}}
+                <input type="text" value={{this.thumbnails}} name={{this.thumbnails}} readonly>
+            </div>
+            
+            {{!-- <input type="submit" value="añadir producto" name={{this.id}}> --}}
+            <button class="btn-añadir" id={{this.id}}>Añadir producto</button>
+        </form>
+    {{/each}}
     <div>
-
-        {{!-- ESTA PARTE TENES Q HACERLA EN EL ROUTER --}}
-
-        {{!-- estos metodos son de mongoose paginate v2 --}}
         {{#if products.hasPrevPage}}
-            <a href="/api/productsDB/products?limit={{products.limit}}&page={{products.prevPage}}" >Anterior</a>
+            <a href="/products?limit={{products.limit}}&page={{products.prevPage}}" >Anterior</a>
         {{/if}}
-        {{!-- la prop page me dice en q pagina estoy --}}
-        {{!-- el totalPages la cantidad de pagina totales --}}
         <span>Pagina {{products.page}} de {{products.totalPages}}</span>
         {{#if products.hasNextPage}}
-            <a href="/api/productsDB/products?limit={{products.limit}}&page={{products.nextPage}}" >Siguiente</a>
+            <a href="/products?limit={{products.limit}}&page={{products.nextPage}}" >Siguiente</a>
         {{/if}}
     </div>
 </div>
+{{!-- <script src="/js/products.js"></script> --}}
+
+{{!-- <div>
+                <label for={{this.id}}>id productos:</label><br>
+                <input type="text" value={{this.id}} id={{this.id}} name={{this.id}} readonly>
+            </div>
+            <div>
+                <label for={{this.title}}>Titulo:</label><br>
+                <input type="text" value={{this.title}} id={{this.title}} name={{this.title}} readonly>
+            </div>
+            <div>
+                <label for={{this.description}}>Descripcion:</label><br>
+                <input type="text" value={{this.description}} id={{this.description}} name={{this.description}} readonly>
+            </div>
+            <div>
+                <label for={{this.code}}>Codigo:</label><br>
+                <input type="text" value={{this.code}} id={{this.code}} name={{this.code}} readonly>
+            </div>
+            <div>
+                <label for={{this.price}}>Precio:</label><br>
+                <input type="text" value={{this.price}} id={{this.price}} name={{this.price}} readonly>
+            </div>
+            <div>
+                <label for={{this.status}}>Status:</label><br>
+                <input type="text" value={{this.status}} id={{this.status}} name={{this.status}} readonly>
+            </div>
+            <div>
+                <label for={{this.category}}>Categoria:</label><br>
+                <input type="text" value={{this.category}} id={{this.category}} name={{this.category}} readonly>
+            </div>
+            <div>
+                <label for={{this.thumbnails}}>Miniaturas:</label><br>
+                <input type="text" value={{this.thumbnails}} id={{this.thumbnails}} name={{this.thumbnails}} readonly>
+            </div> --}}
+            {{!-- <ul>
+                <li>
+                    id : {{this.id}}<br>
+                    titulo : {{this.title}}<br>
+                    descripcion : {{this.description}}<br>
+                    codigo : {{this.code}}<br>
+                    precio : {{this.price}}<br>
+                    status : {{this.status}}<br>
+                    categoria : {{this.category}}<br>
+                    miniaturas : {{this.thumbnails}}<br>
+                </li><br>
+            </ul> --}}

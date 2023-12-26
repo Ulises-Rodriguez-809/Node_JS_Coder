@@ -81,14 +81,6 @@ export default class ProductManagerDB {
     updateProduct = async (id, fields) => {
         try {
 
-            // otra forma seria con save
-            // const product = await productsModel.findOne({_id,id});
-            // product = {
-            //     ...product, //esto despues fijate xq capaz no es asi sino q tenes q acceder a la props dentro de prodcut
-            //     ...fields
-            // }
-            // product.save()
-
             const updateProduct = {
                 ...fields
             }
