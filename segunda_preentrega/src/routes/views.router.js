@@ -1,22 +1,30 @@
 import { Router } from 'express';
 import ProductManager from '../dao/manager/productManager.js'
+import CartManagerDB from '../dao/managersDB/cartManagerDB.js';
+import cartsModel from '../dao/models/cartsModel.js';
 
 const router = Router();
+
+// FS
 const PATH = "productsList.json";
 const productos = new ProductManager(PATH);
-
 const allProducts = await productos.getProducts();
 
+// DB
+const cartsDB = new CartManagerDB();
 
+// FS router
 router.get("/", async (req, res) => {
     res.render("home", { text: "Desafio Entregable 4", products: allProducts });
 });
 
+// FS router
 router.get('/realtimeproducts', (req, res) => {
 
     res.render('realTimeProducts', { text: "Products con socket" });
 })
 
+// DB router
 // ACA TENES Q AGREGAR UNA VIEW NUEVA PARA
 router.get('/products', async (req, res) => {
     //lo mismo q hiciste en get de products.routes lo tenes q hacer aca
@@ -27,9 +35,49 @@ router.get('/products', async (req, res) => {
     // res.render('products',{products})
 })
 
+// DB router
 router.get('/carts/:cartId', async (req, res) => {
-    // aca create un .handlebars para el carrito en especifico
-    // tiene q visualizarse solo los productos del carrito
+    const cartId = req.params.cartId;
+
+    const cart = await cartsDB.getCartById(cartId);
+    const {products} = cart;
+
+    const auxArray = []
+
+    products.forEach(element => {
+        console.log(element);
+        const {product,quantity} = element;
+
+        const {_id,
+            title,
+            description,
+            code,
+            price,
+            status,
+            stock,
+            category,
+            thumbnails} = product;
+
+        const auxProduct = {
+            _id,
+            quantity,
+            title,
+            description,
+            code,
+            price,
+            status,
+            stock,
+            category,
+            thumbnails
+        }
+
+        auxArray.push(auxProduct);
+    });
+  
+
+    res.render("cart",{products : auxArray});
+    
+
 })
 
 export default router;
