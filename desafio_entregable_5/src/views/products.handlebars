@@ -1,5 +1,6 @@
 <div>
-    <h1>Productos:</h1>
+    <h1>Bienvenido {{user.full_name}} tu rol es :{{user.rol}}</h1>
+    <h2>Productos:</h2>
     {{#each products.docs}}
     <form action="http://localhost:8080/products" method="post">
         <div>

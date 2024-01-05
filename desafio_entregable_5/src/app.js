@@ -1,7 +1,9 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import {Server} from 'socket.io'
+import MongoStore from 'connect-mongo';
+import {Server} from 'socket.io';
 import {engine} from 'express-handlebars';
+import session from 'express-session';
 
 import __dirname from './utils.js';
 
@@ -16,6 +18,8 @@ import productsRouterDB from './routes/products.routes.db.js';
 import messagesRouterDB from './routes/messages.routes.db.js';
 import messagesModel from './dao/models/messagesModel.js';
 
+import sessionRouter from './routes/sessions.routes.js';
+
 
 const app = express();
 
@@ -28,6 +32,16 @@ const connection = mongoose.connect(MONGO);
 app.use(express.json());
 app.use(express.urlencoded({extended : true}));
 app.use(express.static(__dirname+"/public"));
+
+app.use(session({
+    store : new MongoStore({
+        mongoUrl : MONGO,
+        ttl : 3500 //esto capaz q no
+    }),
+    secret : "Sup3rS3gur0",
+    resave : false,
+    saveUninitialized : false
+}))
 
 const httpServer = app.listen(PORT,()=>{
     console.log(`Escuchando el puerto 8080, iniciando Express JS en http://localhost:${PORT}`);
@@ -53,6 +67,9 @@ app.use("/api/productsDB",productsRouterDB);
 
 // mensajes
 app.use("/api/messages",messagesRouterDB);
+
+// sessions
+app.use("/api/sessions",sessionRouter);
 
 
 io.on("connection", async (socket)=>{

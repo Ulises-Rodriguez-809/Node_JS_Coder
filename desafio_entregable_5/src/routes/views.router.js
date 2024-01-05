@@ -5,6 +5,25 @@ import ProductManagerDB from '../dao/managersDB/productManagerDB.js';
 
 const router = Router();
 
+const publicAccess = (req,res,next)=>{
+    // console.log("req session viewrouter");
+    // console.log(req.session);
+    // console.log(req.session.user);
+
+    if (req.session.user) {
+        return res.redirect('/');
+    }
+    next();
+}
+
+const privateAccess = (req,res,next)=>{
+    if (!req.session.user) {
+        return res.redirect('/login');
+    }
+
+    next();
+}
+
 // FS
 const PATH = "productsList.json";
 const productos = new ProductManager(PATH);
@@ -24,11 +43,19 @@ router.get('/realtimeproducts', (req, res) => {
     res.render('realTimeProducts', { text: "Products con socket" });
 })
 
-
 // DB router
 router.get('/products', async (req, res) => {
     const productsDB = new ProductManagerDB();
     const { limit, page} = req.query;
+
+    const {full_name, email, password} = req.session.user;
+
+    const isAdmin = email === "adminCoder@coder.com" && password === "adminCod3r123";
+
+    const user = {
+        full_name,
+        rol : isAdmin ? "admin" : "usuario"
+    }
 
     const query = {};
     const options = {
@@ -40,7 +67,7 @@ router.get('/products', async (req, res) => {
     const result = await productsDB.getProducts(query,options);
     const {messagge} = result;
 
-    res.render('products',{products : messagge});
+    res.render('products',{products : messagge, user});
 })
 
 router.post('/products', async (req, res) => {
@@ -99,6 +126,16 @@ router.get('/carts/:cartId', async (req, res) => {
 
     res.render("cart", { products: auxArray });
 
+})
+
+// login
+router.get('/login',(req,res)=>{
+    res.render("login");
+})
+
+// register
+router.get('/register',(req,res)=>{
+    res.render("register");
 })
 
 export default router;
