@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
         const result = await cartsDB.getCarts();
         
         if (typeof result !== "object") {
-            res.status(400).send({
+            return res.status(400).send({
                 status: "error",
                 message: result
             });
@@ -26,13 +26,6 @@ router.get('/', async (req, res) => {
                 message: result
             })
         }
-
-        const carts = await cartsModel.find();
-
-        res.send({
-            status: "success",
-            message: carts
-        })
 
     } catch (error) {
         console.log(error);
@@ -47,7 +40,7 @@ router.get('/:cartId', async (req, res) => {
         const result = await cartsDB.getCartById(id);
         
         if (typeof result === "string") {
-            res.status(400).send({
+            return res.status(400).send({
                 status: "error",
                 message: result
             });
@@ -87,7 +80,7 @@ router.post('/:cartId/product/:productId', async (req, res) => {
         if (typeof product === "object") {
             const result = await cartsDB.addProductToCart(cartId,productId,quantity);
             
-            res.send({
+            return res.send({
                 status: "success",
                 message: result
             })
@@ -114,7 +107,7 @@ router.delete('/:cartId', async (req, res) => {
         const result = await cartsDB.deleteCart(id);
 
         if (typeof result === "string") {
-            res.status(400).send({
+            return res.status(400).send({
                 status: "error",
                 message: result
             });
