@@ -26,8 +26,6 @@ router.get('/realtimeproducts', (req, res) => {
 
 
 // DB router
-
-// ACA CAPAZ TENGAS Q HACER Q SE INGRESE EL ID DEL CART
 router.get('/products', async (req, res) => {
     const productsDB = new ProductManagerDB();
     const { limit, page} = req.query;
@@ -50,18 +48,9 @@ router.get('/products', async (req, res) => {
 router.post('/products', async (req, res) => {
     try {
         const idCart = req.body.cartId;
-        // const idProduct = req.body.id;
         const idProduct = req.body.id
 
-        console.log(idCart);
-        console.log(idProduct);
-        // console.log(idProduct);
-
         const result = await cartsDB.addProductToCart(idCart,idProduct);
-
-        // res.send({});
-        // return;
-        // 6585e78661847a6e6f60cd01 6585e83b61847a6e6f60cd0a
 
     } catch (error) {
         console.log(error);
@@ -108,9 +97,7 @@ router.get('/carts/:cartId', async (req, res) => {
         auxArray.push(auxProduct);
     });
 
-
     res.render("cart", { products: auxArray });
-
 
 })
 
