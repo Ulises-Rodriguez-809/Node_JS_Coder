@@ -1,5 +1,16 @@
 <div>
-    <h1>Bienvenido {{user.full_name}} tu rol es :{{user.rol}}</h1>
+    <div>
+        <h1>Bienvenido {{user.full_name}}</h1>
+        <p>Estos son tus Datos:</p>
+        <ul>
+            <li>tu edad es : {{user.age}}</li>
+            <li>tu email es : {{user.email}}</li>
+            <li>tu rol es : {{user.rol}}</li>
+        </ul>
+    </div>
+    <div>
+        <a href="/api/sessions/logout"><button>Salir</button></a>
+    </div>
     <h2>Productos:</h2>
     {{#each products.docs}}
     <form action="http://localhost:8080/products" method="post">

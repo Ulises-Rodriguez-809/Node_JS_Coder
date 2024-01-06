@@ -1,9 +1,9 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import MongoStore from 'connect-mongo';
+import session from 'express-session';
 import {Server} from 'socket.io';
 import {engine} from 'express-handlebars';
-import session from 'express-session';
 
 import __dirname from './utils.js';
 
@@ -36,11 +36,12 @@ app.use(express.static(__dirname+"/public"));
 app.use(session({
     store : new MongoStore({
         mongoUrl : MONGO,
+        // collection : "asd",por defecto la colleccion es sessions (por eso te aparece una colleccion sessions en mongo)
         ttl : 3500 //esto capaz q no
     }),
     secret : "Sup3rS3gur0",
-    resave : false,
-    saveUninitialized : false
+    resave : false, // no guarde la sesión si no está modificada
+    saveUninitialized : false // no cree la sesión hasta que algo se almacene
 }))
 
 const httpServer = app.listen(PORT,()=>{
@@ -56,6 +57,8 @@ app.set("views",__dirname+"/views");
 
 
 app.use("/",viewsRouter);
+// sessions
+app.use("/api/sessions",sessionRouter);
 
 //carts
 app.use("/api/carts",cartsRouter);
@@ -68,8 +71,6 @@ app.use("/api/productsDB",productsRouterDB);
 // mensajes
 app.use("/api/messages",messagesRouterDB);
 
-// sessions
-app.use("/api/sessions",sessionRouter);
 
 
 io.on("connection", async (socket)=>{
