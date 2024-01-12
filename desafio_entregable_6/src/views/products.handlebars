@@ -1,0 +1,65 @@
+<div>
+    <div>
+        <h1>Bienvenido {{user.full_name}}</h1>
+        <p>Estos son tus Datos:</p>
+        <ul>
+            <li>tu edad es : {{user.age}}</li>
+            <li>tu email es : {{user.email}}</li>
+            <li>tu rol es : {{user.rol}}</li>
+        </ul>
+    </div>
+    <div>
+        <a href="/api/sessions/logout"><button>Salir</button></a>
+    </div>
+    <h2>Productos:</h2>
+    {{#each products.docs}}
+    <form action="http://localhost:8080/products" method="post">
+        <div>
+            <label for="cartId">Ingrese el id de su carrito</label>
+            <input type="text" name="cartId" id="cartId">
+        </div>
+        <div>
+                <label>id productos:</label><br>
+                <input type="text" value={{this.id}} name="id" readonly>
+            </div>
+            <div>
+                <label>Titulo:</label><br>
+                <input type="text" value={{this.title}} name="title" readonly>
+            </div>
+            <div>
+                <label>Descripcion:</label><br>
+                <input type="text" value={{this.description}} name={{this.description}} readonly>
+            </div>
+            <div>
+                <label>Codigo:</label><br>
+                <input type="text" value={{this.code}} name={{this.code}} readonly>
+            </div>
+            <div>
+                <label>Precio:</label><br>
+                <input type="text" value={{this.price}} name={{this.price}} readonly>
+            </div>
+            <div>
+                <label>Status:</label><br>
+                <input type="text" value={{this.status}} name={{this.status}} readonly>
+            </div>
+            <div>
+                <label>Categoria:</label><br>
+                <input type="text" value={{this.category}} name={{this.category}} readonly>
+            </div>
+            <div>
+                <label>Miniaturas:</label><br>
+                <input type="text" value={{this.thumbnails}} name={{this.thumbnails}} readonly>
+            </div>
+            <button class="btn-añadir" id={{this.id}}>Añadir producto</button>
+        </form>
+    {{/each}}
+    <div>
+        {{#if products.hasPrevPage}}
+            <a href="/products?limit={{products.limit}}&page={{products.prevPage}}" >Anterior</a>
+        {{/if}}
+        <span>Pagina {{products.page}} de {{products.totalPages}}</span>
+        {{#if products.hasNextPage}}
+            <a href="/products?limit={{products.limit}}&page={{products.nextPage}}" >Siguiente</a>
+        {{/if}}
+    </div>
+</div>
