@@ -5,6 +5,10 @@ import session from 'express-session';
 import {Server} from 'socket.io';
 import {engine} from 'express-handlebars';
 
+// 10- importamos passport y la funcion q inicia el passport
+import passport from 'passport';
+import inicializePassport from './config/passport.config.js'
+
 import __dirname from './utils.js';
 
 import viewsRouter from './routes/views.router.js';
@@ -20,6 +24,17 @@ import messagesModel from './dao/models/messagesModel.js';
 
 import sessionRouter from './routes/sessions.routes.js';
 
+// agrega el passport, passport local y passport con github (clase 20 y 21 claves)
+
+// Owned by: @Ulises-Rodriguez-809
+
+// App ID: 794414
+
+// Client ID: Iv1.353d92dfec58dbfd
+
+//     8d45985ce161d455cd42631c71b687870634579f --> client secret
+
+//     http://localhost:8080/api/session/githubcallback --> callbakcURL
 
 const app = express();
 
@@ -43,6 +58,11 @@ app.use(session({
     resave : false, // no guarde la sesión si no está modificada
     saveUninitialized : false // no cree la sesión hasta que algo se almacene
 }))
+
+// 11- llamamos al middleware de passport y la fun de inicializePassport
+inicializePassport();
+app.use(passport.initialize());
+app.use(passport.session()); //recorda poner el passport session debajo del middleware q ejecuta el session
 
 const httpServer = app.listen(PORT,()=>{
     console.log(`Escuchando el puerto 8080, iniciando Express JS en http://localhost:${PORT}`);
@@ -70,7 +90,6 @@ app.use("/api/productsDB",productsRouterDB);
 
 // mensajes
 app.use("/api/messages",messagesRouterDB);
-
 
 
 io.on("connection", async (socket)=>{
