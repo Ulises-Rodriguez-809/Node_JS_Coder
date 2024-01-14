@@ -17,6 +17,14 @@ form.addEventListener("submit",(e)=>{
         }
     })
     .then(result => result.json())
-    .then(json => console.log(json)) //aca capaz hacer redirec como en login
-    // .then(window.location.replace('/api/productsDB')) //esto aca podrias poner un alert o algo asi cosa q no sea tan brusco el cambio
+    .then(json => {
+        console.log(json)
+
+        if (json.status === "error") {
+            alert("Error al registrarse");
+            return "";
+        }
+        
+        alert("Te registraste con exito")
+    })
 })

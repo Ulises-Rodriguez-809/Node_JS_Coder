@@ -34,7 +34,7 @@ import sessionRouter from './routes/sessions.routes.js';
 
 //     8d45985ce161d455cd42631c71b687870634579f --> client secret
 
-//     http://localhost:8080/api/session/githubcallback --> callbakcURL
+//     http://localhost:8080/api/sessions/githubcallback --> callbakcURL
 
 const app = express();
 

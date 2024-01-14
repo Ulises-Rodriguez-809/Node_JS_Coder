@@ -51,5 +51,4 @@ socket.on("mensajes-actualizados",data=>{
     newLi.innerText = `${data.user} dice : ${data.message}`;
     
     logs.appendChild(newLi);
- 
 })

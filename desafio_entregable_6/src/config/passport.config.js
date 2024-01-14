@@ -94,7 +94,46 @@ const inicializePassport = () => {
         done(null, user);
     })
 
-    // FALTA CON GITHUB
+    // 16- github token
+    passport.use("github", new GitHubStrategy(
+        {
+            clientID : "Iv1.353d92dfec58dbfd",
+            clientSecret : "8d45985ce161d455cd42631c71b687870634579f",
+            callbackURL : "http://localhost:8080/api/sessions/githubcallback"
+        },
+        async (accessToken, refreshToken, profile, done)=>{
+            try {
+                console.log(profile);
+
+                const userName = profile._json.name.split(" ");
+
+                let userEmail = !profile._json.email ? profile.username : profile._json.email;
+
+                const user = await userModel.findOne({email: userEmail});
+
+                if (user) {
+                    // console.log(`Usuario ya registrado con el mail: ${userEmail}`);
+
+                    return done(null,user); //FIJATE Q ACA EN DISTINTO A CON REGISTER YA Q SI EXISTE EL USUARIO LOS DEJAS PASAR XQ SE ESTA LOGUEANDO
+                }
+
+                const newUser = {
+                    first_name: userName[0],
+                    last_name: userName[1],
+                    email : userEmail,
+                    age: 18,
+                    password: ""
+                }
+
+                const result = await userModel.create(newUser);
+                
+                return done (null, result);
+
+            } catch (error) {
+                done(error);
+            }
+        }
+    ))
 }
 
 
