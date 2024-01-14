@@ -13,7 +13,7 @@
     </div>
     <h2>Productos:</h2>
     {{#each products.docs}}
-    <form action="http://localhost:8080/products" method="post">
+    <form action="http://localhost:8080/products" method="post" id="formProducts">
         <div>
             <label for="cartId">Ingrese el id de su carrito</label>
             <input type="text" name="cartId" id="cartId">

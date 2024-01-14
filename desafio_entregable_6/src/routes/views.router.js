@@ -58,7 +58,7 @@ router.get('/realtimeproducts', (req, res) => {
     res.render('realTimeProducts', { text: "Products con socket" });
 })
 
-// DB router
+// DB router login
 router.get('/products', async (req, res) => {
     const productsDB = new ProductManagerDB();
     const { limit, page} = req.query;
@@ -89,13 +89,11 @@ router.get('/products', async (req, res) => {
     res.render('products',{products : messagge, user});
 })
 
+// router add products form
 router.post('/products', async (req, res) => {
     try {
         const idCart = req.body.cartId;
         const idProduct = req.body.id
-
-        console.log(idCart);
-        console.log(idProduct);
 
         const result = await cartsDB.addProductToCart(idCart,idProduct);
 
