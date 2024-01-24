@@ -1,0 +1,52 @@
+<h1>{{text}}</h1>
+<div>
+    <form name="nuevo-producto" id="nuevo-producto">
+        <div>
+            <label for="input-title">Titulo</label>
+            <input type="text" name="input-title" id="input-title" placeholder="Nombre del producto">
+        </div>
+        <div>
+            <label for="input-description">Descripcion</label>
+            <input type="text" name="input-description" id="input-description"
+                placeholder="Descripcion del producto">
+        </div>
+        <div>
+            <label for="input-code">Code</label>
+            <input type="text" name="input-code" id="input-code" placeholder="Code del producto">
+        </div>
+        <div>
+            <label for="input-price">Precio</label>
+            <input type="number" name="input-price" id="input-price" placeholder="Precio del producto"
+                min="1">
+        </div>
+        <div>
+            <label for="input-stock">Stock</label>
+            <input type="number" name="input-stock" id="input-stock" placeholder="Stock del producto"
+                min="1">
+        </div>
+        <div>
+            <label for="input-category">Categoria</label>
+            <input type="text" name="input-category" id="input-category"
+                placeholder="Categoria del producto">
+        </div>
+        <div>
+            <label for="input-thumbnails">Thumbnails</label>
+            <input type="text" name="input-thumbnails" id="input-thumbnails"
+                placeholder="urls separadas por ','">
+        </div>
+    </form>
+    <div>
+        <button id="btnAñadir">Añadir</button>
+    </div>
+</div>
+<div>
+    <label for="input-id">Eliminar Producto</label>
+    <input type="number" name="eliminarProducto" id="input-id" placeholder="Ingrese el id del producto" min="0">
+    <button id="btnEliminar">Eliminar</button>
+</div>
+<div>
+    <ul id="ul-products"></ul>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/index.js"></script>
