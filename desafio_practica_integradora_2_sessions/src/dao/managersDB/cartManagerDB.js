@@ -45,10 +45,10 @@ export default class CartManagerDB {
             console.log("PRODUCT ID:", typeof idProduct, idProduct);
 
 
-            const cartID = new mongoose.Types.ObjectId(idCart);
+            // const cartID = new mongoose.Types.ObjectId(idCart);
             // const productID = new mongoose.Types.ObjectId(idProduct);
 
-            const cart = await cartsModel.findOne({ _id: cartID });
+            const cart = await cartsModel.findOne({ _id: idCart });
             console.log("cart");
 
             if (!cart) {
