@@ -4,36 +4,6 @@ import passport from 'passport';
 
 const router = Router();
 
-// router.post("/register", async (req, res) => {
-//     const { first_name, last_name, email, age, password } = req.body;
-
-//     const userFound = await userModel.findOne({ email });
-
-//     if (userFound) {
-//         return res.status(400).send({
-//             status: "error",
-//             message: `Lo siento pero ya hay un usuario registrado con el mail ${email}`
-//         })
-//     }
-
-//     const newUser = {
-//         first_name,
-//         last_name,
-//         email,
-//         age,
-//         password
-//     }
-
-//     const result = await userModel.create(newUser);
-
-//     res.send({
-//         status: "success",
-//         message: "Usuario registrado con exito"
-//     })
-
-// })
-
-
 /* 12- reacondicionamos el register para q quede mas limpio */
 router.post("/register", passport.authenticate("register", { failureRedirect: "/api/sessions/failregister" }), async (req, res) => {
 
@@ -53,47 +23,6 @@ router.get('/failregister', async (req, res) => {
     })
 })
 
-// router.post("/login",async (req, res) => {
-//     const { email, password } = req.body;
-
-//     const adminData = {
-//         full_name : "Coder House",
-//         email : "adminCoder@coder.com",
-//         age : 10,
-//         password : "adminCod3r123"
-//     }
-
-//     // caso admin
-//     if (email === adminData.email) {
-//         // si es admin añadimos al req.session.user los dato del admin
-//         // estos son tomados luego en el view.routes.js
-//         req.session.user = {...adminData};
-
-//     }else{
-//         const userFound = await userModel.findOne({ email, password });
-
-//         if (!userFound) {
-//             return res.status(400).send({
-//                 status: "error",
-//                 message: "Lo siento ingresaste mal lo datos"
-//             })
-//         }
-
-//         req.session.user = {
-//             full_name: `${userFound.first_name} ${userFound.last_name}`,
-//             email: userFound.email,
-//             age: userFound.age,
-//             password: userFound.password
-//         }
-//     }
-
-//     res.send({
-//         status: "success",
-//         payload: req.session.user,
-//         message: "logueado con exito"
-//     })
-// })
-
 /* 14- reacondicionamos el login */
 router.post("/login", passport.authenticate("login", { failureRedirect: "/api/sessions/faillogin" }), async (req, res) => {
 
@@ -109,7 +38,8 @@ router.post("/login", passport.authenticate("login", { failureRedirect: "/api/se
     req.session.user = {
         full_name: `${req.user.first_name} ${req.user.last_name}`,
         age: req.user.age,
-        email: req.user.email
+        email: req.user.email,
+        cartID : req.user.cart._id
     }
 
     res.send({

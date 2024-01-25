@@ -67,8 +67,15 @@ router.post('/', async (req, res) => {
 //añadir un producto (id y quantity) a un cart (por el id)
 router.post('/:cartId/product/:productId', async (req, res) => {
     try {
+        console.log(req.body);
+
         const cartId = req.params.cartId;
         const productId = req.params.productId;
+
+        console.log("PARAMS DESDE CART ROUTEWR");
+        console.log(cartId);
+        console.log(productId);
+
         const { quantity } = req.body;
 
         const result = await cartsDB.addProductToCart(cartId, productId, quantity);

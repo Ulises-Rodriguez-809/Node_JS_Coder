@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import cartsModel from '../models/cartsModel.js';
 import productsModel from '../models/productsModel.js' //el model de products es para el populate
 
@@ -40,7 +41,15 @@ export default class CartManagerDB {
 
     addProductToCart = async (idCart, idProduct, quantity = 1) => {
         try {
-            const cart = await cartsModel.findOne({ _id: idCart });
+            console.log("CART ID:", typeof idCart, idCart);
+            console.log("PRODUCT ID:", typeof idProduct, idProduct);
+
+
+            const cartID = new mongoose.Types.ObjectId(idCart);
+            // const productID = new mongoose.Types.ObjectId(idProduct);
+
+            const cart = await cartsModel.findOne({ _id: cartID });
+            console.log("cart");
 
             if (!cart) {
                 return `el carrito con el id : ${idCart} no existe`;
@@ -79,7 +88,7 @@ export default class CartManagerDB {
         }
     }
 
-    updateProductsList = async (idCart,arryProducts) =>{
+    updateProductsList = async (idCart, arryProducts) => {
         try {
             const cart = await cartsModel.findOne({ _id: idCart });
 
@@ -101,7 +110,7 @@ export default class CartManagerDB {
         }
     }
 
-    updateQuantity = async (idCart, idProduct, quantity)=>{
+    updateQuantity = async (idCart, idProduct, quantity) => {
         try {
             const cart = await cartsModel.findOne({ _id: idCart });
 
@@ -184,7 +193,7 @@ export default class CartManagerDB {
             const indexProduct = productsInCart.findIndex(product => product.product._id.toString() === idProduct);
 
             if (indexProduct > -1) {
-                cart.products.splice(indexProduct,1);
+                cart.products.splice(indexProduct, 1);
 
             }
 

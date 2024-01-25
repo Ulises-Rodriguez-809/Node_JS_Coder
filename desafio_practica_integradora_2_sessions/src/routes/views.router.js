@@ -8,10 +8,6 @@ const router = Router();
 const publicAccess = (req,res,next)=>{
     if (req.session.user) {
         return res.redirect('/products');
-        // return res.send({
-        //     status : "error",
-        //     message : "tenes q darle al btn desloguear"
-        // })
     }
     next();
 }
@@ -64,7 +60,7 @@ router.get('/products', async (req, res) => {
     const { limit, page} = req.query;
 
     // aca tomamos los datos cargados en el session en el sessions.routes.js
-    const {full_name, email, age ,password} = req.session.user;
+    const {full_name, email, age, cartID ,password} = req.session.user;
 
     // comrpobamos si el email ingresado y la contraseña corresponden al perfil del admin
     const isAdmin = email === "adminCoder@coder.com" && password === "adminCod3r123";
@@ -73,7 +69,8 @@ router.get('/products', async (req, res) => {
         full_name,
         age,
         email,
-        rol : isAdmin ? "admin" : "usuario"
+        rol : isAdmin ? "admin" : "usuario",
+        cartID
     }
 
     const query = {};
