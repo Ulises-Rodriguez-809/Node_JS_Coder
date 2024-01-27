@@ -1,4 +1,7 @@
-import userModel from "../models/userModel.js";
+import userModel from '../models/userModel.js'
+import CartManagerDB from './cartManagerDB.js';
+
+const Cart = new CartManagerDB;
 
 
 export default class Users {
@@ -8,20 +11,27 @@ export default class Users {
 
     getAllUsers = async () => {
         // let users = await userModel.find().lean().populate("carts.cart");
-        let users = await userModel.find().lean();
+        let users = await userModel.find();
 
         return users;
     }
 
     saveUser = async (user) => {
-        let result = await userModel.create(user);
+        const newCart = await Cart.createCart();
+
+        const newUser = {
+            ...user,
+            cart : newCart._id
+        }
+
+        let result = await userModel.create(newUser);
 
         return result;
     }
 
     getUser = async (params) => {
         // let result = await userModel.findOne(params).lean().populate("carts.cart");
-        let result = await userModel.findOne(params).lean();
+        let result = await userModel.findOne(params);
 
         return result;
     }

@@ -1,14 +1,39 @@
 import passport from 'passport';
 import local from 'passport-local';
 import GitHubStrategy from 'passport-github2';
+import jwt from 'passport-jwt'
 
-import userModel from '../dao/models/userModel.js';
+
 import { createHash, isValidPassword } from '../utils.js';
-import Users from '../dao/manager/userManager.js';
+import Users from '../dao/managersDB/userManager.js';
 
-const userManager = new Users;
+const User = new Users;
 
 const LocalStrategy = local.Strategy;
+
+// creamos la estrategia para jwt
+const JWTStrategy = jwt.Strategy;
+//  el JWT se analiza a partir de la solicitud mediante una devolución de llamada proporcionada por el usuario y pasada como parámetro jwtFromRequest. Esta devolución de llamada, a partir de ahora denominada extractor, acepta un objeto de solicitud como argumento y devuelve la cadena JWT codificada o nulo
+// En Passport-jwt.ExtractJwt se proporcionan varias funciones de fábrica de extractores. Estas funciones de fábrica devuelven un nuevo extractor configurado con los parámetros dados
+// fromHeader(header_name)crea un nuevo extractor que busca el JWT en el encabezado http dado
+// fromBodyField(field_name)crea un nuevo extractor que busca el JWT en el campo del cuerpo dado. Debe tener un analizador de cuerpo configurado para poder utilizar este método.
+// fromUrlQueryParameter(param_name)crea un nuevo extractor que busca el JWT en el parámetro de consulta de URL dado.
+// fromAuthHeaderWithScheme(auth_scheme)crea un nuevo extractor que busca el JWT en el encabezado de autorización, esperando que el esquema coincida con auth_scheme.
+// fromAuthHeaderAsBearerToken()crea un nuevo extractor que busca el JWT en el encabezado de autorización con el esquema 'portador'
+// fromExtractors([array of extractor functions])crea un nuevo extractor utilizando una serie de extractores proporcionados. Cada extractor se intenta en orden hasta que uno devuelve una ficha.
+const ExtractJWT = jwt.ExtractJwt;
+
+// extractor de cookies
+const cookieExtractor = req=>{
+    let token = null;
+
+    if (req && req.cookies) {
+        token = req.cookies["jwt-cookie"] //este jwt-cookie es la misma key q esta en el login
+        console.log(token);
+    }
+
+    return token
+}
 
 const inicializePassport = () => {
     passport.use("register", new LocalStrategy(
@@ -21,8 +46,7 @@ const inicializePassport = () => {
                     return done(null, false, { message: "valores inclompletos" });
                 }
 
-                const user = await userManager.getUser({ email: username })
-                // const user2 = await userModel.findOne({ email: username }).lean().populate("carts");
+                const user = await User.getUser({ email: username })
 
                 if (user) {
                     console.log(`El usuario con el email : ${username} ya se encuentra registrado`);
@@ -40,8 +64,7 @@ const inicializePassport = () => {
                     password: hashPassword
                 }
 
-                const result = await userManager.saveUser(newUser);
-                // const result = await userModel.create(newUser);
+                const result = await User.saveUser(newUser);
 
                 return done(null, result);
 
@@ -58,13 +81,7 @@ const inicializePassport = () => {
         // si no entuentra alguna de las 2 passport no te va a andar
         async (username, password, done) => {
             try {
-                const user = await userManager.getUser({ email: username });
-                console.log("user info passport config");
-                console.log(user);
-                console.log(" ");
-                console.log(" ");
-                console.log(" ");
-                // const user = await userModel.findOne({ email: username }).lean().populate("carts");
+                const user = await User.getUser({ email: username });
 
                 if (!user) {
                     return done(null, false, { message: "Usuario no encontrado" });
@@ -89,12 +106,11 @@ const inicializePassport = () => {
 
     passport.deserializeUser(async (id, done) => {
         // en caso deserializar buscamos al usuario en la DB
-        let user = await userManager.getUser({ _id: id });
+        let user = await User.getUser({ _id: id });
 
         done(null, user);
     })
 
-    // 16- github token
     passport.use("github", new GitHubStrategy(
         {
             clientID: "Iv1.353d92dfec58dbfd",
@@ -109,7 +125,7 @@ const inicializePassport = () => {
 
                 let userEmail = !profile._json.email ? profile.username : profile._json.email;
 
-                const user = await userManager.getUser({ email: userEmail });
+                const user = await User.getUser({ email: userEmail });
 
                 if (user) {
                     // console.log(`Usuario ya registrado con el mail: ${userEmail}`);
@@ -125,10 +141,28 @@ const inicializePassport = () => {
                     password: ""
                 }
 
-                const result = await userManager.saveUser(newUser);
+                const result = await User.saveUser(newUser);
 
                 return done(null, result);
 
+            } catch (error) {
+                done(error);
+            }
+        }
+    ))
+
+    passport.use("current", new JWTStrategy(
+        { 
+            // jwtFromRequest (REQUIRED) Function that accepts a request as the only parameter and returns either the JWT as a string or null.
+            // fromExtractors([array of extractor functions])crea un nuevo extractor utilizando una serie de extractores proporcionados. Cada extractor se intenta en orden hasta que uno devuelve una ficha
+            jwtFromRequest : ExtractJWT.fromExtractors([cookieExtractor]),
+            secretOrKey : "desafio_jwt_secret" //el mismo q ponemos para jwt.sing() --> jwt.sign function takes the payload, secret and options as its arguments
+        },
+        async (jwt_payload, done) => {
+            try {
+                console.log(jwt_payload);
+    
+                done(null, jwt_payload) //devuelve el web token
             } catch (error) {
                 done(error);
             }

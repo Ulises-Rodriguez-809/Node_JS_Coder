@@ -29,34 +29,38 @@ router.get('/products', async (req, res) => {
     const productsDB = new ProductManagerDB();
     const { limit, page} = req.query;
 
-    console.log(" ");
-    console.log(" ");
-    console.log(" ");
-    console.log("req.user views.router.js");
-    console.log(req.user);
+    console.log("PRODUCTS");
+    console.log(req.cookies);
 
-    
 
-    const serializedUser = {
-        id : req.user._id,
-        full_name: `${req.user.first_name} ${req.user.last_name}`,
-        age: req.user.age,
-        email: req.user.email,
-        rol : req.user.rol
-    }
+    // console.log(req);
+    // const userInfo = {
+    //     id : req.user._id,
+    //     full_name: `${req.user.first_name} ${req.user.last_name}`,
+    //     age: req.user.age,
+    //     email: req.user.email,
+    //     rol : req.user.rol
+    // }
 
     // aca tomamos los datos cargados en el session en el sessions.routes.js
     // const {full_name, email, age ,password} = req.session.user;
 
     // comrpobamos si el email ingresado y la contraseña corresponden al perfil del admin
-    // const isAdmin = serializedUser.email === "adminCoder@coder.com" && password === "adminCod3r123";
-    const isAdmin = serializedUser.email === "adminCoder@coder.com";
+    // const isAdmin = userInfo.email === "adminCoder@coder.com" && password === "adminCod3r123";
+    // const isAdmin = userInfo.email === "adminCoder@coder.com";
+
+    // const user = {
+    //     full_name : userInfo.full_name,
+    //     age : userInfo.age,
+    //     email : userInfo.email,
+    //     rol : isAdmin ? "admin" : userInfo.rol
+    // }
 
     const user = {
-        full_name : serializedUser.full_name,
-        age : serializedUser.age,
-        email : serializedUser.email,
-        rol : isAdmin ? "admin" : serializedUser.rol
+        full_name : "sin funcionatr",
+        age : 10,
+        email : "sinfuncinar@gmail.com",
+        // rol : isAdmin ? "admin" : userInfo.rol
     }
 
     const query = {};

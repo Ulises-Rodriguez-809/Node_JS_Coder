@@ -71,8 +71,6 @@ app.use("/api/productsDB",productsRouterDB);
 
 app.use("/api/messages",messagesRouterDB);
 
-// FALTA AGREGAR USERS
-
 // server
 const httpServer = app.listen(PORT,()=>{
     console.log(`Escuchando el puerto 8080, iniciando Express JS en http://localhost:${PORT}`);
