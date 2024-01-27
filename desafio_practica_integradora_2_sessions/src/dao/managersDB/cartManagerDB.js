@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+// import mongoose from 'mongoose';
 import cartsModel from '../models/cartsModel.js';
 import productsModel from '../models/productsModel.js' //el model de products es para el populate
 

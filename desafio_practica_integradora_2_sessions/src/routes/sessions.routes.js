@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import userModel from '../dao/models/userModel.js';
 import passport from 'passport';
 
 const router = Router();
@@ -87,5 +86,21 @@ router.get('/logout', (req, res) => {
     })
 })
 
+// ruta current
+router.get("/current", (req,res)=>{
+    console.log(req.session);
+
+    if (!req.session) {
+        return res.send({
+            status : "error",
+            message : "No se encontro el usuario"
+        })
+    }
+
+    return res.send({
+        status : "success",
+        payload : req.session.user
+    })
+})
 
 export default router;
