@@ -29,10 +29,12 @@ const cookieExtractor = req=>{
 
     if (req && req.cookies) {
         token = req.cookies["jwt-cookie"] //este jwt-cookie es la misma key q esta en el login
+        console.log("COOKIE EXTRACTOR");
         console.log(token);
+        console.log(req.cookies["jwt-cookie"]);
     }
 
-    return token
+    return token;
 }
 
 const inicializePassport = () => {
@@ -160,6 +162,7 @@ const inicializePassport = () => {
         },
         async (jwt_payload, done) => {
             try {
+                console.log("PASSPORT CONFING PAYLOAD");
                 console.log(jwt_payload);
     
                 done(null, jwt_payload) //devuelve el web token

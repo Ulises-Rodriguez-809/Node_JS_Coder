@@ -52,7 +52,7 @@ app.use(express.static(__dirname+"/public"));
 inicializePassport();
 app.use(passport.initialize());
 // cookie
-app.use(cookieParser());
+app.use(cookieParser("palabraSecreta",{}));
 
 // inicializamos nuestro motor de plantillas e indicamos donde estan las vistas
 app.engine("handlebars",engine()); 

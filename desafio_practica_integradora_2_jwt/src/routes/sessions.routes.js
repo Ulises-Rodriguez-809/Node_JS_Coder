@@ -49,7 +49,6 @@ router.post("/login", passport.authenticate("login", { failureRedirect: "/api/se
 
     // enviamos el token por la cookie
     // HttpOnly Cookies evitan que los scripts del lado del cliente accedan a estas cookies, reduciendo significativamente el riesgo de ataques XSS
-    // res.cookie("jwt-cookie",token, {httpOnly : true}).json({
     res.cookie("jwt-cookie",token, {httpOnly : true, maxAge: 3600000}).json({
         status : "success",
         payload : token

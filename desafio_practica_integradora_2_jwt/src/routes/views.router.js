@@ -31,6 +31,8 @@ router.get('/products', async (req, res) => {
 
     console.log("PRODUCTS");
     console.log(req.cookies);
+    // console.log(req.body);
+    // console.log(req);
 
 
     // console.log(req);
@@ -48,13 +50,6 @@ router.get('/products', async (req, res) => {
     // comrpobamos si el email ingresado y la contraseña corresponden al perfil del admin
     // const isAdmin = userInfo.email === "adminCoder@coder.com" && password === "adminCod3r123";
     // const isAdmin = userInfo.email === "adminCoder@coder.com";
-
-    // const user = {
-    //     full_name : userInfo.full_name,
-    //     age : userInfo.age,
-    //     email : userInfo.email,
-    //     rol : isAdmin ? "admin" : userInfo.rol
-    // }
 
     const user = {
         full_name : "sin funcionatr",
