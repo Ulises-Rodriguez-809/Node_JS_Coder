@@ -10,7 +10,6 @@ export default class Users {
     }
 
     getAllUsers = async () => {
-        // let users = await userModel.find().lean().populate("carts.cart");
         let users = await userModel.find();
 
         return users;
@@ -30,7 +29,6 @@ export default class Users {
     }
 
     getUser = async (params) => {
-        // let result = await userModel.findOne(params).lean().populate("carts.cart");
         let result = await userModel.findOne(params);
 
         return result;

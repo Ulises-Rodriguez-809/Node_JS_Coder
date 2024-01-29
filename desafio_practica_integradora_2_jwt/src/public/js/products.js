@@ -12,11 +12,6 @@ arrayForms.forEach((form) => {
 
         data.forEach((value,key)=> obj[key] = value)
 
-        // console.log(obj);
-
-        // console.log(idCart);
-        // console.log(idCart === idCart.trim());
-
         fetch(`/api/cartsDB/${idCart}/product/${obj.id}`,{
             method : "POST",
             body : JSON.stringify(obj),
