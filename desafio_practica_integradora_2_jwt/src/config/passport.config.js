@@ -29,9 +29,6 @@ const cookieExtractor = req=>{
 
     if (req && req.cookies) {
         token = req.cookies["jwt-cookie"] //este jwt-cookie es la misma key q esta en el login
-        console.log("COOKIE EXTRACTOR");
-        console.log(token);
-        console.log(req.cookies["jwt-cookie"]);
     }
 
     return token;

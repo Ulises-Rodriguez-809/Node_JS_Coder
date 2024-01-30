@@ -29,8 +29,10 @@ router.get('/register',(req,res)=>{
 router.get('/products', async (req, res) => {
     const productsDB = new ProductManagerDB();
     const { limit, page} = req.query;
+
+    const tokenInfo = req.cookies["jwt-cookie"];
     
-    const decodedToken = jwt.decode(req.cookies["jwt-cookie"])
+    const decodedToken = jwt.decode(tokenInfo)
 
     console.log(decodedToken);
 
