@@ -13,6 +13,13 @@ export default class ProductManagerDB {
                 }
             )
 
+            // ESTO DE ACA ES XQ EL VALUE DE LOS INPUTS TE TOMA SOLO LA PRIMERA PALABRA DEL ARRAY
+            // OSEA SI VOS EN LA DB TENES "CAFE RICO" EL VALUE DEL INPUT TE TOMA SOLO "CAFE"
+            products.docs.forEach(product => {
+                product["title"] = product["title"].replace(/ /g,"_");
+                product["description"] = product["description"].replace(/ /g,"_");
+            });
+
             return {
                 status: "success",
                 messagge: products

@@ -1,23 +1,43 @@
-<div>
-    <h1>Registro</h1>
-    <form id="registerForm">
-        <label>Nombre</label>
-        <input name="first_name"><br>
+<!DOCTYPE html>
+<html lang="en">
 
-        <label>Apellido</label>
-        <input name="last_name"><br>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/register.css">
+    <title>Document</title>
+</head>
 
-        <label>Email</label>
-        <input name="email"><br>
+<body>
+    <div class="registerContainer">
+        <div class="register">
+            <h1 class="registerTitle">Registro</h1>
+            <form id="registerForm" class="registerForm">
+                <label>Nombre</label>
+                <input name="first_name"><br>
 
-        <label>Edad</label>
-        <input name="age"><br>
+                <label>Apellido</label>
+                <input name="last_name"><br>
 
-        <label>Contraseña</label>
-        <input name="password" type="password" autocomplete="on"><br>
+                <label>Email</label>
+                <input name="email"><br>
 
-        <input type="submit">
-    </form>
-    <p>Ya tienes cuenta? <a href="/">Ingresa aqui</a></p>
-</div>
-<script src="/js/register.js"></script>
+                <label>Edad</label>
+                <input name="age"><br>
+
+                <label>Contraseña</label>
+                <input name="password" type="password" autocomplete="on"><br>
+
+                <div class="registerBtnContainer">
+                    <input type="submit">
+                </div>
+            </form>
+            <p>Ya tienes cuenta? <a href="/">Ingresa aqui</a></p>
+        </div>
+
+    </div>
+    <script src="/js/register.js"></script>
+
+</body>
+
+</html>
