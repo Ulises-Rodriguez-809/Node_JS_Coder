@@ -13,6 +13,11 @@ export default class ProductManagerDB {
                 }
             )
 
+            products.docs.forEach(product => {
+                product["title"] = product["title"].replace(/ /g,"_");
+                product["description"] = product["description"].replace(/ /g,"_");
+            });
+
             return {
                 status: "success",
                 payload: products

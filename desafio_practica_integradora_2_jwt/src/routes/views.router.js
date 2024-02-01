@@ -34,8 +34,6 @@ router.get('/products', async (req, res) => {
     
     const decodedToken = jwt.decode(tokenInfo)
 
-    console.log(decodedToken);
-
     const {full_name, age, email ,rol, cartID} = decodedToken;
 
     const isAdmin = email === "adminCoder@coder.com";
@@ -56,6 +54,7 @@ router.get('/products', async (req, res) => {
     }
     
     const result = await productsDB.getProducts(query,options);
+    
     const {payload} = result;
 
     res.render('products',{products : payload, user});

@@ -32,9 +32,6 @@ router.post("/login", passport.authenticate("login", { failureRedirect: "/api/se
         })
     }
 
-    console.log("LOGIN");
-    console.log(req.user);
-
     const rol = req.user.email === "adminCoder@gmail.com" ? "admin" : "usuario";
 
     const user = {

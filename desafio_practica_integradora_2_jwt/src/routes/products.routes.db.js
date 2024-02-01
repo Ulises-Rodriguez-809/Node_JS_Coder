@@ -47,7 +47,7 @@ router.get("/", async (req, res) => {
         if (result["messagge"].hasPrevPage) {
             console.log("tine pagina anterior");
 
-            console.log(`http://localhost:8080/api/productsDB?limit=${options.limit}&page=${result["messagge"].prevPage}${sort && auxSort}${category ? auxCategory : ""}${stock ? auxStock : ""}`);
+            // console.log(`http://localhost:8080/api/productsDB?limit=${options.limit}&page=${result["messagge"].prevPage}${sort && auxSort}${category ? auxCategory : ""}${stock ? auxStock : ""}`);
 
             result["messagge"].prevLink = `http://localhost:8080/api/productsDB?limit=${options.limit}&page=${result["messagge"].prevPage}${sort ? auxSort : ""}${category ? auxCategory : ""}${stock ? auxStock : ""}`;
 
