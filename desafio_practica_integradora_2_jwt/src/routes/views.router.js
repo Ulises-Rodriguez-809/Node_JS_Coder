@@ -16,48 +16,57 @@ const cartsDB = new CartManagerDB();
 const router = Router();
 
 // login
-router.get('/',(req,res)=>{
+router.get('/', (req, res) => {
     res.render("login");
 })
 
 // register
-router.get('/register',(req,res)=>{
+router.get('/register', (req, res) => {
     res.render("register");
 })
 
 // DB router ruta cuadno te logueaas
 router.get('/products', async (req, res) => {
-    const productsDB = new ProductManagerDB();
-    const { limit, page} = req.query;
 
-    const tokenInfo = req.cookies["jwt-cookie"];
-    
-    const decodedToken = jwt.decode(tokenInfo)
+    try {
+        const productsDB = new ProductManagerDB();
+        const { limit, page } = req.query;
 
-    const {full_name, age, email ,rol, cartID} = decodedToken;
+        const tokenInfo = req.cookies["jwt-cookie"];
 
-    const isAdmin = email === "adminCoder@coder.com";
+        const decodedToken = jwt.decode(tokenInfo)
 
-    const user = {
-        full_name,
-        age,
-        email,
-        rol : isAdmin ? "admin" : rol,
-        cartID
+        const { full_name, age, email, rol, cartID } = decodedToken;
+
+        const isAdmin = email === "adminCoder@coder.com";
+
+        const user = {
+            full_name,
+            age,
+            email,
+            rol: isAdmin ? "admin" : rol,
+            cartID
+        }
+
+        const query = {};
+        const options = {
+            limit: limit ?? 5,
+            page: page ?? 1,
+            lean: true
+        }
+
+        const result = await productsDB.getProducts(query, options);
+
+        const { payload } = result;
+
+        res.render('products', { products: payload, user });
+
+    } catch (error) {
+        res.status(400).send({
+            status: "error",
+            msg: "Usuario no encontrado"
+        })
     }
-
-    const query = {};
-    const options = {
-        limit : limit ?? 5,
-        page : page ?? 1,
-        lean : true
-    }
-    
-    const result = await productsDB.getProducts(query,options);
-    
-    const {payload} = result;
-
-    res.render('products',{products : payload, user});
 })
 
 // router add products form
@@ -66,7 +75,7 @@ router.post('/products', async (req, res) => {
         const idCart = req.body.cartId;
         const idProduct = req.body.id
 
-        const result = await cartsDB.addProductToCart(idCart,idProduct);
+        const result = await cartsDB.addProductToCart(idCart, idProduct);
 
     } catch (error) {
         console.log(error);
@@ -76,44 +85,47 @@ router.post('/products', async (req, res) => {
 
 // DB router
 router.get('/carts/:cartId', async (req, res) => {
-    const cartId = req.params.cartId;
+    try {
+        const cartId = req.params.cartId;
 
-    const cart = await cartsDB.getCartById(cartId);
-    const { products } = cart;
+        const cart = await cartsDB.getCartById(cartId);
+        const { products } = cart;
 
-    const auxArray = []
+        const auxArray = []
 
-    products.forEach(element => {
-        const { product, quantity } = element;
+        products.forEach(element => {
+            const { product, quantity } = element;
 
-        const { _id,
-            title,
-            description,
-            code,
-            price,
-            status,
-            stock,
-            category,
-            thumbnails } = product;
+            const { _id,
+                title,
+                description,
+                code,
+                price,
+                status,
+                stock,
+                category,
+                thumbnails } = product;
 
-        const auxProduct = {
-            _id,
-            quantity,
-            title,
-            description,
-            code,
-            price,
-            status,
-            stock,
-            category,
-            thumbnails
-        }
+            const auxProduct = {
+                _id,
+                quantity,
+                title,
+                description,
+                code,
+                price,
+                status,
+                stock,
+                category,
+                thumbnails
+            }
 
-        auxArray.push(auxProduct);
-    });
+            auxArray.push(auxProduct);
+        });
 
-    res.render("cart", { products: auxArray });
-
+        res.render("cart", { products: auxArray });
+    } catch (error) {
+        console.log(error);
+    }
 })
 
 // FS router
