@@ -23,6 +23,7 @@ form.addEventListener("submit",(e)=>{
         }
         else{
             console.log(result);
+            alert("error en los datos")
         }
     })
 })

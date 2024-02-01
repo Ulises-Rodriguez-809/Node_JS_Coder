@@ -5,14 +5,14 @@ import ProductManagerDB from '../dao/managersDB/productManagerDB.js';
 
 const router = Router();
 
-const publicAccess = (req,res,next)=>{
+const publicAccess = (req, res, next) => {
     if (req.session.user) {
         return res.redirect('/products');
     }
     next();
 }
 
-const privateAccess = (req,res,next)=>{
+const privateAccess = (req, res, next) => {
     if (!req.session.user) {
         return res.redirect('/');
     }
@@ -26,12 +26,12 @@ const privateAccess = (req,res,next)=>{
 // si provas hacerlo el navegador tira error
 // al usar el middleware lo q haces es una comprobacion de q si la session sigue activa (osea no se le dio al btn salir q mata la sesion) este no permite q se renderize la vista del login.handlebars osea no te deja salir de otra forma q no sea con el btn salir
 // en caso de q intentes volver al login sin pasar por el btn salir, el middleware lo q hace es redirigirte la vista productos
-router.get('/',publicAccess,(req,res)=>{
+router.get('/', publicAccess, (req, res) => {
     res.render("login");
 })
 
 // register
-router.get('/register',publicAccess,(req,res)=>{
+router.get('/register', publicAccess, (req, res) => {
     res.render("register");
 })
 
@@ -50,40 +50,47 @@ router.get("/productsFS", async (req, res) => {
 
 // FS router
 router.get('/realtimeproducts', (req, res) => {
-
     res.render('realTimeProducts', { text: "Products con socket" });
 })
 
 // DB router login
 router.get('/products', async (req, res) => {
-    const productsDB = new ProductManagerDB();
-    const { limit, page} = req.query;
+    try {
+        const productsDB = new ProductManagerDB();
+        const { limit, page } = req.query;
 
-    // aca tomamos los datos cargados en el session en el sessions.routes.js
-    const {full_name, email, age, cartID ,password} = req.session.user;
+        // aca tomamos los datos cargados en el session en el sessions.routes.js
+        const { full_name, email, age, cartID, password } = req.session.user;
 
-    // comrpobamos si el email ingresado y la contraseña corresponden al perfil del admin
-    const isAdmin = email === "adminCoder@coder.com" && password === "adminCod3r123";
+        // comrpobamos si el email ingresado y la contraseña corresponden al perfil del admin
+        const isAdmin = email === "adminCoder@coder.com" && password === "adminCod3r123";
 
-    const user = {
-        full_name,
-        age,
-        email,
-        rol : isAdmin ? "admin" : "usuario",
-        cartID
+        const user = {
+            full_name,
+            age,
+            email,
+            rol: isAdmin ? "admin" : "usuario",
+            cartID
+        }
+
+        const query = {};
+        const options = {
+            limit: limit ?? 5,
+            page: page ?? 1,
+            lean: true
+        }
+
+        const result = await productsDB.getProducts(query, options);
+        const { messagge } = result;
+
+        res.render('products', { products: messagge, user });
+        
+    } catch (error) {
+        res.status(400).send({
+            status: "error",
+            msg: "Usuario no encontrado"
+        })
     }
-
-    const query = {};
-    const options = {
-        limit : limit ?? 5,
-        page : page ?? 1,
-        lean : true
-    }
-    
-    const result = await productsDB.getProducts(query,options);
-    const {messagge} = result;
-
-    res.render('products',{products : messagge, user});
 })
 
 // router add products form
@@ -92,7 +99,7 @@ router.post('/products', async (req, res) => {
         const idCart = req.body.cartId;
         const idProduct = req.body.id
 
-        const result = await cartsDB.addProductToCart(idCart,idProduct);
+        const result = await cartsDB.addProductToCart(idCart, idProduct);
 
     } catch (error) {
         console.log(error);
@@ -102,43 +109,49 @@ router.post('/products', async (req, res) => {
 
 // DB router
 router.get('/carts/:cartId', async (req, res) => {
-    const cartId = req.params.cartId;
 
-    const cart = await cartsDB.getCartById(cartId);
-    const { products } = cart;
+    try {
+        const cartId = req.params.cartId;
 
-    const auxArray = []
+        const cart = await cartsDB.getCartById(cartId);
+        const { products } = cart;
 
-    products.forEach(element => {
-        const { product, quantity } = element;
+        const auxArray = []
 
-        const { _id,
-            title,
-            description,
-            code,
-            price,
-            status,
-            stock,
-            category,
-            thumbnails } = product;
+        products.forEach(element => {
+            const { product, quantity } = element;
 
-        const auxProduct = {
-            _id,
-            quantity,
-            title,
-            description,
-            code,
-            price,
-            status,
-            stock,
-            category,
-            thumbnails
-        }
+            const { _id,
+                title,
+                description,
+                code,
+                price,
+                status,
+                stock,
+                category,
+                thumbnails } = product;
 
-        auxArray.push(auxProduct);
-    });
+            const auxProduct = {
+                _id,
+                quantity,
+                title,
+                description,
+                code,
+                price,
+                status,
+                stock,
+                category,
+                thumbnails
+            }
 
-    res.render("cart", { products: auxArray });
+            auxArray.push(auxProduct);
+        });
+
+        res.render("cart", { products: auxArray });
+    } catch (error) {
+        console.log(error);
+    }
+
 
 })
 

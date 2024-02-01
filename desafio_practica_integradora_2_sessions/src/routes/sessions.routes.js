@@ -16,7 +16,7 @@ router.post("/register", passport.authenticate("register", { failureRedirect: "/
 router.get('/failregister', async (req, res) => {
     console.log("fallo el registro");
 
-    res.send({
+    res.status(400).send({
         status: "error",
         message: "No se logro el registro con exito"
     })
@@ -25,33 +25,41 @@ router.get('/failregister', async (req, res) => {
 /* 14- reacondicionamos el login */
 router.post("/login", passport.authenticate("login", { failureRedirect: "/api/sessions/faillogin" }), async (req, res) => {
 
-    // DATA: el req.user te lo agrega el passport por defecto cuando hace la autenticacion (por si te preguntabas de donde salia)
-    if (!req.user) {
-        return res.status(400).send({
-            status: "error",
-            message: "Usuario no encontrado"
+    try {
+        // DATA: el req.user te lo agrega el passport por defecto cuando hace la autenticacion (por si te preguntabas de donde salia)
+        if (!req.user) {
+            return res.status(400).send({
+                status: "error",
+                message: "Usuario no encontrado"
+            })
+        }
+
+        // 14.1 al req.session le agregamos el obj user
+        req.session.user = {
+            full_name: `${req.user.first_name} ${req.user.last_name}`,
+            age: req.user.age,
+            email: req.user.email,
+            cartID: req.user.cart._id
+        }
+
+        res.send({
+            status: "success",
+            payload: req.user
+        })
+    } catch (error) {
+        res.status(400).send({
+            stattus: "error",
+            msg: "error en el login"
         })
     }
 
-    // 14.1 al req.session le agregamos el obj user
-    req.session.user = {
-        full_name: `${req.user.first_name} ${req.user.last_name}`,
-        age: req.user.age,
-        email: req.user.email,
-        cartID : req.user.cart._id
-    }
-
-    res.send({
-        status: "success",
-        payload: req.user
-    })
 })
 
 // 15- creo la ruta para el caso de error en el el login
 router.get('/faillogin', async (req, res) => {
     console.log("fallo login");
 
-    res.send({
+    res.status(400).send({
         error: "fallo en el login"
     })
 })
@@ -61,15 +69,24 @@ router.get('/faillogin', async (req, res) => {
 router.get("/github", passport.authenticate("github", { scope: ["user:email"] }), async (req, res) => { });
 
 router.get("/githubcallback", passport.authenticate("github", { failureRedirect: "/" }), async (req, res) => {
-    // si todo sale bien al req.session le agregamos la info necesaria para la vista de products, esta la obtenemos del req.user
-    req.session.user = {
-        full_name: `${req.user.first_name} ${req.user.last_name}`,
-        age: req.user.age,
-        email: req.user.email
-    }
+    try {
+        // si todo sale bien al req.session le agregamos la info necesaria para la vista de products, esta la obtenemos del req.user
+        req.session.user = {
+            full_name: `${req.user.first_name} ${req.user.last_name}`,
+            age: req.user.age,
+            email: req.user.email
+        }
 
-    // recorda q en products tenemos ademas de los productos, la info del usuario
-    res.redirect("/products");
+        // recorda q en products tenemos ademas de los productos, la info del usuario
+        res.redirect("/products");
+    } catch (error) {
+        console.log(error);
+
+        res.status.send({
+            status: "error",
+            msg: "No se logro el registro con github"
+        })
+    }
 })
 
 // ruta q se encarga de destruir la session y redirigir al login
@@ -87,19 +104,19 @@ router.get('/logout', (req, res) => {
 })
 
 // ruta current
-router.get("/current", (req,res)=>{
+router.get("/current", (req, res) => {
     console.log(req.session);
 
     if (!req.session) {
-        return res.send({
-            status : "error",
-            message : "No se encontro el usuario"
+        return res.status(400).send({
+            status: "error",
+            message: "No se encontro el usuario"
         })
     }
 
     return res.send({
-        status : "success",
-        payload : req.session.user
+        status: "success",
+        payload: req.session.user
     })
 })
 
