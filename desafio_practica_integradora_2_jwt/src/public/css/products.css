@@ -41,8 +41,8 @@
     display: grid;
     grid-template-areas: 
     "idContainer idContainer idContainer"
-    ". titleContainer ."
-    " . descriptionContainer ."
+    "titleContainer titleContainer titleContainer"
+    "descriptionContainer descriptionContainer descriptionContainer"
     "codeContainer statusContainer categoryContainer"
     ". priceContainer ."
     ". thumbnailsContainer ."
@@ -77,8 +77,16 @@
     grid-area: titleContainer;
 }
 
+.titleContainer>input{
+    width: 50%;
+}
+
 .descriptionContainer{
     grid-area: descriptionContainer;
+}
+
+.descriptionContainer>input{
+    width: 50%;
 }
 
 .codeContainer{
@@ -109,4 +117,12 @@
     font-size: 20px;
     border-radius: 10px;
     padding: 2px;
+}
+
+.paginationContainer{
+    margin: 20px;
+}
+
+.paginationContainer>a, .paginationContainer>span{
+    font-size: 20px;
 }
