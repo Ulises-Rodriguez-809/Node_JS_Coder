@@ -87,18 +87,54 @@ router.get('/faillogin', async (req, res) => {
 
 // 17- creamos la ruta para loguearse con github
 //DATO: https://docs.github.com/es/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps#scopes --> aca esta de donde sale el scope
-router.get("/github", passport.authenticate("github", { scope: ["user:email"] }), async (req, res) => { });
+router.get("/github", passport.authenticate("github", { scope: ["user:email"], session: false }), async (req, res) => { });
 
-router.get("/githubcallback", passport.authenticate("github", { failureRedirect: "/" }), async (req, res) => {
-    // si todo sale bien al req.session le agregamos la info necesaria para la vista de products, esta la obtenemos del req.user
-    req.session.user = {
-        full_name: `${req.user.first_name} ${req.user.last_name}`,
-        age: req.user.age,
-        email: req.user.email
+router.get("/githubcallback", passport.authenticate("github", { failureRedirect: "/", session: false }), async (req, res) => {
+    try {
+        if (!req.user) {
+            return res.status(400).send({
+                status: "error",
+                message: "Usuario no encontrado"
+            })
+        }
+
+        const { first_name, last_name, age, email, rol, cart } = req.user;
+
+        
+        if (!first_name || !last_name || !age || !email || !cart) {
+            console.log("se ejecuto este error");
+            return res.status(400).send({
+                status: "error",
+                payload: "datos incompletos"
+            })
+        }
+
+        const user = {
+            full_name: `${first_name} ${last_name}`,
+            age,
+            email,
+            rol,
+            cartID: cart._id
+        }
+
+        const token = jwt.sign(user, "desafio_jwt_secret", { expiresIn: "2h" });
+
+        // RECORDA Q LUEGO DEL .JSON O .SEND SI ESCRIBIS ALGO DA ERROR
+        // res.cookie("jwt-cookie", token, { httpOnly: true, maxAge: 3600000 }).json({
+        //     status: "success",
+        //     payload: token
+        // })
+
+        res.cookie("jwt-cookie", token, { httpOnly: true, maxAge: 3600000 })
+
+        res.redirect("/products");
+
+    } catch (error) {
+        res.status(400).send({
+            status: "error",
+            payload: "No se logro iniciar sesion con github"
+        })
     }
-
-    // recorda q en products tenemos ademas de los productos, la info del usuario
-    res.redirect("/products");
 })
 
 // ruta q se encarga de destruir la cookie y redirigir al login
