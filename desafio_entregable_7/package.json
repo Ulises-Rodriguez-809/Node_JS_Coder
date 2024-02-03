@@ -1,7 +1,7 @@
 {
-  "name": "desafio_practica_integradora_2",
+  "name": "desafio_entregable_7",
   "version": "1.0.0",
-  "description": "Segunda practica integradora del curso de Node JS",
+  "description": "desafi entregadble 7 (.env y capas)",
   "type": "module",
   "main": "index.js",
   "scripts": {
@@ -14,6 +14,7 @@
   "dependencies": {
     "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.6",
+    "dotenv": "^16.4.1",
     "express": "^4.18.2",
     "express-handlebars": "^7.1.2",
     "jsonwebtoken": "^9.0.2",

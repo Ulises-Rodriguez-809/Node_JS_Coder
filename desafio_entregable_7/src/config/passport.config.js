@@ -1,7 +1,8 @@
 import passport from 'passport';
 import local from 'passport-local';
 import GitHubStrategy from 'passport-github2';
-import jwt from 'passport-jwt'
+import jwt from 'passport-jwt';
+import {options} from './config.js';
 
 
 import { createHash, isValidPassword } from '../utils.js';
@@ -80,7 +81,21 @@ const inicializePassport = () => {
         // si no entuentra alguna de las 2 passport no te va a andar
         async (username, password, done) => {
             try {
-                const user = await User.getUser({ email: username });
+                let user = {};
+
+                if (username === options.ADMIN_EMAIL && password === options.ADMIN_PASSWORD) {
+                    
+                    user = {
+                        first_name: "Coder",
+                        last_name : "House",
+                        age: 10,
+                        email: username,
+                        password,
+                    }
+
+                } else {
+                    user = await User.getUser({ email: username });
+                }
 
                 if (!user) {
                     return done(null, false, { message: "Usuario no encontrado" });
@@ -112,13 +127,13 @@ const inicializePassport = () => {
 
     passport.use("github", new GitHubStrategy(
         {
-            clientID: "Iv1.353d92dfec58dbfd",
-            clientSecret: "8d45985ce161d455cd42631c71b687870634579f",
-            callbackURL: "http://localhost:8080/api/sessions/githubcallback"
+            clientID: options.CLIENT_ID,
+            clientSecret: options.CLIENT_SECRET,
+            callbackURL: options.CALLBACK_URL,
         },
         async (accessToken, refreshToken, profile, done) => {
             try {
-                console.log(profile);
+                // console.log(profile);
 
                 const userName = profile._json.name.split(" ");
 
@@ -127,8 +142,6 @@ const inicializePassport = () => {
                 const user = await User.getUser({ email: userEmail });
 
                 if (user) {
-                    // console.log(`Usuario ya registrado con el mail: ${userEmail}`);
-
                     return done(null, user); //FIJATE Q ACA EN DISTINTO A CON REGISTER YA Q SI EXISTE EL USUARIO LOS DEJAS PASAR XQ SE ESTA LOGUEANDO
                 }
 

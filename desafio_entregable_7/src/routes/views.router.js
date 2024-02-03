@@ -38,13 +38,11 @@ router.get('/products', async (req, res) => {
 
         const { full_name, age, email, rol, cartID } = decodedToken;
 
-        const isAdmin = email === "adminCoder@coder.com";
-
         const user = {
             full_name,
             age,
             email,
-            rol: isAdmin ? "admin" : rol,
+            rol,
             cartID
         }
 
