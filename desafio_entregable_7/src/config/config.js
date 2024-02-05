@@ -11,6 +11,7 @@ const APP_ID = process.env.APP_ID;
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
 const CALLBACK_URL = process.env.CALLBACK_URL;
+const COOKIE_WORD = process.env.COOKIE_WORD;
 const JWT_SECRET_WORD = process.env.JWT_SECRET_WORD;
 
 
@@ -23,5 +24,6 @@ export const options = {
     CLIENT_ID,
     CLIENT_SECRET,
     CALLBACK_URL,
+    COOKIE_WORD,
     JWT_SECRET_WORD
 }

@@ -1,10 +1,9 @@
 import {Router} from 'express'
+import { MessageController } from '../controlador/messages.controllers.js';
 
 const router = Router();
 
-router.get('/chat', async (req,res)=>{
-    res.render('chat', { title: "Chat con socket y mongo"});
-})
+router.get('/chat', MessageController.chat)
 
 
 export default router;
