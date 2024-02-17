@@ -28,9 +28,8 @@ export class Users {
     }
 
     getUser = async (params) => {
-        const {email} = params;
 
-        let result = await userModel.findOne({email});
+        let result = await userModel.findOne(params);
 
         return result;
     }

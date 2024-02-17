@@ -2,6 +2,9 @@ const idCart = document.getElementById("id-cart").textContent;
 
 const arrayForms = document.querySelectorAll(".form");
 
+
+// ACA CAPAZ PODES OBTENER EL ID DEL CARRITO DEL TOKEN
+
 arrayForms.forEach((form) => {
     form.addEventListener("submit",e=>{
         e.preventDefault()

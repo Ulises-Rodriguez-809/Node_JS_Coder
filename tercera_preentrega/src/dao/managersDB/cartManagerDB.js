@@ -26,12 +26,6 @@ export class CartManagerDB {
     }
 
     createCart = async () => {
-        // hacerlo de esta forma no hace falta ya q cuando creas un cart nuevo este va a tomar la estuctura del schema
-        // si lo haces asi estas laburando el doble
-        // const newCart = {
-        //     products: []
-        // }
-        // const cart = await cartsModel.create(newCart);
 
         const cart = await cartsModel.create({});
 

@@ -6,7 +6,9 @@ export class UsersRepository{
     }
 
     async getUser(user){
-        const userInfo = await this.dao.getUser(user);
+        const {email} = user;
+
+        const userInfo = await this.dao.getUser({email});
 
         const getUserDtoFront = new GetUserDto(userInfo);
 

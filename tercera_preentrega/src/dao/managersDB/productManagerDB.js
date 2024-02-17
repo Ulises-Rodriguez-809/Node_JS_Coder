@@ -1,7 +1,6 @@
 import productsModel from '../models/productsModel.js';
 
 export class ProductManagerDB {
-
     getProducts = async (query, options) => {
         try {
             const products = await productsModel.paginate(
@@ -43,6 +42,25 @@ export class ProductManagerDB {
 
         } catch (error) {
             console.log(error);
+        }
+    }
+
+    isInStock = async (amount,id)=>{
+        try {
+            const product = await this.getProductById(id);
+
+            if (!product) {
+                return false
+            }
+
+            if (parseInt(amount) > product.stock) {
+                return false
+            }
+
+            return true
+
+        } catch (error) {
+            console.log(error.message);
         }
     }
 
