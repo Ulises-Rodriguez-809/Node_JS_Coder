@@ -8,35 +8,10 @@ const Product = new ProductManagerDB();
 const Cart = new CartManagerDB();
 const User = new Users();
 
-const calculateAmount = async (arrayProducts)=>{
-    let totalAmount = 0;
-
-    // https://stackoverflow.com/questions/37576685/using-async-await-with-a-foreach-loop
-    for (const item of arrayProducts) {
-        let amount = item.quantity;
-
-        let isStock = await Product.isInStock(amount,item.product.id);
-
-        if (isStock) {
-            const aux = await Product.getProductById(item.product.id); 
-
-            let stockUpdate = aux.stock - item.quantity;
-
-            const isUpdated = await Product.updateProduct(aux._id, {stock : stockUpdate});
-
-            if (isUpdated) {
-                totalAmount += aux.price * item.quantity;
-            }
-        }
-    }
-
-    return totalAmount;
-}
-
 export class TicketManager {
     async getTicket(ticketId) {
         try {
-            const ticket = await ticketModel.findOne({ticketId})
+            const ticket = await ticketModel.findOne({ ticketId })
 
             if (!ticket) {
                 return "Ticket de compra no encontrado";
@@ -49,16 +24,72 @@ export class TicketManager {
         }
     }
 
+    async updateProductsStock(arrayProducts){
+        for (const item of arrayProducts) {
+            const aux = await Product.getProductById(item.product.id);
+    
+            let stockUpdate = aux.stock - item.quantity;
+    
+            const isUpdated = await Product.updateProduct(aux._id, { stock: stockUpdate });
+        }
+    }
+
+    async calculateAmount(arrayProducts){
+        let totalAmount = 0;
+    
+        // https://stackoverflow.com/questions/37576685/using-async-await-with-a-foreach-loop
+        for (const item of arrayProducts) {
+            let amountProducts = item.quantity;
+    
+            let isStock = await Product.isInStock(amountProducts, item.product.id);
+    
+            if (isStock) {
+                const product = await Product.getProductById(item.product.id);
+    
+                totalAmount += product.price * item.quantity;
+            }
+        }
+    
+        return totalAmount;
+    }
+
+    async purchesedProducts(cartId,arrayProducts) {
+        try {
+            let productsNotStock = [];
+            let productsInStock = [];
+
+            for (const item of arrayProducts) {
+                let amountProducts = item.quantity;
+
+                let isStock = await Product.isInStock(amountProducts, item.product.id);
+
+                if (isStock) {
+                    productsInStock.push(item);
+
+                    await Cart.deleteProductToCart(cartId, item.product.id);
+
+                }
+                else {
+                    productsNotStock.push({
+                        id : item.product.id
+                    });
+                }
+            }
+
+            return {
+                productsNotStock,
+                productsInStock
+            };
+
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
+
     async createTicket(cartId) {
         try {
-            // code: String debe autogenerarse y ser único
-// purchase_datetime: Deberá guardar la fecha y hora exacta en la cual se formalizó la compra (básicamente es un created_at)
-// amount: Number, total de la compra.
-// purchaser: String, contendrá el correo del usuario asociado al carrito.
-            const user = await User.getUser({cart : cartId});
-            // console.log("user ticket man", user);
+            const user = await User.getUser({ cart: cartId });
             const cart = await Cart.getCartById(cartId);
-            // console.log("cart ticket man", cart);
 
             if (!user) {
                 return "Usuario no encontrado";
@@ -81,20 +112,29 @@ export class TicketManager {
                 date.getFullYear(),
             ];
 
-            created_at = `dia: ${day}, mes: ${month+1}, año: ${year}`;
+            created_at = `dia: ${day}, mes: ${month + 1}, año: ${year}`;
 
-            amount = await calculateAmount(cart.products);
+            amount = await this.calculateAmount(cart.products);
+
+            const { productsNotStock, productsInStock } = await this.purchesedProducts(cartId,cart.products);
+
+            await this.updateProductsStock(productsInStock);
 
             const newTicket = {
                 code,
-                purchase_datetime : created_at,
+                purchase_datetime: created_at,
                 amount,
                 purchaser
             }
 
-            const result = ticketModel.create(newTicket);
+            const result = await ticketModel.create(newTicket);
 
-            return result;
+            // FALTA ELIMINAR DEL CART LOS PRODUCTOS COMPRADOS Y DEJAR LOS Q NO SE PUDIERON COMPRAR
+
+            return {
+                ticket: result,
+                notStock: productsNotStock
+            };
 
         } catch (error) {
             console.log(error.message);

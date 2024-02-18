@@ -94,10 +94,10 @@ class CartsControllers {
 
             const result = await ticketDB.createTicket(cartId);
 
-            if (typeof result === String) {
+            if (!result) {
                 return res.status(400).send({
                     status: "error",
-                    payload: result
+                    payload: "La compra no se logro hacer con exito"
                 })
             }
 

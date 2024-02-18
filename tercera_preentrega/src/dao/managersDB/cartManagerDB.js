@@ -146,14 +146,6 @@ export class CartManagerDB {
 
             return true
 
-
-            // if (result["deletedCount"] === 0) {
-            //     return `No se logro eliminar el producto con el id: ${id}`;
-
-            // } else {
-            //     return true;
-            // }
-
         } catch (error) {
             console.log(error);
         }
@@ -184,15 +176,7 @@ export class CartManagerDB {
 
             await cart.save();
 
-            return true
-
-
-            // if (result["deletedCount"] === 0) {
-            //     return `No se logro eliminar el producto con el id: ${id}`;
-
-            // } else {
-            //     return true;
-            // }
+            return true;
 
         } catch (error) {
             console.log(error);

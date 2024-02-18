@@ -1,7 +1,7 @@
 {
-  "name": "desafio_entregable_7",
+  "name": "tercera_preentrega",
   "version": "1.0.0",
-  "description": "desafi entregadble 7 (.env y capas)",
+  "description": "tercera preentrega",
   "type": "module",
   "main": "index.js",
   "scripts": {
