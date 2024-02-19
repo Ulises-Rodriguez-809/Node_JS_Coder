@@ -29,9 +29,6 @@ class SessionControler {
     }
 
     static login = async (req, res) => {
-
-        // console.log(req.user);
-
         try {
             // DATA: el req.user te lo agrega el passport por defecto cuando hace la autenticacion 
             if (!req.user) {

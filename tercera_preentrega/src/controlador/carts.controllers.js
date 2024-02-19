@@ -67,7 +67,7 @@ class CartsControllers {
             const productId = req.params.productId;
             const { quantity } = req.body;
 
-            const result = await cartsDB.addProductToCart(cartId, productId, quantity);
+            const result = await cartsDB.addProductToCart(cartId, productId, parseInt(quantity));
 
             if (typeof result === "string") {
                 res.status(400).send({

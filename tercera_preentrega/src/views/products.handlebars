@@ -23,8 +23,13 @@
                 </li>
             </ul>
         </div>
-        <div>
-            <a href="/api/sessions/logout"><button>Salir</button></a>
+        <div class="opcionesContainer">
+            <div>
+                <button class="btnMostrarTicket opcionLink">Realizar Compra</button>
+            </div>
+            <div>
+                <a href="/api/sessions/logout"><button class="opcionLink">Salir</button></a>
+            </div>
         </div>
         <div class="products">
             <div>
@@ -66,6 +71,12 @@
                         <div class="thumbnailsContainer info">
                             <label>Miniaturas:</label>
                             <input type="text" value={{this.thumbnails}} name="thumbnails" readonly>
+                        </div>
+                        <div class="countContainer info">
+                            <button type="button" class="plus">+</button>
+                            <input class="count" type="text" value="0" name="quantity">
+                            {{!-- <span class="count">0</span> --}}
+                            <button type="button" class="minus">-</button>
                         </div>
                         <div class="btnCompraContainer info">
                             <input type="submit" value="Comprar">

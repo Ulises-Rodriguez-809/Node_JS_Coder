@@ -9,13 +9,15 @@ const Cart = new CartManagerDB();
 const User = new Users();
 
 export class TicketManager {
-    async getTicket(ticketId) {
+    async getTicket(email) {
         try {
-            const ticket = await ticketModel.findOne({ ticketId })
+            const ticket = await ticketModel.findOne({ purchaser : email }).lean();
 
             if (!ticket) {
                 return "Ticket de compra no encontrado";
             }
+
+            ticket["purchase_datetime"] = ticket["purchase_datetime"].replace(/ /g,"_");
 
             return ticket;
 

@@ -21,6 +21,18 @@
     text-align: center;
 }
 
+.opcionesContainer{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.opcionLink{
+    font-size: 1.2rem;
+    text-align: center;
+    margin: 1rem;
+}
+
 .formsContainer{
     display: flex;
     justify-content: space-around;
@@ -46,6 +58,7 @@
     "codeContainer statusContainer categoryContainer"
     ". priceContainer ."
     ". thumbnailsContainer ."
+    "countContainer countContainer countContainer"
     "btnCompraContainer . ."
     ;
     grid-template-columns: repeat(3,1fr);
@@ -107,6 +120,22 @@
 
 .thumbnailsContainer{
     grid-area: thumbnailsContainer;
+}
+
+.countContainer{
+    grid-area: countContainer;
+    margin: 1rem 0;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+.plus,
+.count,
+.minus{
+    font-size: 2rem;
+    width: 40px;
+    height: 50px;
+    text-align: center;
 }
 
 .btnCompraContainer{
