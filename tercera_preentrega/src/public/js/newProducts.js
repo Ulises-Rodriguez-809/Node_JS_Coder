@@ -1,7 +1,9 @@
 const form = document.getElementById("nuevo-producto");
 
-const inputId = document.getElementById("input-id");
+const inputIdEliminar = document.getElementById("input-id-eliminar");
 const btnEliminar = document.getElementById("btn-eliminar");
+
+const formUpdate = document.getElementById("actualizar-producto");
 
 form.addEventListener("submit", e => {
     e.preventDefault()
@@ -32,7 +34,7 @@ form.addEventListener("submit", e => {
 });
 
 btnEliminar.addEventListener("click",()=>{
-    const idProduct = inputId.value;
+    const idProduct = inputIdEliminar.value;
 
     const endpoint = `/api/productsDB/${idProduct}`
 
@@ -57,3 +59,33 @@ btnEliminar.addEventListener("click",()=>{
             }
         })
 })
+
+formUpdate.addEventListener("submit", e => {
+    e.preventDefault()
+
+    console.log(e);
+
+    const data = new FormData(formUpdate);
+
+    const obj = {}
+
+    data.forEach((value, key) => obj[key] = value)
+
+    console.log(obj);
+
+    const endpoint = `/api/productsDB/${obj.id}`;
+
+    fetch(endpoint, {
+        method: "PUT",
+        body: JSON.stringify(obj),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+        .then(result => result.json())
+        .then(json => {
+            console.log(json);
+
+            alert("Producto Actualizado");
+        })
+});
