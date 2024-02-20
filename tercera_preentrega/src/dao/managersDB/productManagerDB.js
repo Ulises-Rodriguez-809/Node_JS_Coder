@@ -129,6 +129,7 @@ export class ProductManagerDB {
 
     deleteProduct = async (id) => {
         try {
+
             const result = await productsModel.deleteOne({ _id: id });
 
             if (result["deletedCount"] === 0) {

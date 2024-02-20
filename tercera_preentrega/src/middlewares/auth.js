@@ -7,7 +7,6 @@ export const checkRole = (roles)=>{
 
         const decodedToken = jwt.decode(tokenInfo);
 
-        console.log(decodedToken);
         if(!decodedToken){
             return res.status(404).json({
                 status:"error", 

@@ -102,6 +102,8 @@ class ProductsControllers{
         try {
     
             const fields = req.body;
+
+            console.log(req.body);
     
             const result = await productService.add(fields);
     
@@ -152,6 +154,8 @@ class ProductsControllers{
     static deleteProduct = async (req, res) => {
         try {
             const id = req.params.productId;
+
+            console.log(id);
     
             const result = await productService.deleteOne(id);
     
