@@ -1,7 +1,7 @@
 import userModel from '../models/userModel.js';
 import {CartManagerDB} from './cartManagerDB.js';
 
-const Cart = new CartManagerDB;
+const Cart = new CartManagerDB();
 
 export class Users {
     constructor() {

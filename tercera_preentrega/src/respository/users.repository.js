@@ -5,7 +5,19 @@ export class UsersRepository{
         this.dao = dao;
     }
 
-    async getUser(user){
+    async getAll(){
+        const result = await this.dao.getAllUsers();
+
+        return result;
+    }
+
+    async create(user){
+        const result = await this.dao.saveUser(user);
+
+        return result;
+    }
+
+    async get(user){
         const {email} = user;
 
         const userInfo = await this.dao.getUser({email});
@@ -13,5 +25,11 @@ export class UsersRepository{
         const getUserDtoFront = new GetUserDto(userInfo);
 
         return getUserDtoFront;
+    }
+
+    async update(id, user){
+        const result = await this.dao.updateUser();
+
+        return result;
     }
 }

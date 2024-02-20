@@ -166,7 +166,7 @@ class SessionControler {
                 })
             }
 
-            const userInfoDto = await userService.getUser(req.user);
+            const userInfoDto = await userService.get(req.user);
     
             res.send({
                 status: "success",

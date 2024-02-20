@@ -1,12 +1,5 @@
-import { CartManagerDB } from '../dao/managersDB/cartManagerDB.js';
-import { ProductManagerDB } from '../dao/managersDB/productManagerDB.js';
 import jwt from 'jsonwebtoken';
-import { TicketManager } from '../dao/managersDB/ticketManagerDB.js';
-
-// DB
-const cartsDB = new CartManagerDB();
-const productsDB = new ProductManagerDB();
-const ticketDB = new TicketManager();
+import { cartService, productService, ticketService } from '../respository/index.repository.js';
 
 class ViewsControllers {
     static login = (req, res) => {
@@ -40,7 +33,7 @@ class ViewsControllers {
 
             const { email } = decodedToken;
 
-            const ticketInfo = await ticketDB.getTicket(email);
+            const ticketInfo = await ticketService.get(email);
 
             console.log(ticketInfo);
 
@@ -80,7 +73,7 @@ class ViewsControllers {
                 lean: true
             }
 
-            const result = await productsDB.getProducts(query, options);
+            const result = await productService.getAll(query, options);
 
             const { payload } = result;
 
@@ -99,7 +92,7 @@ class ViewsControllers {
             const idCart = req.body.cartId;
             const idProduct = req.body.id
 
-            const result = await cartsDB.addProductToCart(idCart, idProduct);
+            const result = await cartService.add(idCart, idProduct);
 
         } catch (error) {
             console.log(error);
@@ -111,7 +104,7 @@ class ViewsControllers {
         try {
             const cartId = req.params.cartId;
 
-            const cart = await cartsDB.getCartById(cartId);
+            const cart = await cartService.getById(cartId);
             const { products } = cart;
 
             const auxArray = []

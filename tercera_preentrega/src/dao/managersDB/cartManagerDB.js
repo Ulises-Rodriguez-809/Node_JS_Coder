@@ -95,7 +95,7 @@ export class CartManagerDB {
         }
     }
 
-    updateQuantity = async (idCart, idProduct, quantity)=>{
+    updateProductQuantity = async (idCart, idProduct, quantity)=>{
         try {
             const cart = await cartsModel.findOne({ _id: idCart });
 

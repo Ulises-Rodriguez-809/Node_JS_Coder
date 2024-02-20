@@ -173,6 +173,7 @@ const inicializePassport = () => {
         async (jwt_payload, done) => {
             try {
                 // console.log("PASSPORT CONFING PAYLOAD");
+                
                 // console.log(jwt_payload);
     
                 done(null, jwt_payload) //devuelve el web token

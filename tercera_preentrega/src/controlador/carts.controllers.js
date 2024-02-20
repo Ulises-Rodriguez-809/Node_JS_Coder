@@ -1,13 +1,9 @@
-import { CartManagerDB } from '../dao/managersDB/cartManagerDB.js';
-import { TicketManager } from '../dao/managersDB/ticketManagerDB.js';
-
-const cartsDB = new CartManagerDB();
-const ticketDB = new TicketManager();
+import { cartService, ticketService } from '../respository/index.repository.js';
 
 class CartsControllers {
     static getAllCarts = async (req, res) => {
         try {
-            const result = await cartsDB.getCarts();
+            const result = await cartService.getAll();
 
             if (typeof result !== "object") {
                 res.status(400).send({
@@ -31,7 +27,7 @@ class CartsControllers {
         try {
             const id = req.params.cartId;
 
-            const result = await cartsDB.getCartById(id);
+            const result = await cartService.getById(id);
 
             if (typeof result === "string") {
                 res.status(400).send({
@@ -53,7 +49,7 @@ class CartsControllers {
 
     static addCart = async (req, res) => {
 
-        const cart = await cartsDB.createCart();
+        const cart = await cartService.create();
 
         res.send({
             status: "succes",
@@ -67,7 +63,7 @@ class CartsControllers {
             const productId = req.params.productId;
             const { quantity } = req.body;
 
-            const result = await cartsDB.addProductToCart(cartId, productId, parseInt(quantity));
+            const result = await cartService.add(cartId, productId, parseInt(quantity));
 
             if (typeof result === "string") {
                 res.status(400).send({
@@ -92,7 +88,8 @@ class CartsControllers {
         try {
             const cartId = req.params.cartId;
 
-            const result = await ticketDB.createTicket(cartId);
+            const result = await ticketService.create(cartId);
+
 
             if (!result) {
                 return res.status(400).send({
@@ -115,7 +112,7 @@ class CartsControllers {
         const cartId = req.params.cartId;
         const { products } = req.body;
 
-        const result = await cartsDB.updateProductsList(cartId, products);
+        const result = await cartService.updateList(cartId, products);
 
         if (typeof result === "string") {
             res.status(400).send({
@@ -137,7 +134,7 @@ class CartsControllers {
             const productId = req.params.productId;
             const { quantity } = req.body;
 
-            const result = await cartsDB.updateQuantity(cartId, productId, quantity);
+            const result = await cartService.updateQuantity(cartId, productId, quantity);
 
             if (typeof result === "string") {
                 res.status(400).send({
@@ -162,7 +159,7 @@ class CartsControllers {
         try {
             const id = req.params.cartId;
 
-            const result = await cartsDB.deleteCartProducts(id);
+            const result = await cartService.deleteAll(id);
 
             if (typeof result === "string") {
                 res.status(400).send({
@@ -188,7 +185,7 @@ class CartsControllers {
             const cartId = req.params.cartId;
             const productId = req.params.productId;
 
-            const result = await cartsDB.deleteProductToCart(cartId, productId);
+            const result = await cartService.deleteOne(cartId, productId);
 
             if (typeof result === "string") {
                 res.status(400).send({

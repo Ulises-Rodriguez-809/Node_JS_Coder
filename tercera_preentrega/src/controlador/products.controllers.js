@@ -1,7 +1,4 @@
-import {ProductManagerDB} from '../dao/managersDB/productManagerDB.js';
-
-const productsDB = new ProductManagerDB();
-
+import {productService} from '../respository/index.repository.js';
 
 class ProductsControllers{
     static getProductsPaginate = async (req, res) => {
@@ -28,7 +25,7 @@ class ProductsControllers{
                 query.stock = parseInt(stock);
             }
     
-            const result = await productsDB.getProducts(query, options);
+            const result = await productService.getAll(query, options);
     
             const totalPages = result["messagge"]["totalPages"];
     
@@ -81,7 +78,7 @@ class ProductsControllers{
         try {
             const id = req.params.productId;
     
-            const result = await productsDB.getProductById(id);
+            const result = await productService.getById(id);
     
             if (typeof result === "string") {
                 res.status(400).send({
@@ -106,7 +103,7 @@ class ProductsControllers{
     
             const fields = req.body;
     
-            const result = await productsDB.addProduct(fields);
+            const result = await productService.add(fields);
     
             if (typeof result === "string") {
                 res.status(400).send({
@@ -132,7 +129,7 @@ class ProductsControllers{
             const id = req.params.productId;
             const fields = req.body;
     
-            const result = await productsDB.updateProduct(id, fields);
+            const result = await productService.updateOne(id, fields);
     
             if (typeof result === "string") {
                 res.status(400).send({
@@ -156,7 +153,7 @@ class ProductsControllers{
         try {
             const id = req.params.productId;
     
-            const result = await productsDB.deleteProduct(id);
+            const result = await productService.deleteOne(id);
     
     
             if (typeof result === "string") {
