@@ -1,10 +1,21 @@
 import jwt from 'jsonwebtoken';
 import { options } from '../config/config.js';
 import {userService} from '../respository/index.repository.js';
+import { emailSender } from '../utils.js';
 
 class SessionControler {
     static register = async (req, res) => {
         try {
+            const {first_name, last_name,email} = req.user;
+
+            const full_name = first_name.concat(" ",last_name);
+
+            console.log(req.user.email);
+
+            const respond = await emailSender(full_name,email);
+
+            console.log(respond);
+
             res.send({
                 status: "success",
                 message: "Usuario registrado con exito",

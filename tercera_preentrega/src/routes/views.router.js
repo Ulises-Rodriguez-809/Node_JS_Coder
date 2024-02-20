@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import {ViewsControllers} from '../controlador/views.controllers.js'
+import { checkRole } from '../middlewares/auth.js';
 
 // inicializamos Router
 const router = Router();
@@ -22,7 +23,8 @@ router.post('/products', ViewsControllers.productsPost);
 // DB router
 router.get('/carts/:cartId', ViewsControllers.cartId);
 
+// NO TE OLVIDES DE HACER LA VISTA
 // DB router --> esto usalo para q el admin pueda agregar productos
-router.get('/realtimeproducts', ViewsControllers.realtimeproducts);
+router.get('/realtimeproducts', checkRole(["admin"]), ViewsControllers.realtimeproducts);
 
 export default router;

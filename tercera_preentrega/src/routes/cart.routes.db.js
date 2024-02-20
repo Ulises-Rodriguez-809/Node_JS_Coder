@@ -1,10 +1,11 @@
 import { Router } from 'express';
 import {CartsControllers} from '../controlador/carts.controllers.js'
+import { checkRole } from '../middlewares/auth.js';
 
 const router = Router();
 
 //obtener todos los carts
-router.get('/', CartsControllers.getAllCarts);
+router.get('/',CartsControllers.getAllCarts);
 
 //obtener 1 cart por el id
 router.get('/:cartId', CartsControllers.getCartById);
@@ -13,7 +14,7 @@ router.get('/:cartId', CartsControllers.getCartById);
 router.post('/', CartsControllers.addCart);
 
 //añadir un producto (id y quantity) a un cart (por el id)
-router.post('/:cartId/product/:productId', CartsControllers.addProductToCart);
+router.post('/:cartId/product/:productId',  checkRole(["user"]),CartsControllers.addProductToCart);
 
 // realizar compra
 router.post("/:cartId/purchase", CartsControllers.purchase);
