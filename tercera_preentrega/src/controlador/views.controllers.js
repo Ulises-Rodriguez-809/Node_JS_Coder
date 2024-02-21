@@ -24,29 +24,6 @@ class ViewsControllers {
         }
     }
 
-    static ticket = async (req, res) => {
-        try {
-
-            const tokenInfo = req.cookies["jwt-cookie"];
-
-            const decodedToken = jwt.decode(tokenInfo);
-
-            const { email } = decodedToken;
-
-            const ticketInfo = await ticketService.get(email);
-
-            console.log(ticketInfo);
-
-            res.render("ticket", { ticketInfo });
-
-        } catch (error) {
-            res.status(400).send({
-                status: "error",
-                msg: "No se encontro el ticket"
-            })
-        }
-    }
-
     static productsGet = async (req, res) => {
 
         try {

@@ -6,20 +6,39 @@ const arrayBtnsPlus = document.querySelectorAll(".plus");
 const arrayBtnsMinus = document.querySelectorAll(".minus");
 const arrayCount = document.querySelectorAll(".count");
 
-const btnMostrarTicket = document.querySelector(".btnMostrarTicket");
+const finalizarCompra = document.querySelector(".finalizarCompra");
 
-btnMostrarTicket.addEventListener("click",()=>{
-    window.location.replace('/ticket');
+finalizarCompra.addEventListener("click", () => {
+    // window.location.replace('/ticket');
+
+    const endpoint = `/api/cartsDB/${idCart}/purchase`;
+
+    const obj = {};
+
+    fetch(endpoint, {
+        method: "POST",
+        body: JSON.stringify(obj),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+        .then(result => result.json())
+        .then(json => {
+            console.log(json)
+
+            alert("Compra finalizada");
+        })
+
 })
 
-arrayBtnsPlus.forEach((btn,index) => {
+arrayBtnsPlus.forEach((btn, index) => {
     btn.addEventListener("click", () => {
         const count = parseInt(arrayCount[index].value);
         arrayCount[index].value = count + 1;
     })
 })
 
-arrayBtnsMinus.forEach((btn,index) => {
+arrayBtnsMinus.forEach((btn, index) => {
     btn.addEventListener("click", () => {
         const count = parseInt(arrayCount[index].value);
 

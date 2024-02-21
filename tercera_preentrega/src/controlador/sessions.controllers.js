@@ -10,9 +10,14 @@ class SessionControler {
 
             const full_name = first_name.concat(" ",last_name);
 
-            console.log(req.user.email);
+            const template = `<div>
+            <h1>Bienvenido ${full_name}!!</h1>
+            <img src="https://www.ceupe.com/images/easyblog_articles/3625/b2ap3_large_que-es-un-tienda-online.png" style="width:250px; height : 250px"/>
+            <p>Ya puedes empezar a usar nuestros servicios</p>
+            <a href="http://localhost:8080/">Ir a la pagina</a>
+            </div>`;
 
-            const respond = await emailSender(full_name,email);
+            const respond = await emailSender(full_name,email, template);
 
             console.log(respond);
 
