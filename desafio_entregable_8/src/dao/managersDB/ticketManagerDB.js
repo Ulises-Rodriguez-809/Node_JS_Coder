@@ -131,8 +131,6 @@ export class TicketManager {
 
             const result = await ticketModel.create(newTicket);
 
-            // FALTA ELIMINAR DEL CART LOS PRODUCTOS COMPRADOS Y DEJAR LOS Q NO SE PUDIERON COMPRAR
-
             return {
                 ticket: result,
                 notStock: productsNotStock

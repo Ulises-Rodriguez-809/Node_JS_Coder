@@ -85,7 +85,6 @@ export class CartManagerDB {
 
             await cart.save();
 
-            // esto para q el populate haga efecto
             const result = await cartsModel.findOne({ _id: idCart });
 
             return result;
@@ -95,7 +94,7 @@ export class CartManagerDB {
         }
     }
 
-    updateProductQuantity = async (idCart, idProduct, quantity)=>{
+    updateProductQuantity = async (idCart, idProduct, quantity = 1)=>{
         try {
             const cart = await cartsModel.findOne({ _id: idCart });
 
@@ -109,7 +108,7 @@ export class CartManagerDB {
                 return `el producto con el id : ${idProduct} no existe`;
             }
 
-            let productsInCart = cart.products; //este es el products q se crea a partier del cart model
+            let productsInCart = cart.products;
 
             const indexProduct = productsInCart.findIndex(product => product.product._id.toString() === idProduct);
 

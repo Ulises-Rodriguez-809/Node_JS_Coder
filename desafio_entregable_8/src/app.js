@@ -21,22 +21,15 @@ import messagesModel from './dao/models/messagesModel.js';
 
 import sessionRouter from './routes/sessions.routes.js';
 import { connectDB } from './config/dbConnection.js';
+import { errorHandler } from './middlewares/errorHandler.js';
 
 const PORT = options.PORT;
 
 const app = express();
 
 
-// MIRATE LA CLASE 30 Q EXPLICA COMO HACERLO
-// LUNES CLASE CONSULTA --> tipo 20:30 seguro q en el chat lo ponen --> anda con dudas q una parte la van a hacer
-// BORRA LO DE FS XQ YA NO LO VAS A USAR
-// EN CHAT HAY MUCHA INFO
-// HAY VIDEO EXPLICATIVO
-// FACTORY ES OPCIONAL ASI Q NO LO HAGAS
-// LA CARPTEA 03 DEL CLASE 28 ES ESA LA IDEA PARA LA PRIMERA PARTE
-// EL TICKET SE TIENE Q GUARDAR EN MONGO --> TICKET.MODEL
-// EL MAIL ES OPCIONAL ESTARIA BUENO Q LO HAGA
-// LOS MENSAJES LO MANEJAS CON SOCKET
+// AGREGAR MIDDLEWARE DE ERRORES, 
+// AGREGAR A LAS VISTAS EL MOCKUP PARA GENERAR PRODUCTOS
 
 // ejecuto la funcion q se conecta a la DB
 connectDB();
@@ -66,6 +59,10 @@ app.use("/api/cartsDB", cartsRouterDB);
 app.use("/api/productsDB", productsRouterDB);
 
 app.use("/api/messages", messagesRouterDB);
+
+
+app.use(errorHandler);
+
 
 // server
 const httpServer = app.listen(PORT, () => {

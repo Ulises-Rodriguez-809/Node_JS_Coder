@@ -11,7 +11,6 @@ import {TicketsRepository} from './tickets.repository.js';
 
 
 const User = new Users();
-
 const Cart = new CartManagerDB();
 const Product = new ProductManagerDB();
 const Ticket = new TicketManager();

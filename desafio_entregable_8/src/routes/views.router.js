@@ -14,9 +14,6 @@ router.get('/register', ViewsControllers.register);
 // DB router ruta cuadno te logueaas
 router.get('/products', ViewsControllers.productsGet);
 
-// router add products form
-router.post('/products', ViewsControllers.productsPost);
-
 // DB router
 router.get('/carts/:cartId', ViewsControllers.cartId);
 

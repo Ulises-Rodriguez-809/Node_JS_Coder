@@ -19,8 +19,6 @@ class SessionControler {
 
             const respond = await emailSender(full_name,email, template);
 
-            console.log(respond);
-
             res.send({
                 status: "success",
                 message: "Usuario registrado con exito",
@@ -140,12 +138,6 @@ class SessionControler {
             }
     
             const token = jwt.sign(user, options.JWT_SECRET_WORD, { expiresIn: "2h" });
-    
-            // RECORDA Q LUEGO DEL .JSON O .SEND SI ESCRIBIS ALGO DA ERROR
-            // res.cookie("jwt-cookie", token, { httpOnly: true, maxAge: 3600000 }).json({
-            //     status: "success",
-            //     payload: token
-            // })
     
             res.cookie(options.COOKIE_WORD, token, { httpOnly: true, maxAge: 3600000 })
     
