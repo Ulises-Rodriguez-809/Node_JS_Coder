@@ -92,6 +92,9 @@ class CartsControllers {
 
             const result = await ticketService.create(cartId);
 
+            console.log("TICKET CREADO");
+            console.log(result);
+
             const tokenInfo = req.cookies["jwt-cookie"];
 
             const decodedToken = jwt.decode(tokenInfo);
@@ -99,6 +102,9 @@ class CartsControllers {
             const {full_name,email} = decodedToken;
 
             const ticket = await ticketService.get(email);
+
+            console.log("TICKET OBTENIDO");
+            console.log(ticket);
 
             const {code,purchase_datetime,amount,purchaser} = ticket;
 

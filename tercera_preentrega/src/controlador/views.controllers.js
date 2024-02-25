@@ -64,19 +64,6 @@ class ViewsControllers {
         }
     }
 
-    static productsPost = async (req, res) => {
-        try {
-            const idCart = req.body.cartId;
-            const idProduct = req.body.id
-
-            const result = await cartService.add(idCart, idProduct);
-
-        } catch (error) {
-            console.log(error);
-        }
-
-    }
-
     static cartId = async (req, res) => {
         try {
             const cartId = req.params.cartId;
