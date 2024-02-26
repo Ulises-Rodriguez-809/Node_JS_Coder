@@ -20,6 +20,9 @@ import messagesRouterDB from './routes/messages.routes.db.js';
 import messagesModel from './dao/models/messagesModel.js';
 
 import sessionRouter from './routes/sessions.routes.js';
+
+import mockingRouter from './routes/mockingRouter.js';
+
 import { connectDB } from './config/dbConnection.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 
@@ -60,9 +63,10 @@ app.use("/api/productsDB", productsRouterDB);
 
 app.use("/api/messages", messagesRouterDB);
 
+app.use("/mockingproducts", mockingRouter);
+
 
 app.use(errorHandler);
-
 
 // server
 const httpServer = app.listen(PORT, () => {

@@ -2,6 +2,30 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import bcrypt from 'bcrypt';
 import { transporter } from './config/gmail.js';
+import { Faker, en } from '@faker-js/faker';
+
+export const customFaker = new Faker({
+    locale: [en]
+});
+
+const { commerce, image, database, string} = customFaker;
+
+export const generateProductMocking = () => {
+    const newProduct = {
+        id: database.mongodbObjectId(),
+        title: commerce.productName(),
+        description: commerce.productDescription(),
+        price: parseFloat(commerce.price()),
+        code: string.uuid(),
+        stock: parseInt(string.numeric(Math.floor(Math.random() * 2 + 1))),
+        category: commerce.department(),
+        status: true,
+        thumbnails: [image.url()]
+    }
+
+    return newProduct;
+}
+
 
 export const createHash = async (password) => {
     const salts = await bcrypt.genSalt(10);
@@ -11,7 +35,7 @@ export const createHash = async (password) => {
 
 export const isValidPassword = async (password, user) => await bcrypt.compare(password, user.password);
 
-export const emailSender = async (full_name = "nuevo usuario",email, template) => {
+export const emailSender = async (full_name = "nuevo usuario", email, template) => {
     console.log(full_name);
     console.log(email);
 
@@ -26,7 +50,7 @@ export const emailSender = async (full_name = "nuevo usuario",email, template) =
             subject: "Registro exitoso",
             html: emailTemplate
         })
-        
+
         console.log("Contenido", contenido);
 
         return true;
