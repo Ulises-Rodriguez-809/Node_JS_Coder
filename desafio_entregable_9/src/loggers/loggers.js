@@ -1,0 +1,68 @@
+import winston from 'winston';
+import {options} from '../config/config.js'
+import path from 'path'
+import __dirname from '../utils.js';
+
+const currentEnviroment = options.NODE_ENV || "development";
+
+const customLevels = {
+    levels : {
+        fatal : 0,
+        error : 1,
+        warning : 2,
+        info : 3,
+        http : 4,
+        debug : 5
+    },
+    colors : {
+        fatal : "red",
+        error : "orange",
+        warning : "yellow",
+        info : "blue",
+        http : "purple",
+        debug : "green"
+    }
+}
+
+const devLoggers = winston.createLogger({
+    // con esto redefinimos los levels para q tome nuestros levels customizados
+    level : customLevels.levels,
+    transports : [
+        new winston.transports.Console({level : "debug"}), //recorda q la toma de errores va por orden, osea q si queres q te tome todos tenes q pasarle el nivel de error mas bajo
+    ]
+})
+
+const prodLoggers = winston.createLogger({
+    level : customLevels.levels,
+    transports : [
+        // este para mostrar en consola
+        new winston.transports.Console({level : "info"}),
+        // este para guardar la info en el archvio
+        new winston.transports.File({filename : path.join(__dirname, "/logs/error.log"), level : "info"}) //le pasamos la direccion exacta donde guardamos el archivo y el level para production
+    ] 
+})
+
+
+const addLogger = (req,res,next)=>{
+    if (currentEnviroment === "development") {
+        // creamos el logger y lo agregamos al req
+        req.logger = devLoggers
+    }
+    else{
+        req.logger = prodLoggers
+    }
+
+    // disparo el logger para cualquier ruta q se ejecute
+    req.logger.debug(`${req.url} - method : ${req.method}`);
+
+//     {"level":"info","message":"/ - method : GET"}
+// REQ LOGGER VIEW
+// {"level":"info","message":"error"}
+
+    // console.log("REQ LOGGER LOGGER.js");
+    // console.log(req.logger);
+
+    next();
+}
+
+export {addLogger};
