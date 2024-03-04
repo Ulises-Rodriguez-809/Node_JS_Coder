@@ -31,7 +31,7 @@ class ProductsControllers {
             const result = await productService.getAll(query, options);
 
             if (!result) {
-                req.logger.warn("No se logro obtener los productos");
+                req.logger.warning("No se logro obtener los productos");
 
                 CustomError.createError({
                     name: "No se logro obtener los productos",
@@ -79,7 +79,7 @@ class ProductsControllers {
 
         }
         catch (error) {
-            req.logger.warn("error en la paginacion de los productos");
+            req.logger.warning("error en la paginacion de los productos");
 
             next(error);
         }
@@ -92,7 +92,7 @@ class ProductsControllers {
             const result = await productService.getById(id);
 
             if (typeof result === "string") {
-                req.logger.warn(`No se logro obtener el producto : ${id}`);
+                req.logger.warning(`No se logro obtener el producto : ${id}`);
 
                 CustomError.createError({
                     name: "No se logro obtener el producto",
@@ -123,7 +123,7 @@ class ProductsControllers {
             const result = await productService.add(fields);
 
             if (typeof result === "string") {
-                req.logger.warn("No se logro añadir el producto");
+                req.logger.warning("No se logro añadir el producto");
 
                 CustomError.createError({
                     name: "No se logro agregar el producto",
@@ -154,7 +154,7 @@ class ProductsControllers {
             const result = await productService.updateOne(id, fields);
 
             if (typeof result === "string") {
-                req.logger.warn(`No se logro actualizar el producto : ${id}`);
+                req.logger.warning(`No se logro actualizar el producto : ${id}`);
 
                 CustomError.createError({
                     name: "No se logro actualizar el producto",
@@ -184,7 +184,7 @@ class ProductsControllers {
             const result = await productService.deleteOne(id);
 
             if (typeof result === "string") {
-                req.logger.warn(`No se logro eliminar el producto : ${id}`);
+                req.logger.warning(`No se logro eliminar el producto : ${id}`);
 
                 CustomError.createError({
                     name: "No se logro eliminar el producto",

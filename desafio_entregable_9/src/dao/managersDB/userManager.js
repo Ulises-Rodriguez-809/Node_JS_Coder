@@ -4,10 +4,6 @@ import {CartManagerDB} from './cartManagerDB.js';
 const Cart = new CartManagerDB();
 
 export class Users {
-    constructor() {
-        console.log("Funciona el dbManager");
-    }
-
     getAllUsers = async () => {
         let users = await userModel.find();
 

@@ -17,12 +17,12 @@ form.addEventListener("submit",(e)=>{
             "Content-Type" : "application/json"
         }
     })
-    .then(result => {
-        if (result.status === 200) {
+    .then(result => result.json())
+    .then(json => {
+        if (json.status === "success") {
             window.location.replace('/products'); //si todo sale bien al loguearse redirijo al usuario a la lista de productos
         }
         else{
-            console.log(result);
             alert("error en los datos")
         }
     })

@@ -26,7 +26,6 @@ export const generateProductMocking = () => {
     return newProduct;
 }
 
-
 export const createHash = async (password) => {
     const salts = await bcrypt.genSalt(10);
 

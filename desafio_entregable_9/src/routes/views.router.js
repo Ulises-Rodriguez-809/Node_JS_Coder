@@ -17,7 +17,6 @@ router.get('/products', ViewsControllers.productsGet);
 // DB router
 router.get('/carts/:cartId', ViewsControllers.cartId);
 
-// NO TE OLVIDES DE HACER LA VISTA
 // DB router --> esto usalo para q el admin pueda agregar productos
 router.get('/realtimeproducts', checkRole(["admin"]), ViewsControllers.realtimeproducts);
 

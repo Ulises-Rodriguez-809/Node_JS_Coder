@@ -1,14 +1,14 @@
 import jwt from 'jsonwebtoken';
 import { options } from '../config/config.js';
-import {userService} from '../respository/index.repository.js';
+import { userService } from '../respository/index.repository.js';
 import { emailSender } from '../utils.js';
 
 class SessionControler {
     static register = async (req, res) => {
         try {
-            const {first_name, last_name,email} = req.user;
+            const { first_name, last_name, email } = req.user;
 
-            const full_name = first_name.concat(" ",last_name);
+            const full_name = first_name.concat(" ", last_name);
 
             const template = `<div>
             <h1>Bienvenido ${full_name}!!</h1>
@@ -17,10 +17,10 @@ class SessionControler {
             <a href="http://localhost:8080/">Ir a la pagina</a>
             </div>`;
 
-            const respond = await emailSender(full_name,email, template);
+            const respond = await emailSender(full_name, email, template);
 
             if (!respond) {
-                req.logger.warn("La compra se realizo pero no se logro enviar el email de confirmacion de esta");
+                req.logger.warning("La compra se realizo pero no se logro enviar el email de confirmacion de esta");
             }
 
             res.send({
@@ -51,7 +51,7 @@ class SessionControler {
             // DATA: el req.user te lo agrega el passport por defecto cuando hace la autenticacion 
             if (!req.user) {
                 req.logger.error("Error, no se logro obtener los datos del usuario");
-                
+
                 return res.status(400).send({
                     status: "error",
                     message: "Usuario no encontrado"
@@ -70,7 +70,7 @@ class SessionControler {
                     rol: "admin"
                 }
 
-                req.logger.info("usuario creado con rol admin");
+                req.logger.info("usuario con rol admin");
 
             }
             else {
@@ -92,7 +92,7 @@ class SessionControler {
                     cartID: cart._id
                 }
 
-                req.logger.info("usuario creado con rol user");
+                req.logger.info("usuario con rol user");
 
             }
 
@@ -117,12 +117,12 @@ class SessionControler {
 
     static faillogin = async (req, res) => {
         req.logger.error("No se logro completar el login del usuario con exito");
-    
+
         res.status(400).send({
-            status : "error",
+            status: "error",
             payload: "fallo en el login"
         })
-    
+
     }
 
     static githubcallback = async (req, res) => {
@@ -135,10 +135,10 @@ class SessionControler {
                     message: "Usuario no encontrado"
                 })
             }
-    
+
             const { first_name, last_name, age, email, rol, cart } = req.user;
-    
-            
+
+
             if (!first_name || !last_name || !age || !email || !cart) {
                 req.logger.error("Error, no se logro obtener los datos del usuario desde github");
 
@@ -147,7 +147,7 @@ class SessionControler {
                     payload: "datos incompletos"
                 })
             }
-    
+
             const user = {
                 full_name: `${first_name} ${last_name}`,
                 age,
@@ -155,13 +155,13 @@ class SessionControler {
                 rol,
                 cartID: cart._id
             }
-    
+
             const token = jwt.sign(user, options.JWT_SECRET_WORD, { expiresIn: "2h" });
-    
+
             res.cookie(options.COOKIE_WORD, token, { httpOnly: true, maxAge: 3600000 })
-    
+
             res.redirect("/products");
-    
+
         } catch (error) {
             req.logger.error("No se encontro la cuenta de Github del usuario");
 
@@ -177,9 +177,9 @@ class SessionControler {
             res.clearCookie(options.COOKIE_WORD);
 
             req.logger.info("Cookie limpiada con exito");
-    
+
             res.redirect('/');
-    
+
         } else {
             req.logger.error("No se logro cerrar la sesion del usuario");
 
@@ -202,12 +202,12 @@ class SessionControler {
             }
 
             const userInfoDto = await userService.get(req.user);
-    
+
             res.send({
                 status: "success",
                 payload: userInfoDto
             })
-    
+
         } catch (error) {
             req.logger.error("Error, no se logro obtener los datos del usuario");
 
@@ -219,8 +219,8 @@ class SessionControler {
     }
 
     static failcurret = async (req, res) => {
-        req.logger.warn("No se logro obtener los datos del usuario actual");
-    
+        req.logger.warning("No se logro obtener los datos del usuario actual");
+
         res.status(400).send({
             error: "fallo en obtener los datos del usuario"
         })

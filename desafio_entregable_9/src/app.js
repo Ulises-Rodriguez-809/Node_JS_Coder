@@ -26,14 +26,11 @@ import mockingRouter from './routes/mockingRouter.js';
 import { connectDB } from './config/dbConnection.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { addLogger } from './loggers/loggers.js';
+import loggerTestRouter from './routes/loggerTestRoutes.js';
 
 const PORT = options.PORT;
 
 const app = express();
-
-
-// AGREGAR MIDDLEWARE DE ERRORES, 
-// AGREGAR A LAS VISTAS EL MOCKUP PARA GENERAR PRODUCTOS
 
 // ejecuto la funcion q se conecta a la DB
 connectDB();
@@ -58,6 +55,8 @@ app.set("views", __dirname + "/views");
 // rutas
 app.use("/", viewsRouter);
 app.use("/api/sessions", sessionRouter);
+
+app.use("/loggerTest", loggerTestRouter);
 
 app.use("/api/cartsDB", cartsRouterDB);
 

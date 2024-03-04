@@ -60,11 +60,11 @@ class ViewsControllers {
             res.render('products', { products: payload, user });
 
         } catch (error) {
-            req.logger.warn("El producto no se logro añadir al cart");
+            req.logger.warning("Datos del usuario incorrectos");
 
             res.status(400).send({
                 status: "error",
-                msg: "Usuario no encontrado"
+                msg: "Datos del usuario incorrectos"
             })
         }
     }
@@ -109,7 +109,7 @@ class ViewsControllers {
 
             res.render("cart", { products: auxArray });
         } catch (error) {
-            req.logger.warn("No se logro encontrar el cart del usuario");
+            req.logger.warning("No se logro encontrar el cart del usuario");
         }
     }
 

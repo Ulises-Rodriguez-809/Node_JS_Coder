@@ -13,7 +13,7 @@ class CartsControllers {
             const result = await cartService.getAll();
 
             if (!result) {
-                req.logger.warn("Error, no se logro obtener los carts");
+                req.logger.warning("Error, no se logro obtener los carts");
 
                 CustomError.createError({
                     name: "No se logro obtener todos los cart",
@@ -42,7 +42,7 @@ class CartsControllers {
             const result = await cartService.getById(id);
 
             if (!result) {
-                req.logger.warn(`Error, no se logro obtener el cart con el id : ${id}`);
+                req.logger.warning(`Error, no se logro obtener el cart con el id : ${id}`);
 
                 CustomError.createError({
                     name: "Cart no encontrado",
@@ -69,7 +69,7 @@ class CartsControllers {
             const cart = await cartService.create();
 
             if (!cart) {
-                req.logger.warn("No se logro crear un nuevo carrito");
+                req.logger.warning("No se logro crear un nuevo carrito");
 
                 CustomError.createError({
                     name: "No se logro crear el cart",
@@ -100,7 +100,7 @@ class CartsControllers {
             const result = await cartService.add(cartId, productId, parseInt(quantity));
 
             if (typeof result === "string") {
-                req.logger.warn(`Error, no se logro agregar al cart el producto con el id : ${productId}`);
+                req.logger.warning(`Error, no se logro agregar al cart el producto con el id : ${productId}`);
 
                 CustomError.createError({
                     name: "No se añadir el producto al cart",
@@ -183,7 +183,7 @@ class CartsControllers {
             const respond = await emailSender(full_name, email, template);
 
             if (respond) {
-                req.logger.warn("El ticket se creo con exito pero no se logro enviar el email");
+                req.logger.warning("El ticket se creo con exito pero no se logro enviar el email");
 
                 CustomError.createError({
                     name: "Error en el envio del email",
@@ -213,7 +213,7 @@ class CartsControllers {
             const result = await cartService.updateList(cartId, products);
 
             if (typeof result === "string") {
-                req.logger.warn("No se logro actualizar el producto");
+                req.logger.warning("No se logro actualizar el producto");
 
                 CustomError.createError({
                     name: "No se logro actualizar el cart",
@@ -245,7 +245,7 @@ class CartsControllers {
             const result = await cartService.updateQuantity(cartId, productId, quantity);
 
             if (typeof result === "string") {
-                req.logger.warn(`No se logro actializar la el producto con el id : ${productId} a la cantidad : ${quantity}`);
+                req.logger.warning(`No se logro actializar la el producto con el id : ${productId} a la cantidad : ${quantity}`);
 
                 CustomError.createError({
                     name: "No se logro actualizar la cantidad de los productos el cart",
@@ -276,7 +276,7 @@ class CartsControllers {
             const result = await cartService.deleteAll(id);
 
             if (typeof result === "string") {
-                req.logger.warn(`No se logro eliminar los productos del cart ${id}`);
+                req.logger.warning(`No se logro eliminar los productos del cart ${id}`);
                 
                 CustomError.createError({
                     name: "No se limpiar cart",
@@ -308,7 +308,7 @@ class CartsControllers {
             const result = await cartService.deleteOne(cartId, productId);
 
             if (typeof result === "string") {
-                req.logger.warn(`No se logro eliminar el producto : ${cartId} del cart : ${cartId}`);
+                req.logger.warning(`No se logro eliminar el producto : ${cartId} del cart : ${cartId}`);
 
                 CustomError.createError({
                     name: "No se logro eliminar el producto del cart",

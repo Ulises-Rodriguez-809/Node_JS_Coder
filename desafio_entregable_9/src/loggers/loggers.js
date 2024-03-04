@@ -12,7 +12,7 @@ const customLevels = {
     levels : {
         fatal : 0,
         error : 1,
-        warn : 2,
+        warning : 2,
         info : 3,
         http : 4,
         debug : 5
@@ -20,7 +20,7 @@ const customLevels = {
     colors : {
         fatal : "red",
         error : "orange",
-        warn : "yellow",
+        warning : "yellow",
         info : "blue",
         http : "purple",
         debug : "green"
@@ -29,14 +29,14 @@ const customLevels = {
 
 const devLoggers = winston.createLogger({
     // con esto redefinimos los levels para q tome nuestros levels customizados
-    level : customLevels.levels,
+    levels : customLevels.levels,
     transports : [
         new winston.transports.Console({level : "debug"}), //recorda q la toma de errores va por orden, osea q si queres q te tome todos tenes q pasarle el nivel de error mas bajo
     ]
 })
 
 const prodLoggers = winston.createLogger({
-    level : customLevels.levels,
+    levels : customLevels.levels,
     transports : [
         // este para mostrar en consola
         new winston.transports.Console({level : "info"}),
@@ -56,7 +56,7 @@ const addLogger = (req,res,next)=>{
     }
 
     // disparo el logger para cualquier ruta q se ejecute
-    req.logger.info(`${req.url} - method : ${req.method}`);
+    req.logger.debug(`${req.url} - method : ${req.method}`);
 
     next();
 }
