@@ -1,8 +1,6 @@
 import { ERRORS } from "../enum/error.js";
 
 export const errorHandler = (error, req, res, next) => {
-    console.log(error.code);
-
     switch (error.code) {
         case ERRORS.PRODUCT_ERROR:
             res.send({

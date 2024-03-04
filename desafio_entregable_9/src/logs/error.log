@@ -1,1 +1,7 @@
-{"level":"info","message":"error"}
+{"level":"info","message":"Error al intentar iniciar sesion"}
+{"level":"error","message":"Error al intentar iniciar sesion"}
+{"level":"info","message":"/register - method : GET"}
+{"level":"info","message":"/api/sessions/register - method : POST"}
+{"level":"warn","message":"El usuario con el email : uliisesrodriguez809@gmail.com ya se encuentra registrado"}
+{"level":"info","message":"/api/sessions/failregister - method : GET"}
+{"level":"error","message":"No se logro completar el registro del nuevo usuario con exito"}

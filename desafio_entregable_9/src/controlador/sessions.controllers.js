@@ -19,6 +19,10 @@ class SessionControler {
 
             const respond = await emailSender(full_name,email, template);
 
+            if (!respond) {
+                req.logger.warn("La compra se realizo pero no se logro enviar el email de confirmacion de esta");
+            }
+
             res.send({
                 status: "success",
                 message: "Usuario registrado con exito",
@@ -34,7 +38,7 @@ class SessionControler {
     }
 
     static failregister = async (req, res) => {
-        console.log("fallo el registro");
+        req.logger.error("No se logro completar el registro del nuevo usuario con exito");
 
         res.status(400).send({
             status: "error",
@@ -46,6 +50,8 @@ class SessionControler {
         try {
             // DATA: el req.user te lo agrega el passport por defecto cuando hace la autenticacion 
             if (!req.user) {
+                req.logger.error("Error, no se logro obtener los datos del usuario");
+                
                 return res.status(400).send({
                     status: "error",
                     message: "Usuario no encontrado"
@@ -63,10 +69,15 @@ class SessionControler {
                     email,
                     rol: "admin"
                 }
+
+                req.logger.info("usuario creado con rol admin");
+
             }
             else {
 
                 if (!first_name || !last_name || !age || !email || !password || !cart) {
+                    req.logger.error("Error con los datos del usuario");
+
                     return res.status(400).send({
                         status: "error",
                         payload: "datos incompletos"
@@ -80,6 +91,9 @@ class SessionControler {
                     rol: "user",
                     cartID: cart._id
                 }
+
+                req.logger.info("usuario creado con rol user");
+
             }
 
             const token = jwt.sign(user, options.JWT_SECRET_WORD, { expiresIn: "2h" });
@@ -92,6 +106,8 @@ class SessionControler {
             })
 
         } catch (error) {
+            req.logger.error("Error con los datos del usuario");
+
             res.status(400).send({
                 status: "error",
                 payload: "Usuario no encontrado"
@@ -100,7 +116,7 @@ class SessionControler {
     }
 
     static faillogin = async (req, res) => {
-        console.log("fallo login");
+        req.logger.error("No se logro completar el login del usuario con exito");
     
         res.status(400).send({
             status : "error",
@@ -112,6 +128,8 @@ class SessionControler {
     static githubcallback = async (req, res) => {
         try {
             if (!req.user) {
+                req.logger.error("Error, usuario no encontrado");
+
                 return res.status(400).send({
                     status: "error",
                     message: "Usuario no encontrado"
@@ -122,7 +140,8 @@ class SessionControler {
     
             
             if (!first_name || !last_name || !age || !email || !cart) {
-                console.log("se ejecuto este error");
+                req.logger.error("Error, no se logro obtener los datos del usuario desde github");
+
                 return res.status(400).send({
                     status: "error",
                     payload: "datos incompletos"
@@ -144,6 +163,8 @@ class SessionControler {
             res.redirect("/products");
     
         } catch (error) {
+            req.logger.error("No se encontro la cuenta de Github del usuario");
+
             res.status(400).send({
                 status: "error",
                 payload: "No se logro iniciar sesion con github"
@@ -154,10 +175,14 @@ class SessionControler {
     static logout = async (req, res) => {
         if (req.cookies[options.COOKIE_WORD]) {
             res.clearCookie(options.COOKIE_WORD);
+
+            req.logger.info("Cookie limpiada con exito");
     
             res.redirect('/');
     
         } else {
+            req.logger.error("No se logro cerrar la sesion del usuario");
+
             res.status(401).send({
                 status: "error",
                 payload: "No se logro desloguear con exito"
@@ -168,6 +193,8 @@ class SessionControler {
     static current = async (req, res) => {
         try {
             if (!req.user) {
+                req.logger.error("Error, usuario no encontrado");
+
                 return res.status(401).send({
                     status: "error",
                     payload: "No se encontro el usuario"
@@ -182,6 +209,8 @@ class SessionControler {
             })
     
         } catch (error) {
+            req.logger.error("Error, no se logro obtener los datos del usuario");
+
             res.status(400).send({
                 status: "error",
                 payload: "No se logro obtener los datos"
@@ -190,7 +219,7 @@ class SessionControler {
     }
 
     static failcurret = async (req, res) => {
-        console.log("failcurret");
+        req.logger.warn("No se logro obtener los datos del usuario actual");
     
         res.status(400).send({
             error: "fallo en obtener los datos del usuario"

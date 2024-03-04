@@ -5,11 +5,14 @@ import __dirname from '../utils.js';
 
 const currentEnviroment = options.NODE_ENV || "development";
 
+// Crear un endpoint /loggerTest que permita probar todos los logs --> supongo q es un enpoint donde pones req.logger.info("error info"), req.logger.debug("error debug"), req.logger.fatal("error fatal"), etc y los mostras en un res.send o algo asi
+// preguntalo por las dudas
+
 const customLevels = {
     levels : {
         fatal : 0,
         error : 1,
-        warning : 2,
+        warn : 2,
         info : 3,
         http : 4,
         debug : 5
@@ -17,7 +20,7 @@ const customLevels = {
     colors : {
         fatal : "red",
         error : "orange",
-        warning : "yellow",
+        warn : "yellow",
         info : "blue",
         http : "purple",
         debug : "green"
@@ -53,14 +56,7 @@ const addLogger = (req,res,next)=>{
     }
 
     // disparo el logger para cualquier ruta q se ejecute
-    req.logger.debug(`${req.url} - method : ${req.method}`);
-
-//     {"level":"info","message":"/ - method : GET"}
-// REQ LOGGER VIEW
-// {"level":"info","message":"error"}
-
-    // console.log("REQ LOGGER LOGGER.js");
-    // console.log(req.logger);
+    req.logger.info(`${req.url} - method : ${req.method}`);
 
     next();
 }

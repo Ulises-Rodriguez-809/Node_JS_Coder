@@ -31,6 +31,8 @@ class ProductsControllers {
             const result = await productService.getAll(query, options);
 
             if (!result) {
+                req.logger.warn("No se logro obtener los productos");
+
                 CustomError.createError({
                     name: "No se logro obtener los productos",
                     cause: productErrorOptions.generateGetAllProductsError(),
@@ -53,15 +55,11 @@ class ProductsControllers {
 
             // tema del LINK
             if (result["messagge"].hasPrevPage) {
-                console.log("tine pagina anterior");
-
                 result["messagge"].prevLink = `http://localhost:8080/api/productsDB?limit=${options.limit}&page=${result["messagge"].prevPage}${sort ? auxSort : ""}${category ? auxCategory : ""}${stock ? auxStock : ""}`;
 
             }
 
             if (result["messagge"].hasNextPage) {
-                console.log("tiene pagina siguiente");
-
                 result["messagge"].nextLink = `http://localhost:8080/api/productsDB?limit=${options.limit}&page=${result["messagge"].nextPage}${sort ? auxSort : ""}${category ? auxCategory : ""}${stock ? auxStock : ""}`;
 
             }
@@ -74,13 +72,15 @@ class ProductsControllers {
 
             } else {
                 res.send({
+                    status : "success",
                     result
                 })
             }
 
         }
         catch (error) {
-            console.log(error);
+            req.logger.warn("error en la paginacion de los productos");
+
             next(error);
         }
     }
@@ -92,6 +92,8 @@ class ProductsControllers {
             const result = await productService.getById(id);
 
             if (typeof result === "string") {
+                req.logger.warn(`No se logro obtener el producto : ${id}`);
+
                 CustomError.createError({
                     name: "No se logro obtener el producto",
                     cause: productErrorOptions.generateGetProductByIdError(id),
@@ -107,7 +109,8 @@ class ProductsControllers {
             })
 
         } catch (error) {
-            console.log(error);
+            req.logger.error("Error al intentar obtener el producto por el id");
+
             next(error);
         }
     }
@@ -120,6 +123,8 @@ class ProductsControllers {
             const result = await productService.add(fields);
 
             if (typeof result === "string") {
+                req.logger.warn("No se logro añadir el producto");
+
                 CustomError.createError({
                     name: "No se logro agregar el producto",
                     cause: productErrorOptions.generateAddProductError(),
@@ -135,7 +140,8 @@ class ProductsControllers {
             })
 
         } catch (error) {
-            console.log(error);
+            req.logger.error("No se logro añadir el producto al cart");
+
             next(error);
         }
     }
@@ -148,6 +154,8 @@ class ProductsControllers {
             const result = await productService.updateOne(id, fields);
 
             if (typeof result === "string") {
+                req.logger.warn(`No se logro actualizar el producto : ${id}`);
+
                 CustomError.createError({
                     name: "No se logro actualizar el producto",
                     cause: productErrorOptions.generateUpdateProductError(id),
@@ -163,7 +171,8 @@ class ProductsControllers {
             })
 
         } catch (error) {
-            console.log(error);
+            req.logger.error("No se logro actualizar el producto");
+
             next(error);
         }
     }
@@ -175,6 +184,8 @@ class ProductsControllers {
             const result = await productService.deleteOne(id);
 
             if (typeof result === "string") {
+                req.logger.warn(`No se logro eliminar el producto : ${id}`);
+
                 CustomError.createError({
                     name: "No se logro eliminar el producto",
                     cause: productErrorOptions.generateDeleteProductError(id),
@@ -190,7 +201,8 @@ class ProductsControllers {
             })
 
         } catch (error) {
-            console.log(error);
+            req.logger.error("No se logro eliminar el producto de la DB");
+
             next(error);
         }
     }

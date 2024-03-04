@@ -13,7 +13,7 @@ class CartsControllers {
             const result = await cartService.getAll();
 
             if (!result) {
-                console.log(result);
+                req.logger.warn("Error, no se logro obtener los carts");
 
                 CustomError.createError({
                     name: "No se logro obtener todos los cart",
@@ -29,7 +29,8 @@ class CartsControllers {
             });
 
         } catch (error) {
-            console.log(error);
+            req.logger.error("No se logro obtener los carts");
+
             next(error);
         }
     }
@@ -41,7 +42,7 @@ class CartsControllers {
             const result = await cartService.getById(id);
 
             if (!result) {
-                console.log(result);
+                req.logger.warn(`Error, no se logro obtener el cart con el id : ${id}`);
 
                 CustomError.createError({
                     name: "Cart no encontrado",
@@ -57,17 +58,19 @@ class CartsControllers {
             });
 
         } catch (error) {
-            console.log(error);
+            req.logger.error("No se logro obtener obtener el cart por su ID");
+
             next(error);
         }
     }
 
     static addCart = async (req, res, next) => {
-
         try {
             const cart = await cartService.create();
 
             if (!cart) {
+                req.logger.warn("No se logro crear un nuevo carrito");
+
                 CustomError.createError({
                     name: "No se logro crear el cart",
                     cause: cartErrorOptions.generateCreateCartError(),
@@ -82,7 +85,8 @@ class CartsControllers {
             });
 
         } catch (error) {
-            console.log(error);
+            req.logger.error("No se logro agregar el cart al usuario");
+
             next(error);
         }
     }
@@ -96,6 +100,8 @@ class CartsControllers {
             const result = await cartService.add(cartId, productId, parseInt(quantity));
 
             if (typeof result === "string") {
+                req.logger.warn(`Error, no se logro agregar al cart el producto con el id : ${productId}`);
+
                 CustomError.createError({
                     name: "No se añadir el producto al cart",
                     cause: cartErrorOptions.generateAddProductToCartError(productId, cartId),
@@ -111,10 +117,10 @@ class CartsControllers {
             });
 
         } catch (error) {
-            console.log(error);
+            req.logger.error("No se logro agregar el producto al cart al usuario");
+
             next(error);
         }
-
     }
 
     static purchase = async (req, res, next) => {
@@ -124,6 +130,8 @@ class CartsControllers {
             const result = await ticketService.create(cartId);
 
             if (!result) {
+                req.logger.error("No se logro crear el ticket");
+
                 CustomError.createError({
                     name: "No se logro crear el ticket",
                     cause: ticketErrorOptions.generateCreateTicketError(),
@@ -141,6 +149,8 @@ class CartsControllers {
             const ticket = await ticketService.get(email);
 
             if (!ticket) {
+                req.logger.error("No se logro obtener el ticket");
+
                 CustomError.createError({
                     name: "No se logro obtener el ticket",
                     cause: ticketErrorOptions.generateGetTicketError(email),
@@ -173,6 +183,8 @@ class CartsControllers {
             const respond = await emailSender(full_name, email, template);
 
             if (respond) {
+                req.logger.warn("El ticket se creo con exito pero no se logro enviar el email");
+
                 CustomError.createError({
                     name: "Error en el envio del email",
                     cause: generateSendEmailError(email),
@@ -187,7 +199,8 @@ class CartsControllers {
             })
 
         } catch (error) {
-            console.log(error.message);
+            req.logger.error("No se logro crear el ticket");
+
             next(error);
         }
     }
@@ -200,6 +213,8 @@ class CartsControllers {
             const result = await cartService.updateList(cartId, products);
 
             if (typeof result === "string") {
+                req.logger.warn("No se logro actualizar el producto");
+
                 CustomError.createError({
                     name: "No se logro actualizar el cart",
                     cause: cartErrorOptions.generateUpdateProductsListError(cartId),
@@ -215,7 +230,8 @@ class CartsControllers {
             });
 
         } catch (error) {
-            console.log(error);
+            req.logger.error("Error al intentar actualizar el producto");
+
             next(error);
         }
     }
@@ -229,6 +245,8 @@ class CartsControllers {
             const result = await cartService.updateQuantity(cartId, productId, quantity);
 
             if (typeof result === "string") {
+                req.logger.warn(`No se logro actializar la el producto con el id : ${productId} a la cantidad : ${quantity}`);
+
                 CustomError.createError({
                     name: "No se logro actualizar la cantidad de los productos el cart",
                     cause: cartErrorOptions.generateUpdateProductQuantityError(cartId, productId, quantity),
@@ -244,7 +262,8 @@ class CartsControllers {
             });
 
         } catch (error) {
-            console.log(error);
+            req.logger.error("Error al intentar actualizar la cantidad del producto");
+
             next(error);
         }
     }
@@ -257,6 +276,8 @@ class CartsControllers {
             const result = await cartService.deleteAll(id);
 
             if (typeof result === "string") {
+                req.logger.warn(`No se logro eliminar los productos del cart ${id}`);
+                
                 CustomError.createError({
                     name: "No se limpiar cart",
                     cause: cartErrorOptions.generateDeleteCartProductsError(id),
@@ -272,7 +293,8 @@ class CartsControllers {
             });
 
         } catch (error) {
-            console.log(error);
+            req.logger.error("error al intentar eliminar los prodcutos del cart");
+
             next(error);
         }
     }
@@ -286,6 +308,8 @@ class CartsControllers {
             const result = await cartService.deleteOne(cartId, productId);
 
             if (typeof result === "string") {
+                req.logger.warn(`No se logro eliminar el producto : ${cartId} del cart : ${cartId}`);
+
                 CustomError.createError({
                     name: "No se logro eliminar el producto del cart",
                     cause: cartErrorOptions.generateDeleteProductToCartError(cartId, productId),
@@ -301,7 +325,8 @@ class CartsControllers {
             });
 
         } catch (error) {
-            console.log(error);
+            req.logger.error("Error al eliminar un productos del cart");
+
             next(error);
         }
     }

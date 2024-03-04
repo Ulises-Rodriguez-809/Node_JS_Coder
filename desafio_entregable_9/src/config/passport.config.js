@@ -49,7 +49,7 @@ const inicializePassport = () => {
                 const user = await User.getUser({ email: username })
 
                 if (user) {
-                    console.log(`El usuario con el email : ${username} ya se encuentra registrado`);
+                    req.logger.warn(`El usuario con el email : ${username} ya se encuentra registrado`);
 
                     return done(null, false, { message: "Usuario ya registrado" });
                 }
@@ -98,10 +98,14 @@ const inicializePassport = () => {
                 }
 
                 if (!user) {
+                    req.logger.warn("Usuario no encontrado");
+
                     return done(null, false, { message: "Usuario no encontrado" });
                 }
 
                 if (!isValidPassword(password, user)) {
+                    req.logger.warn("Contraseña incorrecta");
+
                     return done(null, false, { message: "Contraseña invalida" });
                 }
 
