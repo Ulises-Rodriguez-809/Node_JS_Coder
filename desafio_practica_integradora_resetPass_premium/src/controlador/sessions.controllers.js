@@ -215,6 +215,10 @@ class SessionControler {
         }
     }
 
+    static resetPassword = async(req,res)=>{
+        
+    }
+
     static logout = async (req, res) => {
         if (req.cookies[options.COOKIE_WORD]) {
             res.clearCookie(options.COOKIE_WORD);
