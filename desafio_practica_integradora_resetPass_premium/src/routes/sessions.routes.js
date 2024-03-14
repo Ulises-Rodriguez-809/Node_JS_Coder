@@ -31,4 +31,7 @@ router.get('/failcurret', SessionControler.failcurret);
 //recoverPass
 router.post('/recoverPassword', SessionControler.revocerPassword);
 
+// resetPass
+router.post('/resetPassword', SessionControler.resetPassword);
+
 export default router;

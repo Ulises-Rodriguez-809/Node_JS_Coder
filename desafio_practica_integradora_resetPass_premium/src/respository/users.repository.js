@@ -27,8 +27,16 @@ export class UsersRepository{
         return getUserDtoFront;
     }
 
+    async getWhitoutFilter(user){
+        const {email} = user;
+
+        const userInfo = await this.dao.getUser({email});
+
+        return userInfo;
+    }
+
     async update(id, user){
-        const result = await this.dao.updateUser();
+        const result = await this.dao.updateUser(id,user);
 
         return result;
     }

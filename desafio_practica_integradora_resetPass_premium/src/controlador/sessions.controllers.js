@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { options } from '../config/config.js';
 import { userService } from '../respository/index.repository.js';
-import { emailSender } from '../utils.js';
+import { createHash, emailSender, isValidPassword } from '../utils.js';
 
 class SessionControler {
     static register = async (req, res) => {
@@ -19,7 +19,7 @@ class SessionControler {
             <a href="http://localhost:8080/">Ir a la pagina</a>
             </div>`;
 
-            const respond = await emailSender(full_name, email, template,subject);
+            const respond = await emailSender(full_name, email, template, subject);
 
             if (!respond) {
                 req.logger.warning("La compra se realizo pero no se logro enviar el email de confirmacion de esta");
@@ -174,13 +174,13 @@ class SessionControler {
         }
     }
 
-    static revocerPassword = async (req,res)=>{
+    static revocerPassword = async (req, res) => {
         try {
-            const {email} = req.body;
+            const { email } = req.body;
 
             console.log(email);
 
-            const user = await userService.get({email});
+            const user = await userService.get({ email });
             const full_name = user.full_name;
             const subject = "Restablecer contraseña";
 
@@ -191,20 +191,20 @@ class SessionControler {
             <a href="http://localhost:8080/resetPassword">Restrablecer contraseña</a>
             </div>`;
 
-            const respond = await emailSender(full_name,email,template,subject);
+            const respond = await emailSender(full_name, email, template, subject);
 
             console.log(respond);
 
             if (!respond) {
                 return res.status(400).send({
-                    status : "error",
-                    payload : "No se logro enviar el mail para restrablecer la contraseña"
-                })                
+                    status: "error",
+                    payload: "No se logro enviar el mail para restrablecer la contraseña"
+                })
             }
 
             res.send({
-                status : "success",
-                payload : "mail enviado con exito"
+                status: "success",
+                payload: "mail enviado con exito"
             })
 
         } catch (error) {
@@ -215,8 +215,80 @@ class SessionControler {
         }
     }
 
-    static resetPassword = async(req,res)=>{
-        
+    static resetPassword = async (req, res) => {
+        try {
+            const { email, password, confirmPassword } = req.body;
+
+            console.log(req.body);
+
+            if (password !== confirmPassword) {
+                return res.status(400).send({
+                    status: "error",
+                    payload: "Las contraseñas no coinciden"
+                });
+            }
+
+            const user = await userService.getWhitoutFilter(req.body);
+
+            const samePassword = await isValidPassword(password, user);
+
+            // si la contraseña es la misma q esta guardada en la DB, indicamos q no puede repetir la misma contraseña
+            if (samePassword) {
+                return res.status(400).send({
+                    status: "error",
+                    payload: "Error, esta contraseña ya fue usada anteriormente"
+                });
+            }
+
+            const newPassword = await createHash(password);
+            // console.log(newPassword);
+            // console.log(user.password);
+            console.log(user);
+
+            user.password = newPassword;
+
+            console.log(user);
+
+            // console.log(user.password);
+            // console.log(user);
+
+            const userUpdated = await userService.update(user._id, user);
+
+            if (!userUpdated) {
+                return res.status(400).send({
+                    status: "error",
+                    payload: "Error, no se logro actulizar los datos del usuario"
+                });
+            }
+
+            console.log(userUpdated);
+
+            const user2 = await userService.getWhitoutFilter(req.body);
+
+            console.log(user2);
+
+            // 65a2d0a14aca1c51554048e7 id db
+            // 65a2d0a14aca1c51554048e7
+
+            // _id :ObjectId("65a2d0a14aca1c51554048e7")
+            // first_name :"Facu"
+            // last_name :"ElPampaneitor"
+            // email :"facu@gmail.com"
+            // age :27
+            // password :"$2b$10$QJT/jW89YeJtcFsYRRoSzeXBnLHXLfLjlbUI5RvjhFh/We.d51Jc6"
+            // __v : 0
+
+            res.send({
+                status: "success",
+                payload: "todo bien"
+            })
+
+        } catch (error) {
+            res.status(400).send({
+                status: "error",
+                payload: "No se logro cambiar la contraseña"
+            })
+        }
     }
 
     static logout = async (req, res) => {

@@ -162,3 +162,12 @@
 {"level":"info","message":"usuario creado con rol user"}
 {"level":"info","message":"Cookie limpiada con exito"}
 {"level":"error","message":"No se logro completar el login del usuario con exito"}
+{"level":"error","message":"Error con los datos del usuario"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"error","message":"No se logro completar el login del usuario con exito"}
+{"level":"error","message":"Error con los datos del usuario"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
