@@ -1,7 +1,7 @@
 {
-  "name": "desafio_8",
+  "name": "desafio_9",
   "version": "1.0.0",
-  "description": "custom errors",
+  "description": "desafio entregable loggers",
   "type": "module",
   "main": "index.js",
   "scripts": {
@@ -27,6 +27,7 @@
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
     "socket.io": "^4.7.4",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "winston": "^3.11.0"
   }
 }
