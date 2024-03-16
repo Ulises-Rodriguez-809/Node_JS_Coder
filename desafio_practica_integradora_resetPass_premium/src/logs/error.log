@@ -171,3 +171,61 @@
 {"level":"info","message":"Cookie limpiada con exito"}
 {"level":"info","message":"usuario con rol user"}
 {"level":"info","message":"Cookie limpiada con exito"}
+{"level":"error","message":"No se logro completar el login del usuario con exito"}
+{"level":"error","message":"No se logro completar el login del usuario con exito"}
+{"level":"error","message":"No se logro completar el login del usuario con exito"}
+{"level":"error","message":"No se logro completar el login del usuario con exito"}
+{"level":"error","message":"No se logro completar el login del usuario con exito"}
+{"level":"error","message":"No se logro completar el login del usuario con exito"}
+{"level":"error","message":"No se logro completar el login del usuario con exito"}
+{"level":"error","message":"No se logro completar el login del usuario con exito"}
+{"level":"error","message":"No se logro completar el login del usuario con exito"}
+{"level":"info","message":"usuario con rol admin"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"error","message":"No se logro completar el login del usuario con exito"}
+{"level":"info","message":"usuario con rol admin"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"error","message":"No se logro completar el login del usuario con exito"}
+{"level":"error","message":"No se logro completar el login del usuario con exito"}
+{"level":"error","message":"No se logro completar el login del usuario con exito"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"error","message":"No se logro completar el login del usuario con exito"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"fatal","message":"No se logro acceder al apartado para agregar/actualizar/eliminar productos o no cuenta con los permisos necesarios"}
+{"level":"fatal","message":"No se logro acceder al apartado para agregar/actualizar/eliminar productos o no cuenta con los permisos necesarios"}
+{"level":"fatal","message":"No se logro acceder al apartado para agregar/actualizar/eliminar productos o no cuenta con los permisos necesarios"}
+{"level":"fatal","message":"No se logro acceder al apartado para agregar/actualizar/eliminar productos o no cuenta con los permisos necesarios"}
+{"level":"fatal","message":"No se logro acceder al apartado para agregar/actualizar/eliminar productos o no cuenta con los permisos necesarios"}
+{"level":"fatal","message":"No se logro acceder al apartado para agregar/actualizar/eliminar productos o no cuenta con los permisos necesarios"}
+{"level":"fatal","message":"No se logro acceder al apartado para agregar/actualizar/eliminar productos o no cuenta con los permisos necesarios"}
+{"level":"fatal","message":"No se logro acceder al apartado para agregar/actualizar/eliminar productos o no cuenta con los permisos necesarios"}
+{"level":"fatal","message":"No se logro acceder al apartado para agregar/actualizar/eliminar productos o no cuenta con los permisos necesarios"}
+{"level":"fatal","message":"No se logro acceder al apartado para agregar/actualizar/eliminar productos o no cuenta con los permisos necesarios"}
+{"level":"fatal","message":"No se logro acceder al apartado para agregar/actualizar/eliminar productos o no cuenta con los permisos necesarios"}
+{"level":"fatal","message":"No se logro acceder al apartado para agregar/actualizar/eliminar productos o no cuenta con los permisos necesarios"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"error","message":"No se logro eliminar el producto de la DB"}
+{"level":"error","message":"No se logro eliminar el producto de la DB"}
+{"level":"error","message":"No se logro eliminar el producto de la DB"}
+{"level":"error","message":"No se logro eliminar el producto de la DB"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"info","message":"usuario con rol admin"}
+{"level":"error","message":"No se logro eliminar el producto de la DB"}
+{"level":"error","message":"No se logro eliminar el producto de la DB"}
+{"level":"error","message":"No se logro eliminar el producto de la DB"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"warning","message":"No se logro eliminar el producto : 65f5a299c92b70cc955f1090"}
+{"level":"error","message":"No se logro eliminar el producto de la DB"}
+{"level":"warning","message":"No se logro eliminar el producto : 65f5a299c92b70cc955f1090"}
+{"level":"error","message":"No se logro eliminar el producto de la DB"}
+{"level":"warning","message":"No se logro eliminar el producto : 65f5a299c92b70cc955f1090"}
+{"level":"error","message":"No se logro eliminar el producto de la DB"}
+{"level":"warning","message":"No se logro eliminar el producto : 65f5a299c92b70cc955f1090"}
+{"level":"error","message":"No se logro eliminar el producto de la DB"}
+{"level":"warning","message":"No se logro eliminar el producto : 65f5a299c92b70cc955f1090"}
+{"level":"error","message":"No se logro eliminar el producto de la DB"}

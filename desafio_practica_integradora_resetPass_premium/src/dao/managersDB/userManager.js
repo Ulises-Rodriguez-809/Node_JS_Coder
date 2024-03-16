@@ -32,11 +32,6 @@ export class Users {
 
     updateUser = async (id, user) => {
         // como lo q me trae es un objeto
-
-        console.log("USER MANAGERRRRRRRRRRRRRRRRRRRR");
-        console.log(id);
-        console.log(user);
-
         delete user._id; //borro la referencia
         // esto se hace para checkear y no arriesgarte a pisar todos los usuarios
 

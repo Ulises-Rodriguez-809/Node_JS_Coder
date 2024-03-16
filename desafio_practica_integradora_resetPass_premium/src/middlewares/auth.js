@@ -18,6 +18,7 @@ export const checkRole = (roles)=>{
                 status:"error", 
                 message:"no tenes los permisos necesarios para entrar"});
         }
+
         next();
     }
 }

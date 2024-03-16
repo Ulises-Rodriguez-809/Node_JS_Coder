@@ -50,6 +50,7 @@ class SessionControler {
 
     static login = async (req, res) => {
         try {
+            console.log(req.user);
             // DATA: el req.user te lo agrega el passport por defecto cuando hace la autenticacion 
             if (!req.user) {
                 req.logger.error("Error, no se logro obtener los datos del usuario");
@@ -62,7 +63,7 @@ class SessionControler {
 
             let user = {};
 
-            const { first_name, last_name, age, email, password, cart } = req.user;
+            const { first_name, last_name, age, email, password, cart, rol } = req.user;
 
             if (email === options.ADMIN_EMAIL && password === options.ADMIN_PASSWORD) {
                 user = {
@@ -90,7 +91,7 @@ class SessionControler {
                     full_name: `${first_name} ${last_name}`,
                     age,
                     email,
-                    rol: "user",
+                    rol,
                     cartID: cart._id
                 }
 
@@ -219,8 +220,6 @@ class SessionControler {
         try {
             const { email, password, confirmPassword } = req.body;
 
-            console.log(req.body);
-
             if (password !== confirmPassword) {
                 return res.status(400).send({
                     status: "error",
@@ -241,16 +240,8 @@ class SessionControler {
             }
 
             const newPassword = await createHash(password);
-            // console.log(newPassword);
-            // console.log(user.password);
-            console.log(user);
 
             user.password = newPassword;
-
-            console.log(user);
-
-            // console.log(user.password);
-            // console.log(user);
 
             const userUpdated = await userService.update(user._id, user);
 
@@ -261,22 +252,7 @@ class SessionControler {
                 });
             }
 
-            console.log(userUpdated);
-
             const user2 = await userService.getWhitoutFilter(req.body);
-
-            console.log(user2);
-
-            // 65a2d0a14aca1c51554048e7 id db
-            // 65a2d0a14aca1c51554048e7
-
-            // _id :ObjectId("65a2d0a14aca1c51554048e7")
-            // first_name :"Facu"
-            // last_name :"ElPampaneitor"
-            // email :"facu@gmail.com"
-            // age :27
-            // password :"$2b$10$QJT/jW89YeJtcFsYRRoSzeXBnLHXLfLjlbUI5RvjhFh/We.d51Jc6"
-            // __v : 0
 
             res.send({
                 status: "success",

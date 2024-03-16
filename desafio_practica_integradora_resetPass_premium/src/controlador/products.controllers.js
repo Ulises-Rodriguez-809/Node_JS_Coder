@@ -2,6 +2,7 @@ import { ERRORS } from '../enum/error.js';
 import { productService } from '../respository/index.repository.js';
 import { CustomError } from '../services/customError.services.js';
 import productErrorOptions from '../services/productError.js';
+import jwt from 'jsonwebtoken';
 
 class ProductsControllers {
     static getProductsPaginate = async (req, res, next) => {
@@ -72,7 +73,7 @@ class ProductsControllers {
 
             } else {
                 res.send({
-                    status : "success",
+                    status: "success",
                     result
                 })
             }
@@ -89,6 +90,17 @@ class ProductsControllers {
         try {
             const id = req.params.productId;
 
+            if (!id) {
+                req.logger.error(`El id esta vacio`);
+
+                CustomError.createError({
+                    name: "No se logro obtener el producto",
+                    cause: productErrorOptions.generateGetProductByIdError(id),
+                    message: result,
+                    errorCode: ERRORS.PRODUCT_ERROR
+                })
+            }
+
             const result = await productService.getById(id);
 
             if (typeof result === "string") {
@@ -100,9 +112,8 @@ class ProductsControllers {
                     message: result,
                     errorCode: ERRORS.PRODUCT_ERROR
                 })
-
             }
-            
+
             res.send({
                 status: "success",
                 message: result
@@ -119,6 +130,17 @@ class ProductsControllers {
         try {
 
             const fields = req.body;
+
+            if (!fields) {
+                req.logger.error("Campos incompletos");
+
+                CustomError.createError({
+                    name: "Campos incompletos",
+                    cause: productErrorOptions.generateAddProductError(),
+                    message: result,
+                    errorCode: ERRORS.PRODUCT_ERROR
+                })
+            }
 
             const result = await productService.add(fields);
 
@@ -151,6 +173,17 @@ class ProductsControllers {
             const id = req.params.productId;
             const fields = req.body;
 
+            if (!id || !fields) {
+                req.logger.warning(`Los campos necesarios para actualizar el producto estan vacios`);
+
+                CustomError.createError({
+                    name: "No se logro actualizar el producto",
+                    cause: productErrorOptions.generateUpdateProductError(id),
+                    message: result,
+                    errorCode: ERRORS.PRODUCT_ERROR
+                })
+            }
+
             const result = await productService.updateOne(id, fields);
 
             if (typeof result === "string") {
@@ -162,9 +195,8 @@ class ProductsControllers {
                     message: result,
                     errorCode: ERRORS.PRODUCT_ERROR
                 })
+            }
 
-            } 
-            
             res.send({
                 status: "success",
                 message: `Se modifico con exito el producto con el id: ${id}`
@@ -179,9 +211,69 @@ class ProductsControllers {
 
     static deleteProduct = async (req, res, next) => {
         try {
+            // aca tenemes q obtener el owner del producto
+            // luego buscas por el id o email el usuario y ves q rol tiene
+            // si es admin puede borrar todo, pero si es premium solo puede borrar los productos q el creo
             const id = req.params.productId;
+            let result = null;
+            let message = "";
 
-            const result = await productService.deleteOne(id);
+            if (!id) {
+                req.logger.error(`El id del producto llego vacio`);
+
+                CustomError.createError({
+                    name: "No se logro eliminar el producto",
+                    cause: productErrorOptions.generateDeleteProductError(id),
+                    message: result,
+                    errorCode: ERRORS.PRODUCT_ERROR
+                })
+            }
+
+            const tokenInfo = req.cookies["jwt-cookie"];
+
+            const decodedToken = jwt.decode(tokenInfo);
+
+            console.log(decodedToken);
+            console.log(decodedToken.rol === "admin");
+            console.log(decodedToken.rol === "premium");
+
+            // si el rol es admin le dejo borrar el producto q el quiera
+            if (decodedToken.rol === "admin") {
+                console.log("entro el admin");
+                result = await productService.deleteOne(id);
+
+                message = `El admin logro eliminar con exito el producto con el id: ${id}`;
+            }
+            // como el middleware checkrol se encarga dejarte acceder al endpoint solo si sos rol "premium" o "admin" no te tenes q preocupar de q te llegue otra cosa 
+            else{
+                console.log("entro usuario premium");
+                const { email } = decodedToken;
+    
+                const product = await productService.getById(id);
+    
+                console.log("PRODUCT");
+                console.log(product);
+    
+                const {owner} = product;
+                console.log(owner);
+                console.log(email === owner);
+                if (email === owner) {
+                    result = await productService.deleteOne(id);
+
+                    message = `El usuario premium : ${email} logro eliminar con exito el producto que el creo con el id: ${id}`;
+                }
+                else{
+                    console.log("hola");
+                    message = `El usuario premium : ${email} no tiene permisos para eliminar el producto con el id: ${id}`;
+
+                    return res.status(400).send({
+                        status: "error",
+                        message,
+                        payload : decodedToken.rol
+                    })
+                }
+            }
+
 
             if (typeof result === "string") {
                 req.logger.warning(`No se logro eliminar el producto : ${id}`);
@@ -192,12 +284,12 @@ class ProductsControllers {
                     message: result,
                     errorCode: ERRORS.PRODUCT_ERROR
                 })
-
             }
-            
+
             res.send({
                 status: "success",
-                message: `Se logro eliminar con exito el producto con el id: ${id}`
+                message,
+                payload : decodedToken.rol
             })
 
         } catch (error) {

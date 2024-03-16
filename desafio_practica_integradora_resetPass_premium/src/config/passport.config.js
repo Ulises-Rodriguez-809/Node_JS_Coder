@@ -85,6 +85,8 @@ const inicializePassport = () => {
                         password,
                     }
 
+                    return done(null, user);
+
                 } else {
                     user = await User.getUser({ email: username });
                 }

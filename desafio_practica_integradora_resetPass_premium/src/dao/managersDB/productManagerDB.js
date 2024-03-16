@@ -15,8 +15,8 @@ export class ProductManagerDB {
             // ESTO DE ACA ES XQ EL VALUE DE LOS INPUTS TE TOMA SOLO LA PRIMERA PALABRA DEL ARRAY
             // OSEA SI VOS EN LA DB TENES "CAFE RICO" EL VALUE DEL INPUT TE TOMA SOLO "CAFE"
             products.docs.forEach(product => {
-                product["title"] = product["title"].replace(/ /g,"_");
-                product["description"] = product["description"].replace(/ /g,"_");
+                product["title"] = product["title"].replace(/ /g, "_");
+                product["description"] = product["description"].replace(/ /g, "_");
             });
 
             return {
@@ -45,7 +45,7 @@ export class ProductManagerDB {
         }
     }
 
-    isInStock = async (amount,id)=>{
+    isInStock = async (amount, id) => {
         try {
             const product = await this.getProductById(id);
 
@@ -72,30 +72,32 @@ export class ProductManagerDB {
             status = true,
             stock,
             category,
-            thumbnails = [] } = fields;
+            thumbnails = [],
+            owner } = fields;
+
+
+        if (!title || !description || !code || !price || !stock || !category || !owner) {
+            return "Valores incompletos";
+        }
 
         let newProduct = {};
 
         const productFind = await productsModel.findOne({ code: code });
 
-        if (!title || !description || !code || !price || !stock || !category) {
-            return "Valores incompletos";
-
-        }
-        else if (productFind) {
+        if (productFind) {
             return "El codigo del producto ya se encuentra en uso";
+        }
 
-        } else {
-            newProduct = {
-                title,
-                description,
-                code,
-                price,
-                status,
-                stock,
-                category,
-                thumbnails
-            }
+        newProduct = {
+            title,
+            description,
+            code,
+            price,
+            status,
+            stock,
+            category,
+            thumbnails,
+            owner
         }
 
         await productsModel.create(newProduct);

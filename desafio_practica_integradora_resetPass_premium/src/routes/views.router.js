@@ -12,7 +12,7 @@ router.get('/', ViewsControllers.login);
 router.get('/register', ViewsControllers.register);
 
 // recuperar contraseña
-router.get('/recoverPassword', ViewsControllers.recoverPass)
+router.get('/recoverPassword', ViewsControllers.recoverPass);
 
 // cambiar contraseña
 router.get('/resetPassword', ViewsControllers.resetPass);
@@ -24,6 +24,6 @@ router.get('/products', ViewsControllers.productsGet);
 router.get('/carts/:cartId', ViewsControllers.cartId);
 
 // DB router --> esto usalo para q el admin pueda agregar productos
-router.get('/realtimeproducts', checkRole(["admin"]), ViewsControllers.realtimeproducts);
+router.get('/realtimeproducts', checkRole(["premium","admin"]), ViewsControllers.realtimeproducts);
 
 export default router;

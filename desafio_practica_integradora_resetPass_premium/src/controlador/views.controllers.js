@@ -141,7 +141,26 @@ class ViewsControllers {
 
     static realtimeproducts = (req, res) => {
         try {
-            res.render('realTimeProducts', { text: "Products realtime" });
+            
+            let owner = "";
+
+            const tokenInfo = req.cookies["jwt-cookie"];
+
+            const decodedToken = jwt.decode(tokenInfo);
+
+            const rol = decodedToken.rol;
+
+            if (rol === "admin") {
+                owner = rol;
+                console.log("soy admin");
+            }
+            else{
+                const email = decodedToken.email;
+                owner = email;
+            }
+            
+            res.render('realTimeProducts', { owner });
+
         } catch (error) {
             req.logger.fatal("No se logro acceder al apartado para agregar/actualizar/eliminar productos o no cuenta con los permisos necesarios");
 

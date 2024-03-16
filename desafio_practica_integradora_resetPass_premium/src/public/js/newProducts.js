@@ -5,6 +5,10 @@ const btnEliminar = document.getElementById("btn-eliminar");
 
 const formUpdate = document.getElementById("actualizar-producto");
 
+const owner = document.getElementById("input-owner-add");
+
+owner.readOnly = true;
+
 form.addEventListener("submit", e => {
     e.preventDefault()
 
@@ -33,6 +37,8 @@ form.addEventListener("submit", e => {
         })
 });
 
+// EL PROFE SUBIO UN EJEM DE COMO HACER Q EL LINK EXPIRE EN SU REPO, HACETE UN PULL DESPUES O MIRATE LA CLASE DE CONSULTA
+// AGREGALE A LA COMPRA DE PRODUCTOS EL VERIFI TOKEN PARA Q ASI NO PUEDA AGREGAR PRODUCTOS AL CART SI MODIFICO EL TOKEN
 btnEliminar.addEventListener("click",()=>{
     const idProduct = inputIdEliminar.value;
 
@@ -52,7 +58,11 @@ btnEliminar.addEventListener("click",()=>{
             console.log(json)
 
             if (json.status === "error") {
-                alert(`No se logro eliminar el producto con el id: ${idProduct}`);
+                if (json.payload === "premium") {
+                    alert(`Error, un usuario premium solo puede eliminar productos creados por el`);
+                } else {
+                    alert(`No se logro eliminar el producto con el id: ${idProduct}`);
+                }
             }
             else{
                 alert(`El producto el id: ${idProduct} se elimino con exito`);
