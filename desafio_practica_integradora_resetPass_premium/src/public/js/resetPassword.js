@@ -1,5 +1,9 @@
 const form = document.getElementById("resetPassForm");
 
+// aca capaz podes obtener la data del token de la url
+// le haces un split en el "?"
+// asi te quedas solo con el token
+// cosa de asi no ponerlo como texto en el la vista y despues tomarlo
 form.addEventListener("submit",(e)=>{
     e.preventDefault();
 

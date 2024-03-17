@@ -30,7 +30,7 @@ class ViewsControllers {
 
     static recoverPass = (req, res) => {
         try {
-            res.render("recoverPassword");
+            res.render("recoverPassword", {message : "No te preocupes nos sucede a todos!. Ingresa tu email y te ayudamos"});
         } catch (error) {
             req.logger.error("Error, no se logro obtener la vista para recuperar contraseña");
 
@@ -43,7 +43,10 @@ class ViewsControllers {
 
     static resetPass = (req, res) => {
         try {
-            res.render("resetPassword");
+
+            const tokenInfo = req.query.token;
+
+            res.render("resetPassword",{tokenInfo});
         } catch (error) {
             req.logger.error("Error, al intentar obtener la vista resetPassword");
 

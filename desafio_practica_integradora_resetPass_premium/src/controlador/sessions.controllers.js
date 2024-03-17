@@ -1,7 +1,8 @@
 import jwt from 'jsonwebtoken';
 import { options } from '../config/config.js';
 import { userService } from '../respository/index.repository.js';
-import { createHash, emailSender, isValidPassword } from '../utils.js';
+import { createHash, emailSender, generateEmailToken, isValidPassword } from '../utils.js';
+import { sendRecoverPassword } from '../config/gmail.js';
 
 class SessionControler {
     static register = async (req, res) => {
@@ -9,8 +10,8 @@ class SessionControler {
             const { first_name, last_name, email } = req.user;
 
             const full_name = first_name.concat(" ", last_name);
-            const subject = "Restablecer contraseña";
-
+            
+            const subject = "Registro exitoso";
 
             const template = `<div>
             <h1>Bienvenido ${full_name}!!</h1>
@@ -19,10 +20,10 @@ class SessionControler {
             <a href="http://localhost:8080/">Ir a la pagina</a>
             </div>`;
 
-            const respond = await emailSender(full_name, email, template, subject);
+            const respond = await emailSender(email, template, subject);
 
             if (!respond) {
-                req.logger.warning("La compra se realizo pero no se logro enviar el email de confirmacion de esta");
+                req.logger.warning("La registro se realizo pero no se logro enviar el email de confirmacion de esta");
             }
 
             res.send({
@@ -181,20 +182,14 @@ class SessionControler {
 
             console.log(email);
 
-            const user = await userService.get({ email });
-            const full_name = user.full_name;
-            const subject = "Restablecer contraseña";
+            // para porbarlo ponele 60 segundos pero para el desafio ponele 3600
+            const tokenEmail = generateEmailToken(email,3600);
 
-            const template = `<div>
-            <h1>Hola ${full_name}!!</h1>
-            <p>Lamentamos la perdida de tu contraseña, pero no te preocupes</p>
-            <p>Ingresando al siguiente link podras obtener una contraseña nueva</p>
-            <a href="http://localhost:8080/resetPassword">Restrablecer contraseña</a>
-            </div>`;
+            console.log("generateEmailToken",tokenEmail);
 
-            const respond = await emailSender(full_name, email, template, subject);
+            const respond = await sendRecoverPassword(email,tokenEmail);
 
-            console.log(respond);
+            console.log("emailSender respuesta",respond);
 
             if (!respond) {
                 return res.status(400).send({
@@ -218,7 +213,7 @@ class SessionControler {
 
     static resetPassword = async (req, res) => {
         try {
-            const { email, password, confirmPassword } = req.body;
+            const {password, confirmPassword } = req.body;
 
             if (password !== confirmPassword) {
                 return res.status(400).send({
@@ -251,8 +246,6 @@ class SessionControler {
                     payload: "Error, no se logro actulizar los datos del usuario"
                 });
             }
-
-            const user2 = await userService.getWhitoutFilter(req.body);
 
             res.send({
                 status: "success",

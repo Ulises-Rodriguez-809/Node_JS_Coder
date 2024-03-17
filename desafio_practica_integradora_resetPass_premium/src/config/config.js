@@ -13,6 +13,8 @@ const CLIENT_SECRET = process.env.CLIENT_SECRET;
 const CALLBACK_URL = process.env.CALLBACK_URL;
 const COOKIE_WORD = process.env.COOKIE_WORD;
 const JWT_SECRET_WORD = process.env.JWT_SECRET_WORD;
+const EMAIL_TOKEN = process.env.EMAIL_TOKEN;
+const EMAIL_PASSWORD = process.env.EMAIL_PASSWORD;
 const NODE_ENV = process.env.NODE_ENV;
 
 
@@ -28,5 +30,7 @@ export const options = {
     CALLBACK_URL,
     COOKIE_WORD,
     JWT_SECRET_WORD,
+    EMAIL_TOKEN,
+    EMAIL_PASSWORD,
     NODE_ENV
 }

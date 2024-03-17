@@ -229,3 +229,17 @@
 {"level":"error","message":"No se logro eliminar el producto de la DB"}
 {"level":"warning","message":"No se logro eliminar el producto : 65f5a299c92b70cc955f1090"}
 {"level":"error","message":"No se logro eliminar el producto de la DB"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"error","message":"Error, al intentar obtener la vista resetPassword"}
+{"level":"error","message":"Error, al intentar obtener la vista resetPassword"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"error","message":"Error, al intentar obtener la vista resetPassword"}
+{"level":"error","message":"Error, al intentar obtener la vista resetPassword"}
+{"level":"error","message":"Error, al intentar obtener la vista resetPassword"}
+{"level":"error","message":"Error, al intentar obtener la vista resetPassword"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}

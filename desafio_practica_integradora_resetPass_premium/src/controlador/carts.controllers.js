@@ -161,6 +161,8 @@ class CartsControllers {
 
             const { code, purchase_datetime, amount, purchaser } = ticket;
 
+            const subject = "Ticket de compra"
+
             const template = `<div>
             <h1>Felicidades ${full_name}!!</h1>
             <p>Tu compra se realizo con exito</p>
@@ -180,7 +182,7 @@ class CartsControllers {
             <a href="http://localhost:8080/">Ir a la pagina</a>
             </div>`;
 
-            const respond = await emailSender(full_name, email, template);
+            const respond = await emailSender(email, template, subject);
 
             if (respond) {
                 req.logger.warning("El ticket se creo con exito pero no se logro enviar el email");
