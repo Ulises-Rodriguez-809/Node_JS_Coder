@@ -11,12 +11,12 @@
 <body>
     <div class="productsContainer">
         <div>
-            <h1>Bienvenido {{user.full_name}}</h1>
+            <h1>Bienvenido <span id="userName">{{user.full_name}}</span></h1>
             <p>Estos son tus Datos:</p>
             <ul>
                 <li>tu edad es : {{user.age}}</li>
                 <li>tu email es : {{user.email}}</li>
-                <li>tu rol es : {{user.rol}}</li>
+                <li>tu rol es : <span id="userRol">{{user.rol}}</span></li>
                 <li>
                     <p>cart id :</p>
                     <p id="id-cart">{{user.cartID}}</p>
@@ -26,6 +26,8 @@
         <div class="opcionesContainer">
             <div>
                 <button class="finalizarCompra opcionLink">Realizar Compra</button>
+            </div>
+            <div id="containerChangeRol">
             </div>
             <div>
                 <a href="/api/sessions/logout"><button class="opcionLink">Salir</button></a>

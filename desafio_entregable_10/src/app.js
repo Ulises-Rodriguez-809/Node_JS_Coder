@@ -5,6 +5,9 @@ import { options } from './config/config.js';
 import { engine } from 'express-handlebars';
 import { Server } from 'socket.io';
 
+import { swaggerSpecs } from './config/docConfig.js';
+import swaggerUi from 'swagger-ui-express';
+
 import passport from 'passport';
 import inicializePassport from './config/passport.config.js'
 
@@ -28,8 +31,8 @@ import { errorHandler } from './middlewares/errorHandler.js';
 import { addLogger } from './loggers/loggers.js';
 import loggerTestRouter from './routes/loggerTestRoutes.js';
 
-
-// Hola Ulises, que bueno que venis integrando todo, te felicito la verdad, si tenes tiempo ponete a hacer un chequeo ruta por ruta porque hay algun error dando vueltas, pero en general impecable, y sobre todo implementando todas las consignas, no es fácil, manteniendo el orden con lo trabajado anteriormente, muy buen trabajo, para revisar por ejemplo, el getproducts, anda mirando, algo pasa con el paginate, después queda en vos revisar todos los endpoints, la recuperación de contraseña y el manejo del usaurio premium excelente, quedaría ver desde donde se asigna ese usuario premium, quizás una ruta para poder asignar ese error, pero de momento cubriste todo, excelente!!
+// falta agregar al register una opcion para ser premium y dentro del /products una opcion para volverte premium
+// MAS IMPORTANTE HACE LA DOCS Q ES MAS IMPORTANTE Q EL BTN PARA HACER UN USER PREMIUM
 
 const PORT = options.PORT;
 
@@ -69,6 +72,7 @@ app.use("/api/messages", messagesRouterDB);
 
 app.use("/mockingproducts", mockingRouter);
 
+app.use("/api/docs",swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
 app.use(errorHandler);
 

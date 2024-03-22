@@ -1,7 +1,8 @@
 import jwt from 'jsonwebtoken';
 import { options } from '../config/config.js';
 import { userService } from '../respository/index.repository.js';
-import { emailSender } from '../utils.js';
+import { createHash, emailSender, generateEmailToken, isValidPassword } from '../utils.js';
+import { sendRecoverPassword } from '../config/gmail.js';
 
 class SessionControler {
     static register = async (req, res) => {
@@ -9,6 +10,8 @@ class SessionControler {
             const { first_name, last_name, email } = req.user;
 
             const full_name = first_name.concat(" ", last_name);
+            
+            const subject = "Registro exitoso";
 
             const template = `<div>
             <h1>Bienvenido ${full_name}!!</h1>
@@ -17,10 +20,10 @@ class SessionControler {
             <a href="http://localhost:8080/">Ir a la pagina</a>
             </div>`;
 
-            const respond = await emailSender(full_name, email, template);
+            const respond = await emailSender(email, template, subject);
 
             if (!respond) {
-                req.logger.warning("La compra se realizo pero no se logro enviar el email de confirmacion de esta");
+                req.logger.warning("La registro se realizo pero no se logro enviar el email de confirmacion de esta");
             }
 
             res.send({
@@ -60,7 +63,7 @@ class SessionControler {
 
             let user = {};
 
-            const { first_name, last_name, age, email, password, cart } = req.user;
+            const { first_name, last_name, age, email, password, cart, rol } = req.user;
 
             if (email === options.ADMIN_EMAIL && password === options.ADMIN_PASSWORD) {
                 user = {
@@ -88,7 +91,7 @@ class SessionControler {
                     full_name: `${first_name} ${last_name}`,
                     age,
                     email,
-                    rol: "user",
+                    rol,
                     cartID: cart._id
                 }
 
@@ -172,6 +175,84 @@ class SessionControler {
         }
     }
 
+    static revocerPassword = async (req, res) => {
+        try {
+            const { email } = req.body;
+
+            // para porbarlo ponele 60 segundos pero para el desafio ponele 3600
+            const tokenEmail = generateEmailToken(email,3600);
+
+            const respond = await sendRecoverPassword(email,tokenEmail);
+
+            if (!respond) {
+                return res.status(400).send({
+                    status: "error",
+                    payload: "No se logro enviar el mail para restrablecer la contraseña"
+                })
+            }
+
+            res.send({
+                status: "success",
+                payload: "mail enviado con exito"
+            })
+
+        } catch (error) {
+            res.status(400).send({
+                status: "error",
+                payload: "Usuario ya registrado"
+            })
+        }
+    }
+
+    static resetPassword = async (req, res) => {
+        try {
+            const {password, confirmPassword } = req.body;
+
+            if (password !== confirmPassword) {
+                return res.status(400).send({
+                    status: "error",
+                    payload: "Las contraseñas no coinciden"
+                });
+            }
+
+            const user = await userService.getWhitoutFilter(req.body);
+
+            const samePassword = await isValidPassword(password, user);
+
+            // si la contraseña es la misma q esta guardada en la DB, indicamos q no puede repetir la misma contraseña
+            if (samePassword) {
+                return res.status(400).send({
+                    status: "error",
+                    payload: "Error, esta contraseña ya fue usada anteriormente"
+                });
+            }
+
+            const newPassword = await createHash(password);
+
+            user.password = newPassword;
+
+            const userUpdated = await userService.update(user._id, user);
+
+            if (!userUpdated) {
+                return res.status(400).send({
+                    status: "error",
+                    payload: "Error, no se logro actulizar los datos del usuario"
+                });
+            }
+
+            res.send({
+                status: "success",
+                payload: "todo bien"
+            })
+
+        } catch (error) {
+            res.status(400).send({
+                status: "error",
+                payload: "No se logro cambiar la contraseña"
+            })
+        }
+    }
+
     static logout = async (req, res) => {
         if (req.cookies[options.COOKIE_WORD]) {
             res.clearCookie(options.COOKIE_WORD);
@@ -224,6 +305,43 @@ class SessionControler {
         res.status(400).send({
             error: "fallo en obtener los datos del usuario"
         })
+    }
+
+    static premiumUser = async (req,res)=>{
+        try {
+            const {rol} = req.body;
+            
+            const tokenInfo = req.cookies["jwt-cookie"];
+            const decodedToken = jwt.decode(tokenInfo);
+
+            const user = await userService.getWhitoutFilter(decodedToken);
+
+            user.rol = rol;
+
+            const updateUser = await userService.update(user.id,user);
+
+            res.clearCookie(options.COOKIE_WORD);
+
+            
+            // capaz tenes q borrar y actualizar el token
+            // o volverlo a firmar con el sing pero el mismo nombre
+            // res.clearCookie(options.COOKIE_WORD);
+            // const token = jwt.sign(user, options.JWT_SECRET_WORD, { expiresIn: "2h" });
+            // res.cookie(options.COOKIE_WORD, token, { httpOnly: true, maxAge: 3600000 })
+
+            res.send({
+                status : "success",
+                payload : "Rol cambiado de USER a PREMIUM con exito"
+            })
+
+        } catch (error) {
+            req.logger.error("No se logro cambiar el rol del usuario de : user a premium");
+
+            res.status(400).send({
+                status : "error",
+                payload: "Error al intentar modificar el rol del usuario"
+            })
+        }
     }
 }
 

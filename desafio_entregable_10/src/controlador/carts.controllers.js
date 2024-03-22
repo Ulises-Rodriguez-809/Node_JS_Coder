@@ -146,9 +146,22 @@ class CartsControllers {
 
             const { full_name, email } = decodedToken;
 
-            const { code, purchase_datetime, amount, purchaser } = result.ticket;
+            const ticket = await ticketService.get(email);
 
-            const subject = "Compra exitosa";
+            if (!ticket) {
+                req.logger.error("No se logro obtener el ticket");
+
+                CustomError.createError({
+                    name: "No se logro obtener el ticket",
+                    cause: ticketErrorOptions.generateGetTicketError(email),
+                    message: "El ticket no exite o no se logro obtener",
+                    errorCode: ERRORS.TICKET_ERROR
+                })
+            }
+
+            const { code, purchase_datetime, amount, purchaser } = ticket;
+
+            const subject = "Ticket de compra"
 
             const template = `<div>
             <h1>Felicidades ${full_name}!!</h1>
@@ -169,9 +182,9 @@ class CartsControllers {
             <a href="http://localhost:8080/">Ir a la pagina</a>
             </div>`;
 
-            const respond = await emailSender(email, subject, template);
+            const respond = await emailSender(email, template, subject);
 
-            if (!respond) {
+            if (respond) {
                 req.logger.warning("El ticket se creo con exito pero no se logro enviar el email");
 
                 CustomError.createError({

@@ -28,6 +28,35 @@ class ViewsControllers {
         }
     }
 
+    static recoverPass = (req, res) => {
+        try {
+            res.render("recoverPassword", {message : "No te preocupes nos sucede a todos!. Ingresa tu email y te ayudamos"});
+        } catch (error) {
+            req.logger.error("Error, no se logro obtener la vista para recuperar contraseña");
+
+            res.status(400).send({
+                status: "error",
+                msg: "No se logro obtener la vista recoverPassword"
+            })
+        }
+    }
+
+    static resetPass = (req, res) => {
+        try {
+
+            const tokenInfo = req.query.token;
+
+            res.render("resetPassword",{tokenInfo});
+        } catch (error) {
+            req.logger.error("Error, al intentar obtener la vista resetPassword");
+
+            res.status(400).send({
+                status: "error",
+                msg: "No se logro obtener la vista resetPassword"
+            })
+        }
+    }
+
     static productsGet = async (req, res) => {
         try {
             const { limit, page } = req.query;
@@ -115,7 +144,26 @@ class ViewsControllers {
 
     static realtimeproducts = (req, res) => {
         try {
-            res.render('realTimeProducts', { text: "Products realtime" });
+            
+            let owner = "";
+
+            const tokenInfo = req.cookies["jwt-cookie"];
+
+            const decodedToken = jwt.decode(tokenInfo);
+
+            const rol = decodedToken.rol;
+
+            if (rol === "admin") {
+                owner = rol;
+                console.log("soy admin");
+            }
+            else{
+                const email = decodedToken.email;
+                owner = email;
+            }
+            
+            res.render('realTimeProducts', { owner });
+
         } catch (error) {
             req.logger.fatal("No se logro acceder al apartado para agregar/actualizar/eliminar productos o no cuenta con los permisos necesarios");
 

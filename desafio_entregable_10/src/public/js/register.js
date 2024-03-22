@@ -18,8 +18,6 @@ form.addEventListener("submit",(e)=>{
     })
     .then(result => result.json())
     .then(json => {
-        console.log(json)
-
         if (json.status === "error") {
             alert("Error al registrarse");
             return "";

@@ -17,7 +17,7 @@ export class TicketManager {
                 return "Ticket de compra no encontrado";
             }
 
-            // ticket["purchase_datetime"] = ticket["purchase_datetime"].replace(/ /g,"_");
+            ticket["purchase_datetime"] = ticket["purchase_datetime"].replace(/ /g,"_");
 
             return ticket;
 

@@ -8,9 +8,51 @@ const arrayCount = document.querySelectorAll(".count");
 
 const finalizarCompra = document.querySelector(".finalizarCompra");
 
-finalizarCompra.addEventListener("click", () => {
-    // window.location.replace('/ticket');
+const userName = document.getElementById("userName").textContent;
+const userRol = document.getElementById("userRol").textContent;
 
+const checkRol = () => {
+    const containerChangeRol = document.getElementById("containerChangeRol");
+
+    if (userRol === "user") {
+        const btn = document.createElement("button");
+
+        btn.textContent = "Obtener premium";
+
+        btn.setAttribute("class", "opcionLink");
+        btn.setAttribute("id", "btnChangeRol");
+
+        containerChangeRol.append(btn);
+
+        const btnChangeRol = document.getElementById("btnChangeRol");
+
+        btnChangeRol.addEventListener("click", () => {
+            const endpoint = "/api/sessions/premiumUser";
+
+            fetch(endpoint, {
+                method: "POST",
+                body: JSON.stringify({ rol: "premium" }),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+                .then(result => result.json())
+                .then(json => {
+                    console.log(json);
+                    if (json.status === "error") {
+                        alert("No se logro obtener el rol premium, contacte con el servicio al cliente");
+                    }
+                    else {
+                        alert(`Felicidades ${userName} por obtener rol premium, ahora podras crear, actualizar y eliminar tus propios products, PARA VER LOS CAMBIOS VUELVA A INICAR SESSION`);
+
+                        location.replace("http://localhost:8080/");
+                    }
+                })
+        })
+    }
+}
+
+finalizarCompra.addEventListener("click", () => {
     const endpoint = `/api/cartsDB/${idCart}/purchase`;
 
     const obj = {};
@@ -75,3 +117,5 @@ arrayForms.forEach((form) => {
             })
     })
 });
+
+checkRol();
