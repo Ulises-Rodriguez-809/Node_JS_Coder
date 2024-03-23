@@ -31,9 +31,6 @@ import { errorHandler } from './middlewares/errorHandler.js';
 import { addLogger } from './loggers/loggers.js';
 import loggerTestRouter from './routes/loggerTestRoutes.js';
 
-// falta agregar al register una opcion para ser premium y dentro del /products una opcion para volverte premium
-// MAS IMPORTANTE HACE LA DOCS Q ES MAS IMPORTANTE Q EL BTN PARA HACER UN USER PREMIUM
-
 const PORT = options.PORT;
 
 const app = express();

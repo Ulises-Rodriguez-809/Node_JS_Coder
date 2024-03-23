@@ -322,13 +322,6 @@ class SessionControler {
 
             res.clearCookie(options.COOKIE_WORD);
 
-            
-            // capaz tenes q borrar y actualizar el token
-            // o volverlo a firmar con el sing pero el mismo nombre
-            // res.clearCookie(options.COOKIE_WORD);
-            // const token = jwt.sign(user, options.JWT_SECRET_WORD, { expiresIn: "2h" });
-            // res.cookie(options.COOKIE_WORD, token, { httpOnly: true, maxAge: 3600000 })
-
             res.send({
                 status : "success",
                 payload : "Rol cambiado de USER a PREMIUM con exito"
