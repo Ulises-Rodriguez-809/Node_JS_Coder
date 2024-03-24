@@ -10,9 +10,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Product"
+                $ref: "#/components/schemas/Product"
         "400":
           description: No se logro obtener los productos de la DB
         "500":
@@ -93,13 +91,13 @@ paths:
               $ref: "#/components/body/UpdateProduct"
       responses:
         "200":
-          description: Se logro obtener con exito el producto con el "productId" pasado
+          description: Se logro modificar con exito el producto con el "productId"
           content:
             application/json:
               schema:
                 $ref: "#/components/updateById/UpdateProductById"
         "400":
-          description: No se logro obtener el producto con el "productId"
+          description: No se logro modificar el producto con el "productId"
         "500":
           description: Error interno del servidor
     delete:

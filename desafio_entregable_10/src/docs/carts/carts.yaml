@@ -1,0 +1,393 @@
+paths:
+  /api/cartsDB/:
+    get:
+      summary: Obtener todos los carritos de compra
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: Se logro con exito obtener todos los carts de la DB
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Carts"
+        "400":
+          description: No se logro obtener los carts de la DB
+        "500":
+          description: Error interno del servidor
+    post:
+      summary: Añadir un nuevo cart a la DB, solo si se tiene rol "admin" o "premium"
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: Se logró añadir un nuevo producto a la DB con éxito
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/newCart/CreateCart"
+        "400":
+          description: No se tienen los permisos necesarios para añadir productos
+        "500":
+          description: Error interno del servidor
+  /api/cartsDB/{cartId}:
+    get:
+      summary: Obtener un cart por su id "cartId"
+      tags:
+        - Carts
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          description: cartId es el id del producto
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: Se logro obtener con exito el cart con el id "cartId"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/getById/GetCartById"
+        "400":
+          description: No se logro obtener el cart con el id "cartId"
+        "500":
+          description: Error interno del servidor
+    put:
+      summary: modifica una lista de productos del cart con el id "cartId"
+      tags:
+        - Carts
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          description: cartId es el id del cart
+          schema:
+            $type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/body/UpdateCart"
+      responses:
+        "200":
+          description: Se logro modificar con exito la lista de productos del cart con el id "cartId"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/updateById/UpdateCartById"
+        "400":
+          description: No se logro modificar la lista de producto con el el id del cart "cartId"
+        "500":
+          description: Error interno del servidor
+    delete:
+      summary: Eliminar de la DB un lista de producto por su el id del cart
+      tags:
+        - Carts
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          description: cartId es el id del cart
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: Se logro eliminar con exito el la lista de productos del cart con el "cartId", dejando un array de "products" vacio
+        "400":
+          description: No se logro eliminar la lista de productos del cart con el "cartId"
+        "500":
+          description: Error interno del servidor
+components:
+  schemas:
+    Carts:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: id del cart autogenerado por la DB
+        products:
+          type: array
+          description: array de objetos donde se guardan los productos que el usuario compro, la informacion que se guarda es productId y el quantity (cantidad) comprada del producto
+      example:
+        - _id: ObjectId('ahjg7862jahsgd871263')
+          products: 
+            _id: ObjectId('657f6d0db3f9db4a9c00978a')
+            quantity: 5
+        - _id: ObjectId('aas5dg416dsf5g463')
+          products: 
+            _id: ObjectId('657f6d0db3f9db4a9c00978a')
+            quantity: 5
+  newCart:
+    CreateCart:
+      type: object
+      properties:
+        status: 
+          type: string
+          description: estado de la peticion
+        payload:
+          type: object
+          properties:
+            _id:
+              type: string
+              description: id del cart autogenerado por la DB
+            products:
+              type: array
+              description: array de objetos donde se guardan los productos que el usuario compro, la informacion que se guarda es productId y el quantity (cantidad) comprada del producto
+              properties:
+                product: 
+                  type: object
+                  description: producto
+                  properties:
+                    _id: 
+                      type: string
+                      description: id del producto
+                    quantity: 
+                      type: number
+                      description: cantidad del producto comprado
+      example:
+        status: "success"
+        payload:
+          _id: ObjectId('6586edafb7dc291112c7f9af')
+          products: []
+  getById:
+    GetCartById:
+      type: object
+      properties:
+        status: 
+          type: string
+          description: estado de la peticion
+        payload:
+          type: object
+          properties:
+            _id:
+              type: string
+              description: id del cart del cart
+            products:
+              type: array
+              description: array de objetos donde se guardan los productos que el usuario compro, la informacion que se guarda es productId y el quantity (cantidad) comprada del producto
+              properties:
+                product: 
+                  type: object
+                  description: producto
+                  properties:
+                    _id: 
+                      type: string
+                      description: id del producto
+                    quantity: 
+                      type: number
+                      description: cantidad del producto comprado
+      example:
+        status: "success"
+        payload:
+          _id: ObjectId('6586edafb7dc291112c7f9af')
+          products: 
+            - product:
+                _id: ObjectId('ahjg7862jahsgd871263')
+                title: arroz
+                description: bolsa de arroz de 1KG
+                price: 1200
+                code: 1fgs56d1
+                stock: 123
+                category: comida
+                status: ok
+                thumbnails: [arrozImg1, arrozImg2]
+                owner: "admin"
+            - product:
+                _id: ObjectId('6asd5c4v9a6e1w23362s')
+                title: masitas
+                description: paquete de masitas de 12 unidades
+                price: 500
+                code:  xbvf56d4g
+                stock: 13
+                category: comida
+                status: ok
+                thumbnails: []
+                owner: "premium"
+  updateById:
+    UpdateProductById:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: id del producto autogenerado por la DB
+        title:
+          type: string
+          description: nombre del producto
+        descripcion:
+          type: string
+          description: descripcion del producto
+        price:
+          type: number
+          description: precio del producto
+        code:
+          type: string
+          description: codigo del producto
+        stock:
+          type: number
+          description: cantidad del producto
+        category:
+          type: string
+          description: categoria del producto
+        status:
+          type: string
+          description: estado del producto
+        thumbnails:
+          type: array
+          description: imagenes del producto
+        owner:
+          type: string
+          description: creador del producto
+      example:
+        status : "success"
+        payload:
+          _id: ObjectId('ahjg7862jahsgd871263')
+          title: Nuevo Nombre
+          description: Nueva descripcion
+          price: 1000
+          code: 1fgs56d1
+          stock: 13
+          category: comida
+          status: ok
+          thumbnails: [arrozImg1, arrozImg2]
+          owner: "admin"
+  body:
+  # CreateCart:
+  #     type: object
+  #     properties:
+  #       status: 
+  #         type: string
+  #         description: estado de la peticion
+  #       payload:
+  #         type: object
+  #         description: Producto creado o mensaje de error
+  #         properties:
+  #           _id:
+  #             type: string
+  #             description: id del producto autogenerado por la DB
+  #           title:
+  #             type: string
+  #             description: nombre del producto
+  #           descripcion:
+  #             type: string
+  #             description: descripcion del producto
+  #           price:
+  #             type: number
+  #             description: precio del producto
+  #           code:
+  #             type: string
+  #             description: codigo del producto
+  #           stock:
+  #             type: number
+  #             description: cantidad del producto
+  #           category:
+  #             type: string
+  #             description: categoria del producto
+  #           status:
+  #             type: string
+  #             description: estado del producto
+  #           thumbnails:
+  #             type: array
+  #             description: imagenes del producto
+  #           owner:
+  #             type: string
+  #             description: creador del producto
+  #     example:
+  #       title: arroz
+  #       description: bolsa de arroz de 1KG
+  #       price: 1200
+  #       code: 1fgs56d1
+  #       stock: 123
+  #       category: comida
+  #       status: ok
+  #       thumbnails: [arrozImg1, arrozImg2]
+  #       owner: "admin"
+    UpdateCart:
+      type: object
+      properties:
+        status: 
+          type: string
+          description: estado de la peticion
+        payload:
+          type: object
+          description: lista de productos actualizada o mensaje de error
+          properties:
+            _id:
+              type: string
+              description: id del cart
+            products:
+              type: array
+              description: lista de productos dentro del cart
+              properties:
+                product: 
+                  type: object
+                  description: info del producto
+                  properties:
+                    _id:
+                      type: string
+                      description: id del producto
+                    title:
+                      type: string
+                      description: nombre del producto
+                    descripcion:
+                      type: string
+                      description: descripcion del producto
+                    price:
+                      type: number
+                      description: precio del producto
+                    code:
+                      type: string
+                      description: codigo del producto
+                    stock:
+                      type: number
+                      description: cantidad del producto
+                    category:
+                      type: string
+                      description: categoria del producto
+                    status:
+                      type: string
+                      description: estado del producto
+                    thumbnails:
+                      type: array
+                      description: imagenes del producto
+                    owner:
+                      type: string
+                      description: creador del producto
+                quantity:
+                  type: number
+                  description: cantidad del producto comprado
+                _id:
+                  type: string
+                  description: id autogenerado del objeto general
+      example:
+        status: "success"
+        payload: 
+            _id: "6586edafb7dc291112c7f9af"
+            products: 
+              - product:
+                  _id: 657f6d0db3f9db4a9c00978a
+                  owner: admin
+                  title: cafe
+                  description: cafe de la db rico
+                  code: ds4f564ds
+                  price: 1200
+                  status: true
+                  stock: 8
+                  category: bebida
+                  thumbnails: [cafeUrl1,cafeUrl2]
+                quantity: 32
+                _id : 65ff70702c8d9b96f9f07cd2
+              - product:
+                  _id: 657f6d40b3f9db4a9c00978c
+                  owner: admin
+                  title: masitas
+                  description: masitas de la db rico
+                  code: 8jhkhj654l
+                  price: 1000
+                  status: true
+                  stock: 69
+                  category: comida
+                  thumbnails: []
+                quantity: 5
+                _id : 65ff70702c8d9b96f9f07cd3
