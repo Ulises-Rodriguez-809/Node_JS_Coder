@@ -14,7 +14,7 @@ router.get('/:cartId', CartsControllers.getCartById);
 router.post('/', CartsControllers.addCart);
 
 //añadir un producto (id y quantity) a un cart (por el id)
-router.post('/:cartId/product/:productId',  checkRole(["user"]),CartsControllers.addProductToCart);
+router.post('/:cartId/product/:productId',  checkRole(["user","premium"]),CartsControllers.addProductToCart);
 
 // realizar compra
 router.post("/:cartId/purchase", CartsControllers.purchase);
@@ -29,6 +29,6 @@ router.put('/:cartId/products/:productId', CartsControllers.updateProductsQuanti
 router.delete('/:cartId', CartsControllers.clearCart);
 
 // ELIMINAR EL PRODUCTO DEL CARRITO
-router.delete('/:cartId/products/:productId', CartsControllers.deleteProductFromCart);
+router.delete('/:cartId/product/:productId', CartsControllers.deleteProductFromCart);
 
 export default router;

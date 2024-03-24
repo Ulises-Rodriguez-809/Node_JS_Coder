@@ -268,3 +268,10 @@
 {"level":"info","message":"Cookie limpiada con exito"}
 {"level":"info","message":"usuario con rol user"}
 {"level":"info","message":"Cookie limpiada con exito"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"warning","message":"El ticket se creo con exito pero no se logro enviar el email"}
+{"level":"error","message":"No se logro crear el ticket"}
+{"level":"warning","message":"El ticket se creo con exito pero no se logro enviar el email"}
+{"level":"error","message":"No se logro crear el ticket"}
