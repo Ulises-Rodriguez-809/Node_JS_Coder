@@ -1,0 +1,277 @@
+{"level":"info","message":"Error al intentar iniciar sesion"}
+{"level":"error","message":"Error al intentar iniciar sesion"}
+{"level":"info","message":"/register - method : GET"}
+{"level":"info","message":"/api/sessions/register - method : POST"}
+{"level":"warn","message":"El usuario con el email : uliisesrodriguez809@gmail.com ya se encuentra registrado"}
+{"level":"info","message":"/api/sessions/failregister - method : GET"}
+{"level":"error","message":"No se logro completar el registro del nuevo usuario con exito"}
+{"level":"info","message":"/register - method : GET"}
+{"level":"info","message":"/favicon.ico - method : GET"}
+{"level":"info","message":"/ - method : GET"}
+{"level":"info","message":"/api/loggerTest - method : GET"}
+{"level":"info","message":"/api/sessions/login - method : POST"}
+{"level":"info","message":"usuario creado con rol user"}
+{"level":"info","message":"/products - method : GET"}
+{"level":"info","message":"/api/loggerTest - method : GET"}
+{"level":"info","message":"/api/loggerTest - method : GET"}
+{"level":"info","message":"/mockingproducts?cantidad=10 - method : GET"}
+{"level":"info","message":"/images/icons/gear.png - method : GET"}
+{"level":"info","message":"/loggerTest - method : GET"}
+{"level":"info","message":"/loggerTest - method : GET"}
+{"level":"info","message":"/loggerTest - method : GET"}
+{"level":"info","message":"/images/icons/gear.png - method : GET"}
+{"level":"info","message":"/loggerTest - method : GET"}
+{"level":"info","message":"/images/icons/gear.png - method : GET"}
+{"level":"info","message":"/products - method : GET"}
+{"level":"info","message":"/loggerTest - method : GET"}
+{"level":"info","message":"/images/icons/gear.png - method : GET"}
+{"level":"info","message":"/loggerTest - method : GET"}
+{"level":"info","message":"/loggerTest - method : GET"}
+{"level":"info","message":"/images/icons/gear.png - method : GET"}
+{"level":"info","message":"/loggerTest - method : GET"}
+{"level":"info","message":"/ - method : GET"}
+{"level":"info","message":"/ - method : GET"}
+{"level":"info","message":"/loggerTest - method : GET"}
+{"level":"info","message":"/loggerTest - method : GET"}
+{"level":"info","message":"/ - method : GET"}
+{"level":"info","message":"/loggerTest - method : GET"}
+{"level":"info","message":"/ - method : GET"}
+{"level":"info","message":"/api/sessions/login - method : POST"}
+{"level":"info","message":"usuario creado con rol user"}
+{"level":"info","message":"/products - method : GET"}
+{"level":"info","message":"/loggerTest - method : GET"}
+{"level":"info","message":"test info"}
+{"level":"info","message":"/images/icons/gear.png - method : GET"}
+{"level":"info","message":"/loggerTest - method : GET"}
+{"level":"info","message":"/products - method : GET"}
+{"level":"info","message":"/loggerTest - method : GET"}
+{"level":"info","message":"/products - method : GET"}
+{"level":"info","message":"/asd - method : GET"}
+{"level":"info","message":"info test"}
+{"level":"info","message":"/asd - method : GET"}
+{"level":"info","message":"info test"}
+{"level":"info","message":"/images/icons/gear.png - method : GET"}
+{"level":"info","message":"/asd - method : GET"}
+{"level":"info","message":"info test"}
+{"level":"info","message":"/images/icons/gear.png - method : GET"}
+{"level":"info","message":"/asd - method : GET"}
+{"level":"info","message":"info test"}
+{"level":"info","message":"/images/icons/gear.png - method : GET"}
+{"level":"info","message":"/asd - method : GET"}
+{"level":"info","message":"info test"}
+{"level":"info","message":"/images/icons/gear.png - method : GET"}
+{"level":"info","message":"/asd - method : GET"}
+{"level":"info","message":"info test"}
+{"level":"info","message":"info test"}
+{"level":"info","message":"/images/icons/gear.png - method : GET"}
+{"level":"info","message":"/asd - method : GET"}
+{"level":"info","message":"/images/icons/gear.png - method : GET"}
+{"level":"info","message":"/asd - method : GET"}
+{"level":"info","message":"/images/icons/gear.png - method : GET"}
+{"level":"info","message":"/products - method : GET"}
+{"level":"info","message":"/asd - method : GET"}
+{"level":"info","message":"Logger Test info"}
+{"level":"info","message":"/images/icons/gear.png - method : GET"}
+{"level":"info","message":"/asd - method : GET"}
+{"level":"info","message":"Logger Test info"}
+{"level":"info","message":"/images/icons/gear.png - method : GET"}
+{"level":"info","message":"/asd - method : GET"}
+{"level":"warn","message":"Logger Test warn"}
+{"level":"info","message":"Logger Test info"}
+{"level":"info","message":"/images/icons/gear.png - method : GET"}
+{"level":"info","message":"/asd - method : GET"}
+{"level":"error","message":"Logger Test error"}
+{"level":"warn","message":"Logger Test warn"}
+{"level":"info","message":"Logger Test info"}
+{"level":"info","message":"/images/icons/gear.png - method : GET"}
+{"level":"info","message":"/asd - method : GET"}
+{"level":"info","message":"/images/icons/gear.png - method : GET"}
+{"level":"error","message":"Logger Test error"}
+{"level":"warn","message":"Logger Test warn"}
+{"level":"info","message":"Logger Test info"}
+{"level":"error","message":"Logger Test error"}
+{"level":"warn","message":"Logger Test warn"}
+{"level":"info","message":"Logger Test info"}
+{"level":"fatal","message":"Logger Test fatal"}
+{"level":"error","message":"Logger Test error"}
+{"level":"fatal","message":"Logger Test fatal"}
+{"level":"error","message":"Logger Test error"}
+{"level":"warning","message":"Logger Test warn"}
+{"level":"info","message":"Logger Test info"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"info","message":"usuario creado con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"info","message":"usuario creado con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"error","message":"No se logro completar el login del usuario con exito"}
+{"level":"info","message":"usuario creado con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"info","message":"usuario creado con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"info","message":"usuario creado con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"warning","message":"El producto no se logro añadir al cart"}
+{"level":"warning","message":"El producto no se logro añadir al cart"}
+{"level":"info","message":"usuario creado con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"info","message":"usuario creado con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"info","message":"usuario creado con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"info","message":"usuario creado con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"warning","message":"El producto no se logro añadir al cart"}
+{"level":"warning","message":"El producto no se logro añadir al cart"}
+{"level":"warning","message":"El usuario con el email : uliisesrodriguez809@gmail.com ya se encuentra registrado"}
+{"level":"error","message":"No se logro completar el registro del nuevo usuario con exito"}
+{"level":"warning","message":"El producto no se logro añadir al cart"}
+{"level":"warning","message":"Datos del usuario incorrectos"}
+{"level":"info","message":"usuario creado con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"warning","message":"Datos del usuario incorrectos"}
+{"level":"warning","message":"Datos del usuario incorrectos"}
+{"level":"warning","message":"Datos del usuario incorrectos"}
+{"level":"warning","message":"Datos del usuario incorrectos"}
+{"level":"warning","message":"Datos del usuario incorrectos"}
+{"level":"warning","message":"Datos del usuario incorrectos"}
+{"level":"warning","message":"El usuario con el email : uliisesrodriguez809@gmail.com ya se encuentra registrado"}
+{"level":"error","message":"No se logro completar el registro del nuevo usuario con exito"}
+{"level":"warning","message":"Datos del usuario incorrectos"}
+{"level":"warning","message":"Datos del usuario incorrectos"}
+{"level":"warning","message":"Datos del usuario incorrectos"}
+{"level":"warning","message":"Datos del usuario incorrectos"}
+{"level":"warning","message":"Datos del usuario incorrectos"}
+{"level":"info","message":"usuario creado con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"warning","message":"Datos del usuario incorrectos"}
+{"level":"info","message":"usuario creado con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"info","message":"usuario creado con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"warning","message":"Datos del usuario incorrectos"}
+{"level":"warning","message":"Datos del usuario incorrectos"}
+{"level":"warning","message":"Datos del usuario incorrectos"}
+{"level":"warning","message":"Datos del usuario incorrectos"}
+{"level":"info","message":"usuario creado con rol user"}
+{"level":"info","message":"usuario creado con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"warning","message":"El usuario con el email : uliisesrodriguez809@gmail.com ya se encuentra registrado"}
+{"level":"error","message":"No se logro completar el registro del nuevo usuario con exito"}
+{"level":"info","message":"usuario creado con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"info","message":"usuario creado con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"error","message":"No se logro completar el login del usuario con exito"}
+{"level":"error","message":"Error con los datos del usuario"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"error","message":"No se logro completar el login del usuario con exito"}
+{"level":"error","message":"Error con los datos del usuario"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"error","message":"No se logro completar el login del usuario con exito"}
+{"level":"error","message":"No se logro completar el login del usuario con exito"}
+{"level":"error","message":"No se logro completar el login del usuario con exito"}
+{"level":"error","message":"No se logro completar el login del usuario con exito"}
+{"level":"error","message":"No se logro completar el login del usuario con exito"}
+{"level":"error","message":"No se logro completar el login del usuario con exito"}
+{"level":"error","message":"No se logro completar el login del usuario con exito"}
+{"level":"error","message":"No se logro completar el login del usuario con exito"}
+{"level":"error","message":"No se logro completar el login del usuario con exito"}
+{"level":"info","message":"usuario con rol admin"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"error","message":"No se logro completar el login del usuario con exito"}
+{"level":"info","message":"usuario con rol admin"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"error","message":"No se logro completar el login del usuario con exito"}
+{"level":"error","message":"No se logro completar el login del usuario con exito"}
+{"level":"error","message":"No se logro completar el login del usuario con exito"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"error","message":"No se logro completar el login del usuario con exito"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"fatal","message":"No se logro acceder al apartado para agregar/actualizar/eliminar productos o no cuenta con los permisos necesarios"}
+{"level":"fatal","message":"No se logro acceder al apartado para agregar/actualizar/eliminar productos o no cuenta con los permisos necesarios"}
+{"level":"fatal","message":"No se logro acceder al apartado para agregar/actualizar/eliminar productos o no cuenta con los permisos necesarios"}
+{"level":"fatal","message":"No se logro acceder al apartado para agregar/actualizar/eliminar productos o no cuenta con los permisos necesarios"}
+{"level":"fatal","message":"No se logro acceder al apartado para agregar/actualizar/eliminar productos o no cuenta con los permisos necesarios"}
+{"level":"fatal","message":"No se logro acceder al apartado para agregar/actualizar/eliminar productos o no cuenta con los permisos necesarios"}
+{"level":"fatal","message":"No se logro acceder al apartado para agregar/actualizar/eliminar productos o no cuenta con los permisos necesarios"}
+{"level":"fatal","message":"No se logro acceder al apartado para agregar/actualizar/eliminar productos o no cuenta con los permisos necesarios"}
+{"level":"fatal","message":"No se logro acceder al apartado para agregar/actualizar/eliminar productos o no cuenta con los permisos necesarios"}
+{"level":"fatal","message":"No se logro acceder al apartado para agregar/actualizar/eliminar productos o no cuenta con los permisos necesarios"}
+{"level":"fatal","message":"No se logro acceder al apartado para agregar/actualizar/eliminar productos o no cuenta con los permisos necesarios"}
+{"level":"fatal","message":"No se logro acceder al apartado para agregar/actualizar/eliminar productos o no cuenta con los permisos necesarios"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"error","message":"No se logro eliminar el producto de la DB"}
+{"level":"error","message":"No se logro eliminar el producto de la DB"}
+{"level":"error","message":"No se logro eliminar el producto de la DB"}
+{"level":"error","message":"No se logro eliminar el producto de la DB"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"info","message":"usuario con rol admin"}
+{"level":"error","message":"No se logro eliminar el producto de la DB"}
+{"level":"error","message":"No se logro eliminar el producto de la DB"}
+{"level":"error","message":"No se logro eliminar el producto de la DB"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"warning","message":"No se logro eliminar el producto : 65f5a299c92b70cc955f1090"}
+{"level":"error","message":"No se logro eliminar el producto de la DB"}
+{"level":"warning","message":"No se logro eliminar el producto : 65f5a299c92b70cc955f1090"}
+{"level":"error","message":"No se logro eliminar el producto de la DB"}
+{"level":"warning","message":"No se logro eliminar el producto : 65f5a299c92b70cc955f1090"}
+{"level":"error","message":"No se logro eliminar el producto de la DB"}
+{"level":"warning","message":"No se logro eliminar el producto : 65f5a299c92b70cc955f1090"}
+{"level":"error","message":"No se logro eliminar el producto de la DB"}
+{"level":"warning","message":"No se logro eliminar el producto : 65f5a299c92b70cc955f1090"}
+{"level":"error","message":"No se logro eliminar el producto de la DB"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"error","message":"Error, al intentar obtener la vista resetPassword"}
+{"level":"error","message":"Error, al intentar obtener la vista resetPassword"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"error","message":"Error, al intentar obtener la vista resetPassword"}
+{"level":"error","message":"Error, al intentar obtener la vista resetPassword"}
+{"level":"error","message":"Error, al intentar obtener la vista resetPassword"}
+{"level":"error","message":"Error, al intentar obtener la vista resetPassword"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"error","message":"No se logro cerrar la sesion del usuario"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"error","message":"No se logro cambiar el rol del usuario de : user a premium"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"error","message":"No se logro cambiar el rol del usuario de : user a premium"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"warning","message":"El ticket se creo con exito pero no se logro enviar el email"}
+{"level":"error","message":"No se logro crear el ticket"}
+{"level":"warning","message":"El ticket se creo con exito pero no se logro enviar el email"}
+{"level":"error","message":"No se logro crear el ticket"}
