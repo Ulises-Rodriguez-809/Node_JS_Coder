@@ -601,6 +601,52 @@ describe('super test de los endpoints del ecommerce', () => {
             expect(cookie.value).to.be.ok;
         })
 
+        it("enpoint: /api/sessions/recoverPassword || metodo: POST, envia un email para recuperar contraseña", async function () {
+            this.timeout(15000);
+
+            const response = await requester.post("/api/sessions/recoverPassword").send({ email: "pepito@gmail.com" })
+
+            const { statusCode, _body } = response;
+
+            console.log("body corrent");
+            console.log(statusCode);
+            console.log(_body);
+
+            const { status, payload } = _body
+
+            expect(response).to.be.an("object");
+
+            expect(status).to.be.deep.equal("success");
+
+            expect(payload).to.be.deep.equal("mail enviado con exito");
+        })
+
+        it("enpoint: /api/sessions/resetPassword || metodo: POST, permite cambiar la contraseña", async function () {
+            this.timeout(15000);
+
+            const mockUserNewPassword = {
+                email: "pepito@gmail.com", 
+                password: "123456", 
+                confirmPassword: "123456"
+            }
+
+            const response = await requester.post("/api/sessions/resetPassword").send(mockUserNewPassword);
+
+            const { statusCode, _body } = response;
+
+            console.log("body corrent");
+            console.log(statusCode);
+            console.log(_body);
+
+            const { status, payload } = _body
+
+            expect(response).to.be.an("object");
+
+            expect(status).to.be.deep.equal("success");
+
+            expect(payload).to.be.deep.equal("todo bien");
+        })
+
         it("enpoint: /api/sessions/current || metodo: GET, obtiene la info del usuario actual", async function () {
             this.timeout(15000);
 
