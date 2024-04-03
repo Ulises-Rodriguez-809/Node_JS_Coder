@@ -312,3 +312,27 @@
 {"level":"error","message":"No se logro eliminar el producto de la DB"}
 {"level":"warning","message":"No se logro añadir el producto"}
 {"level":"error","message":"No se logro añadir el producto al cart"}
+{"level":"warning","message":"El usuario con el email : pepe@gmail.com ya se encuentra registrado"}
+{"level":"warning","message":"El usuario con el email : pepe@gmail.com ya se encuentra registrado"}
+{"level":"warning","message":"El usuario con el email : pepe@gmail.com ya se encuentra registrado"}
+{"level":"warning","message":"El usuario con el email : pepeArgento@gmail.com ya se encuentra registrado"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"usuario con rol user"}

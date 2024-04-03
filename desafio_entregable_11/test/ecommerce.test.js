@@ -7,6 +7,8 @@ import productsModel from '../src/dao/models/productsModel.js';
 import cartsModel from '../src/dao/models/cartsModel.js';
 import userModel from '../src/dao/models/userModel.js';
 
+import jwt from 'jsonwebtoken';
+
 // import {CartsControllers} from '../src/controlador/carts.controllers.js'
 // import mongoose from 'mongoose';
 // import {CartsRepository} from '../src/respository/carts.repository.js';
@@ -27,6 +29,7 @@ const requester = supertest(app);
 
 describe('super test de los endpoints del ecommerce', () => {
     describe('products endpoints test', () => {
+
         // OJO Q ESTO TE BORRA TODA LA COLLECCION, BUSCA DESPUES COMO HACER PARA Q BORRE LOS ULTIMOS
         // capaz aca poner los delete del it post y put
         // befroeEach(async function () {
@@ -350,7 +353,7 @@ describe('super test de los endpoints del ecommerce', () => {
         it("endpoint: /api/cartsDB/:cartId || metodo: PUT, actualiza toda la lista de productos con una lista nueva", async function () {
 
             const mockNewListProducts = {
-                products : [
+                products: [
                     {
                         product: "657f6d0db3f9db4a9c00978a",
                         quantity: 32
@@ -470,29 +473,101 @@ describe('super test de los endpoints del ecommerce', () => {
         let cookie;
 
         it("enpoint: /api/sessions/register || metodo: POST, registro exitoso", async function () {
+            // https://stackoverflow.com/questions/16607039/in-mocha-testing-while-calling-asynchronous-function-how-to-avoid-the-timeout-er#
+            // es como q mocha por defecto tiene de tiempo para resolver las operaciones 2000ms si supera eso corta la ejecucion
+            // probe ponerlo para todos los it pero no hubo caso solo anduvo asi poniendo a los it
+            this.timeout(15000);
+
             const mockUser = {
-                first_name : "Pepe",
-                last_name : "Argento",
-                email : "pepe@gmail.com",
-                age : "40",
-                password : "pepe1234"
+                first_name: "Pepe",
+                last_name: "Argento",
+                email: "pepito@gmail.com",
+                age: "40",
+                password: "pepe1234"
             }
 
-            const {_body} = await requester.post("/api/sessions/register").send(mockUser);
+            const response = await requester.post("/api/sessions/register").send(mockUser);
 
-            expect(_body)
+            const { statusCode, _body } = response
+
+            expect(response).to.be.an("object");
+
+            expect(statusCode).to.be.deep.equal(200);
+
+            expect(response).to.be.an("object");
+            expect(_body).to.have.property("status");
+            expect(_body).to.have.property("message");
+            expect(_body).to.have.property("payload");
         })
 
-        it("enpoint: /api/sessions || metodo: GET, texto", async function () {
-            
+        it("enpoint: /api/sessions/login || metodo: POST, login exitoso", async function () {
+            this.timeout(15000);
+
+            const mockUser = {
+                email: "pepito@gmail.com",
+                password: "pepe1234"
+            }
+
+            const response = await requester.post("/api/sessions/login").send(mockUser);
+
+            // console.log(response.headers);
+            expect(response).to.be.an("object");
+
+            const cookieResult = response.headers["set-cookie"][0];
+
+            // const tokenInfo = req.cookies["jwt-cookie"];
+            // const decodedToken = jwt.decode(tokenInfo);
+
+            expect(cookieResult).to.be.ok;
+
+            cookie = {
+                name: cookieResult.split("=")[0],
+                value: cookieResult.split("=")[1]
+            }
+
+            // console.log(cookie);
+
+            // const tokenInfo = cookie.value.split(";")[0];
+            // console.log(tokenInfo);
+
+            // const decodedToken = jwt.decode(tokenInfo);
+            // console.log(decodedToken);
+
+            expect(cookie.name).to.be.ok.and.equal("jwt-cookie");
+            expect(cookie.value).to.be.ok;
         })
 
-        it("enpoint: /api/sessions || metodo: GET, texto", async function () {
-            
-        })
+        it("enpoint: /api/sessions/current || metodo: GET, obtiene la info del usuario actual", async function () {
+            this.timeout(15000);
 
-        it("enpoint: /api/sessions || metodo: GET, texto", async function () {
-            
+            const response = await requester.get("/api/sessions/current").set("Cookie", [`${cookie.name}=${cookie.value}`]);
+
+            const { _body } = response;
+
+            console.log("body corrent");
+            console.log(_body);
+
+            const { status, payload } = _body
+
+            const { email } = payload;
+
+            expect(response).to.be.an("object");
+
+            expect(status).to.be.deep.equal("success");
+
+            expect(payload).to.be.an("object");
+            expect(email).to.be.deep.equal("pepito@gmail.com");
+
+            // el borrado tenes q hacerlo despues de probar el login y current xq si lo borras en el register cuando intente loguear el usuario mock ya esta eliminado de la db
+            const getUser = await userModel.findOne({ email: "pepito@gmail.com" });
+
+            const { email: emailUser, cart } = getUser;
+            const { id } = cart;
+
+            await cartsModel.deleteOne({ _id: id });
+            await userModel.deleteOne({ email: emailUser });
         })
     })
+
+
 })
