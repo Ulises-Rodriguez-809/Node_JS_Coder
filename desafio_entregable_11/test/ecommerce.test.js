@@ -92,6 +92,70 @@ describe('super test de los endpoints del ecommerce', () => {
             expect(message).to.have.property("_id");
         })
 
+        // post con checkrol --> este preguntar en la clase del jueves como hacer con el checkrol
+        // it("endpoint: /api/productsDB || metodo: POST, permite añadir un nuevo producto a la DB", async function () {
+
+        //     const mockProduct = {
+        //         title: "rockStart",
+        //         description: "bebida energetica, 500ml, producida en Argentina",
+        //         code: "r0cks4rt",
+        //         price: 1000,
+        //         status: "true",
+        //         stock: 25,
+        //         category: "bebida",
+        //         thumbnails: ["rockStartUrl1"],
+        //         owner: "admin"
+        //     }
+
+        //     console.log(cookie);
+        //     const token = cookie.value.split(";")[0];
+
+        //     const response = await requester.post("/api/productsDB").set({ "Authorization": `Bearer ${token}` }).send(mockProduct);
+
+        //     const { statusCode, _body } = response;
+
+        //     const { status, message } = _body;
+
+        //     const { owner, title, description, code, price, stock, category } = message;
+
+        //     expect(response).to.be.an("object");
+        //     expect(statusCode).to.be.deep.equal(200);
+
+        //     expect(_body).to.be.an("object");
+
+        //     expect(status).to.be.deep.equal("success");
+
+        //     expect(message).to.have.property("owner");
+        //     expect(message).to.have.property("title");
+        //     expect(message).to.have.property("description");
+        //     expect(message).to.have.property("code");
+        //     expect(message).to.have.property("price");
+        //     expect(message).to.have.property("stock");
+        //     expect(message).to.have.property("category");
+
+        //     expect(owner).to.be.deep.equal("admin");
+        //     expect(title).to.be.deep.equal("rockStart");
+        //     expect(description).to.be.deep.equal("bebida energetica, 500ml, producida en Argentina");
+        //     expect(code).to.be.deep.equal("r0cks4rt");
+        //     expect(price).to.be.deep.equal(1000);
+        //     expect(stock).to.be.deep.equal(25);
+        //     expect(category).to.be.deep.equal("bebida");
+
+        //     const productFind = await productsModel.findOne({ code: "r0cks4rt" });
+        //     const { id } = productFind;
+
+        //     await productsModel.deleteOne({ _id: id });
+
+        //     const getUser = await userModel.findOne({ email: "pepito@gmail.com" });
+
+        //     const { email: emailUser, cart } = getUser;
+        //     const { id : idCart } = cart;
+
+        //     await cartsModel.deleteOne({ _id: idCart });
+        //     await userModel.deleteOne({ email: emailUser });
+
+        // })
+
         // SI EL BEFOREEACH NO TE DA FE DESPUES DE LOS EXPECT BORRA EL PRODUCTO CON UN DELETE (PRODUCTMODEL.DELETEONE(ID)), MIRA EL IT DEL UPDATE Q TENES UN EJEM PARA OBTENER EL ID
         // post (PARA ESTE SACAR EL MIDDLEWARE DE CHECK ROL de products.routes.db.js)
         it("endpoint: /api/productsDB/testingPost || metodo: POST, permite añadir un nuevo producto a la DB", async function () {
