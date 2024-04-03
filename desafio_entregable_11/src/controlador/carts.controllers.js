@@ -80,7 +80,7 @@ class CartsControllers {
             }
 
             res.send({
-                status: "succes",
+                status: "success",
                 cart
             });
 

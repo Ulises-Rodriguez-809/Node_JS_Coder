@@ -42,7 +42,7 @@ class ProductsControllers {
                 })
             }
 
-            const totalPages = result["messagge"]["totalPages"];
+            const totalPages = result["payload"]["totalPages"];
 
             if (page > totalPages) {
                 // este return es para q el resto del codigo no se ejecute ya q si bien no influye en el funcionamiento por consola tira error
@@ -55,13 +55,13 @@ class ProductsControllers {
             }
 
             // tema del LINK
-            if (result["messagge"].hasPrevPage) {
-                result["messagge"].prevLink = `http://localhost:8080/api/productsDB?limit=${options.limit}&page=${result["messagge"].prevPage}${sort ? auxSort : ""}${category ? auxCategory : ""}${stock ? auxStock : ""}`;
+            if (result["payload"].hasPrevPage) {
+                result["payload"].prevLink = `http://localhost:8080/api/productsDB?limit=${options.limit}&page=${result["payload"].prevPage}${sort ? auxSort : ""}${category ? auxCategory : ""}${stock ? auxStock : ""}`;
 
             }
 
-            if (result["messagge"].hasNextPage) {
-                result["messagge"].nextLink = `http://localhost:8080/api/productsDB?limit=${options.limit}&page=${result["messagge"].nextPage}${sort ? auxSort : ""}${category ? auxCategory : ""}${stock ? auxStock : ""}`;
+            if (result["payload"].hasNextPage) {
+                result["payload"].nextLink = `http://localhost:8080/api/productsDB?limit=${options.limit}&page=${result["payload"].nextPage}${sort ? auxSort : ""}${category ? auxCategory : ""}${stock ? auxStock : ""}`;
 
             }
 
@@ -211,9 +211,6 @@ class ProductsControllers {
 
     static deleteProduct = async (req, res, next) => {
         try {
-            // aca tenemes q obtener el owner del producto
-            // luego buscas por el id o email el usuario y ves q rol tiene
-            // si es admin puede borrar todo, pero si es premium solo puede borrar los productos q el creo
             const id = req.params.productId;
             let result = null;
             let message = "";
@@ -233,47 +230,52 @@ class ProductsControllers {
 
             const decodedToken = jwt.decode(tokenInfo);
 
-            console.log(decodedToken);
-            console.log(decodedToken.rol === "admin");
-            console.log(decodedToken.rol === "premium");
-
             // si el rol es admin le dejo borrar el producto q el quiera
             if (decodedToken.rol === "admin") {
                 console.log("entro el admin");
                 result = await productService.deleteOne(id);
 
-                message = `El admin logro eliminar con exito el producto con el id: ${id}`;
+                if (result) {
+                    message = `El admin logro eliminar con exito el producto con el id: ${id}`;
+
+                    return res.send({
+                        status: "success",
+                        message
+                    })
+                }
+
+                message = `El admin NO logro eliminar el producto con el id: ${id}`;
+
+                return res.status(400).send({
+                    status: "error",
+                    message,
+                })
+
             }
             // como el middleware checkrol se encarga dejarte acceder al endpoint solo si sos rol "premium" o "admin" no te tenes q preocupar de q te llegue otra cosa 
-            else{
+            else {
                 console.log("entro usuario premium");
                 const { email } = decodedToken;
-    
+
                 const product = await productService.getById(id);
-    
-                console.log("PRODUCT");
-                console.log(product);
-    
-                const {owner} = product;
-                console.log(owner);
-                console.log(email === owner);
+
+                const { owner } = product;
+                
                 if (email === owner) {
                     result = await productService.deleteOne(id);
 
                     message = `El usuario premium : ${email} logro eliminar con exito el producto que el creo con el id: ${id}`;
                 }
-                else{
-                    console.log("hola");
+                else {
                     message = `El usuario premium : ${email} no tiene permisos para eliminar el producto con el id: ${id}`;
 
                     return res.status(400).send({
                         status: "error",
                         message,
-                        payload : decodedToken.rol
+                        payload: decodedToken.rol
                     })
                 }
             }
-
 
             if (typeof result === "string") {
                 req.logger.warning(`No se logro eliminar el producto : ${id}`);
@@ -289,7 +291,7 @@ class ProductsControllers {
             res.send({
                 status: "success",
                 message,
-                payload : decodedToken.rol
+                payload: decodedToken.rol
             })
 
         } catch (error) {

@@ -170,7 +170,6 @@ export class CartManagerDB {
 
             if (indexProduct > -1) {
                 cart.products.splice(indexProduct,1);
-
             }
 
             await cart.save();

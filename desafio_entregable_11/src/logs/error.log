@@ -275,3 +275,40 @@
 {"level":"error","message":"No se logro crear el ticket"}
 {"level":"warning","message":"El ticket se creo con exito pero no se logro enviar el email"}
 {"level":"error","message":"No se logro crear el ticket"}
+{"level":"warning","message":"error en la paginacion de los productos"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"warning","message":"error en la paginacion de los productos"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"warning","message":"No se logro obtener el producto : 65db398406c13a531c3b92c9"}
+{"level":"error","message":"Error al intentar obtener el producto por el id"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"warning","message":"No se logro obtener el producto : 65db398406c13a531c3b92c9"}
+{"level":"error","message":"Error al intentar obtener el producto por el id"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"info","message":"usuario con rol admin"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"warning","message":"error en la paginacion de los productos"}
+{"level":"warning","message":"error en la paginacion de los productos"}
+{"level":"warning","message":"error en la paginacion de los productos"}
+{"level":"warning","message":"error en la paginacion de los productos"}
+{"level":"warning","message":"error en la paginacion de los productos"}
+{"level":"warning","message":"error en la paginacion de los productos"}
+{"level":"warning","message":"error en la paginacion de los productos"}
+{"level":"warning","message":"No se logro añadir el producto"}
+{"level":"error","message":"No se logro añadir el producto al cart"}
+{"level":"warning","message":"No se logro añadir el producto"}
+{"level":"error","message":"No se logro añadir el producto al cart"}
+{"level":"warning","message":"No se logro actualizar el producto : 660c4fe34cec92d2b2afc66f"}
+{"level":"error","message":"No se logro actualizar el producto"}
+{"level":"warning","message":"No se logro actualizar el producto : 660c4fe34cec92d2b2afc66f"}
+{"level":"error","message":"No se logro actualizar el producto"}
+{"level":"error","message":"No se logro eliminar el producto de la DB"}
+{"level":"warning","message":"No se logro añadir el producto"}
+{"level":"error","message":"No se logro añadir el producto al cart"}
