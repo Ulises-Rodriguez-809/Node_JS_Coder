@@ -9,6 +9,13 @@ import userModel from '../src/dao/models/userModel.js';
 
 // import jwt from 'jsonwebtoken';
 
+
+
+// PROFE SI PUEDE REGISTRESE DEVUELTA, COMPRE ALGUNOS PRODUCTOS (HUBO UN PROBLEMA CON EL BEFOREEACH Y ME TERMINO BORRANDO TODA LA COLLECCION DE CARTS Y USERS)
+// LUEGO PRUEBE EL TEST
+// Y SI PUEDE CAMBIE LOS DATOS DEL MOCKUSER EN EL ENPOINT DE COMPRA DEL TICKET (PARA Q NO ME LLEGUE SPAM A MI MAIL XD)
+// OSEA ACA --> it("endpoint: /api/cartsDB/:cartId/product/:productId || metodo: POST, agrega un producto con una cantidad determinada al cart (ambos por id)"
+
 const MONGO = options.MONGO_URL;
 
 // const expect = chai.expect;
@@ -307,6 +314,7 @@ describe('super test de los endpoints del ecommerce', () => {
             this.timeout(15000);
 
             // para este caso pone un usuario premium o user para q te llegue el mail (osea pone el tuyo si pones un mail q no existe no va a llegar nada XD)
+            // PROFE ACA PONGA LOS DATOS DEL REGISTRO NUEVO Q HIZO
             const mockUser = {
                 email: "uliisesrodriguez809@gmail.com",
                 password: "asd"
