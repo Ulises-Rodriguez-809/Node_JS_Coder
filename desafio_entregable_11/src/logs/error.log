@@ -389,3 +389,30 @@
 {"level":"info","message":"usuario con rol admin"}
 {"level":"info","message":"usuario con rol user"}
 {"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"usuario con rol admin"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"Cookie limpiada con exito"}
+{"level":"info","message":"usuario con rol admin"}
+{"level":"warning","message":"Error, no se logro obtener el cart con el id : 660df5043766ec33d106c5ed"}
+{"level":"error","message":"No se logro obtener obtener el cart por su ID"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"warning","message":"Error, no se logro agregar al cart el producto con el id : 6586d47bd7c76a66e55718b4"}
+{"level":"error","message":"No se logro agregar el producto al cart al usuario"}
+{"level":"error","message":"No se logro crear el ticket"}
+{"level":"warning","message":"No se logro actualizar el producto"}
+{"level":"error","message":"Error al intentar actualizar el producto"}
+{"level":"warning","message":"No se logro actializar la el producto con el id : 657f6d0db3f9db4a9c00978a a la cantidad : 8"}
+{"level":"error","message":"Error al intentar actualizar la cantidad del producto"}
+{"level":"warning","message":"No se logro eliminar los productos del cart 660df5043766ec33d106c5ed"}
+{"level":"error","message":"error al intentar eliminar los prodcutos del cart"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"usuario con rol admin"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"usuario con rol admin"}
+{"level":"info","message":"usuario con rol user"}
+{"level":"info","message":"usuario con rol user"}

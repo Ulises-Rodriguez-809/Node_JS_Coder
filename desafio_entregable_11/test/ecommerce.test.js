@@ -29,6 +29,7 @@ describe('super test de los endpoints del ecommerce', () => {
 
         // get
         it("endpoint: /api/productsDB || metodo: GET, obtiene todos los productos de la DB", async function () {
+            this.timeout(15000);
 
             const response = await requester.get("/api/productsDB");
 
@@ -249,7 +250,7 @@ describe('super test de los endpoints del ecommerce', () => {
 
         it("endpoint: /api/cartsDB/:cartId || metodo: GET, obtiene un cart de la DB por su id", async function () {
 
-            const response = await requester.get("/api/cartsDB/65871f3f05bb3a74f389c3a7");
+            const response = await requester.get("/api/cartsDB/660df5043766ec33d106c5eb");
 
             const { statusCode, _body } = response;
             const { status, message } = _body;
@@ -323,7 +324,7 @@ describe('super test de los endpoints del ecommerce', () => {
                 value: cookieResult.split("=")[1]
             }
 
-            const response = await requester.post("/api/cartsDB/65db398406c13a531c3b92c9/product/6586d47bd7c76a66e55718b4").set("Cookie", [`${cookie.name}=${cookie.value}`]).send({ quantity: 3 });
+            const response = await requester.post("/api/cartsDB/660df5043766ec33d106c5eb/product/6586d47bd7c76a66e55718b4").set("Cookie", [`${cookie.name}=${cookie.value}`]).send({ quantity: 3 });
 
             const { statusCode, _body } = response;
             const { status, message } = _body;
@@ -350,7 +351,7 @@ describe('super test de los endpoints del ecommerce', () => {
         it("endpoint: /api/cartsDB/:cartId/purchase || metodo: POST, realiza la compra y envia el ticket", async function () {
             this.timeout(15000);
 
-            const response = await requester.post("/api/cartsDB/65db398406c13a531c3b92c9/purchase").set("Cookie", [`${cookie.name}=${cookie.value}`]);
+            const response = await requester.post("/api/cartsDB/660df5043766ec33d106c5eb/purchase").set("Cookie", [`${cookie.name}=${cookie.value}`]);
 
             const { statusCode, _body } = response;
             const {payload} = _body;
@@ -392,7 +393,7 @@ describe('super test de los endpoints del ecommerce', () => {
                 ]
             }
 
-            const response = await requester.put("/api/cartsDB/6586edafb7dc291112c7f9af").send(mockNewListProducts);
+            const response = await requester.put("/api/cartsDB/660df5043766ec33d106c5eb").send(mockNewListProducts);
 
             const { statusCode, _body } = response;
             const { status, message } = _body;
@@ -422,7 +423,7 @@ describe('super test de los endpoints del ecommerce', () => {
                 quantity: 8
             }
 
-            const response = await requester.put("/api/cartsDB/6586edafb7dc291112c7f9af/products/657f6d0db3f9db4a9c00978a").send(mockQuantity);
+            const response = await requester.put("/api/cartsDB/660df5043766ec33d106c5eb/products/657f6d0db3f9db4a9c00978a").send(mockQuantity);
 
             const { statusCode, _body } = response;
             const { status, message } = _body;
@@ -448,7 +449,7 @@ describe('super test de los endpoints del ecommerce', () => {
 
         it("endpoint: /api/cartsDB/:cartId/product/:productId || metodo: DELETE, elimina un productos del cart (ambos por id)", async function () {
 
-            const response = await requester.delete("/api/cartsDB/6586edafb7dc291112c7f9af/product/657f6d0db3f9db4a9c00978a");
+            const response = await requester.delete("/api/cartsDB/660df5043766ec33d106c5eb/product/657f6d0db3f9db4a9c00978a");
 
 
             const { statusCode, _body } = response;
@@ -469,7 +470,7 @@ describe('super test de los endpoints del ecommerce', () => {
 
         it("endpoint: /api/cartsDB/:cartId || metodo: DELETE, elimina la lista de productos y deja un array []", async function () {
 
-            const response = await requester.delete("/api/cartsDB/6586edafb7dc291112c7f9af");
+            const response = await requester.delete("/api/cartsDB/660df5043766ec33d106c5eb");
 
             const { statusCode, _body } = response;
             const { status, message } = _body;
@@ -484,13 +485,15 @@ describe('super test de los endpoints del ecommerce', () => {
 
             expect(status).to.be.deep.equal("success");
 
-            expect(message).to.be.deep.equal("Los productos del cart: 6586edafb7dc291112c7f9af se eliminaron con exito");
+            expect(message).to.be.deep.equal("Los productos del cart: 660df5043766ec33d106c5eb se eliminaron con exito");
         })
     })
 
     describe('sessions endpoints test', () => {
-        // befroeEach(async function () {
-        //     await petModel.deleteMany({});
+        // efectivamente borro toda la colleccion
+        // beforeEach(async function () {
+        //     await cartsModel.deleteMany({});
+        //     await userModel.deleteMany({});
         // })
 
         let cookie;
