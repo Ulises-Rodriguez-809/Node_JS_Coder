@@ -129,8 +129,6 @@ class CartsControllers {
 
             const result = await ticketService.create(cartId);
 
-            console.log(result);
-
             if (!result) {
                 req.logger.error("No se logro crear el ticket");
 

@@ -7,15 +7,7 @@ import productsModel from '../src/dao/models/productsModel.js';
 import cartsModel from '../src/dao/models/cartsModel.js';
 import userModel from '../src/dao/models/userModel.js';
 
-import jwt from 'jsonwebtoken';
-
-// import {CartsControllers} from '../src/controlador/carts.controllers.js'
-// import mongoose from 'mongoose';
-// import {CartsRepository} from '../src/respository/carts.repository.js';
-
-// CAPAZ Q EN VES DE IMPORTAR TODOS LOS MODELOS DE LO Q NECESITA CART PARA ANDAR LO IDEAL SEA IMPORTAR EL CARTS.CONTROLLER
-// y como en carts.controller trabajas con static no hace falta intanciar la clase
-
+// import jwt from 'jsonwebtoken';
 
 const MONGO = options.MONGO_URL;
 
@@ -30,8 +22,7 @@ const requester = supertest(app);
 describe('super test de los endpoints del ecommerce', () => {
     describe('products endpoints test', () => {
 
-        // OJO Q ESTO TE BORRA TODA LA COLLECCION, BUSCA DESPUES COMO HACER PARA Q BORRE LOS ULTIMOS
-        // capaz aca poner los delete del it post y put
+        let cookie;
         // befroeEach(async function () {
         //     await productsModel.deleteMany({});
         // })
@@ -92,73 +83,27 @@ describe('super test de los endpoints del ecommerce', () => {
             expect(message).to.have.property("_id");
         })
 
-        // post con checkrol --> este preguntar en la clase del jueves como hacer con el checkrol
-        // it("endpoint: /api/productsDB || metodo: POST, permite añadir un nuevo producto a la DB", async function () {
+        // post con checkrol
+        it("endpoint: /api/productsDB || metodo: POST, permite añadir un nuevo producto a la DB", async function () {
+            this.timeout(15000);
 
-        //     const mockProduct = {
-        //         title: "rockStart",
-        //         description: "bebida energetica, 500ml, producida en Argentina",
-        //         code: "r0cks4rt",
-        //         price: 1000,
-        //         status: "true",
-        //         stock: 25,
-        //         category: "bebida",
-        //         thumbnails: ["rockStartUrl1"],
-        //         owner: "admin"
-        //     }
+            // creas el usuario q sea admin q tenes en .env
+            const mockUser = {
+                email: "adminCoder@gmail.com",
+                password: "adminCod3r123"
+            }
 
-        //     console.log(cookie);
-        //     const token = cookie.value.split(";")[0];
+            // le pegas al endpoint de login para poder setear la cookie y poder obtener la info para pasarsela al endpoint de crear un producto
+            const responseLogin = await requester.post("/api/sessions/login").send(mockUser);
 
-        //     const response = await requester.post("/api/productsDB").set({ "Authorization": `Bearer ${token}` }).send(mockProduct);
+            // obtener del header de la respuesta la cookie
+            const cookieResult = responseLogin.headers["set-cookie"][0];
 
-        //     const { statusCode, _body } = response;
-
-        //     const { status, message } = _body;
-
-        //     const { owner, title, description, code, price, stock, category } = message;
-
-        //     expect(response).to.be.an("object");
-        //     expect(statusCode).to.be.deep.equal(200);
-
-        //     expect(_body).to.be.an("object");
-
-        //     expect(status).to.be.deep.equal("success");
-
-        //     expect(message).to.have.property("owner");
-        //     expect(message).to.have.property("title");
-        //     expect(message).to.have.property("description");
-        //     expect(message).to.have.property("code");
-        //     expect(message).to.have.property("price");
-        //     expect(message).to.have.property("stock");
-        //     expect(message).to.have.property("category");
-
-        //     expect(owner).to.be.deep.equal("admin");
-        //     expect(title).to.be.deep.equal("rockStart");
-        //     expect(description).to.be.deep.equal("bebida energetica, 500ml, producida en Argentina");
-        //     expect(code).to.be.deep.equal("r0cks4rt");
-        //     expect(price).to.be.deep.equal(1000);
-        //     expect(stock).to.be.deep.equal(25);
-        //     expect(category).to.be.deep.equal("bebida");
-
-        //     const productFind = await productsModel.findOne({ code: "r0cks4rt" });
-        //     const { id } = productFind;
-
-        //     await productsModel.deleteOne({ _id: id });
-
-        //     const getUser = await userModel.findOne({ email: "pepito@gmail.com" });
-
-        //     const { email: emailUser, cart } = getUser;
-        //     const { id : idCart } = cart;
-
-        //     await cartsModel.deleteOne({ _id: idCart });
-        //     await userModel.deleteOne({ email: emailUser });
-
-        // })
-
-        // SI EL BEFOREEACH NO TE DA FE DESPUES DE LOS EXPECT BORRA EL PRODUCTO CON UN DELETE (PRODUCTMODEL.DELETEONE(ID)), MIRA EL IT DEL UPDATE Q TENES UN EJEM PARA OBTENER EL ID
-        // post (PARA ESTE SACAR EL MIDDLEWARE DE CHECK ROL de products.routes.db.js)
-        it("endpoint: /api/productsDB/testingPost || metodo: POST, permite añadir un nuevo producto a la DB", async function () {
+            // obtenes el nombre y value para simular lo mismo de como estaria en el navegador
+            cookie = {
+                name: cookieResult.split("=")[0],
+                value: cookieResult.split("=")[1]
+            }
 
             const mockProduct = {
                 title: "rockStart",
@@ -172,7 +117,8 @@ describe('super test de los endpoints del ecommerce', () => {
                 owner: "admin"
             }
 
-            const response = await requester.post("/api/productsDB/testingPost").send(mockProduct);
+            // aca le seteas la cookie para q el check rol no joda
+            const response = await requester.post("/api/productsDB").set("Cookie", [`${cookie.name}=${cookie.value}`]).send(mockProduct);
 
             const { statusCode, _body } = response;
 
@@ -202,16 +148,10 @@ describe('super test de los endpoints del ecommerce', () => {
             expect(price).to.be.deep.equal(1000);
             expect(stock).to.be.deep.equal(25);
             expect(category).to.be.deep.equal("bebida");
-
-            const productFind = await productsModel.findOne({ code: "r0cks4rt" });
-            const { id } = productFind;
-
-            await productsModel.deleteOne({ _id: id });
-
         })
 
-        // put (para este tambien saca el middleware de check rol)
-        it("endpoint: /api/productsDB/testingPut/:productId || metodo: PUT, actualiza los campos del producto en la DB por su id", async function () {
+        // put
+        it("endpoint: /api/productsDB/:productId || metodo: PUT, actualiza los campos del producto en la DB por su id", async function () {
             // creo un producto
             const mockProduct = {
                 title: "Taza",
@@ -241,7 +181,7 @@ describe('super test de los endpoints del ecommerce', () => {
             }
 
             // aca uso el id de forma dinamica
-            const response = await requester.put(`/api/productsDB/testingPut/${id}`).send(updateProduct);
+            const response = await requester.put(`/api/productsDB/${id}`).set("Cookie", [`${cookie.name}=${cookie.value}`]).send(updateProduct);
 
             const { statusCode, _body } = response;
 
@@ -262,24 +202,25 @@ describe('super test de los endpoints del ecommerce', () => {
             await productsModel.deleteOne({ _id: idProducto });
         })
 
-        // delete (PARA ESTE NECESITAS SI O SI LA COOKIE PARA SABER SI SOS ADMIN O PREMIUM) para este hacete otra ruta la cual no tenga el checkrol y en el controller sea lo mismo q el delete con token pero q la info del rol del usuario se la mandes por el body
-        // it("endpoint: /api/productsDB/testingDelete/:productId || metodo: DELETE, elimina un producto en la DB por su id", async function () {
+        // delete 
+        it("endpoint: /api/productsDB/:productId || metodo: DELETE, elimina un producto en la DB por su id", async function () {
+            const responseGetById = await productsModel.findOne({ code: "r0cks4rt" });
 
-        //     // lo busco por el code y no por el nombre xq puede haber 2 productos con el mismo nombre pero no el mismo code
-        //     const responseGetById = await productsModel.findOne({code : "r0cks4rt"});
+            const { id } = responseGetById;
 
-        //     console.log(responseGetById);
-        //     const {id} = responseGetById;
+            const response = await requester.delete(`/api/productsDB/${id}`).set("Cookie", [`${cookie.name}=${cookie.value}`]);
 
-        //     const response = await requester.delete(`/api/productsDB/${id}`);
+            const { statusCode, _body } = response;
 
-        //     const {status, message} = response;
 
-        //     expect(response).to.be.deep.equal({});
-        // })
+            expect(response).to.be.an("object");
+
+            expect(statusCode).to.be.deep.equal(200);
+        })
     })
 
     describe('carts endpoints test', () => {
+        let cookie;
         // befroeEach(async function () {
         //     await cartsModel.deleteMany({});
         // })
@@ -360,9 +301,29 @@ describe('super test de los endpoints del ecommerce', () => {
             await cartsModel.deleteOne({ _id });
         })
 
-        it("endpoint: /api/cartsDB/testing/:cartId/product/:productId || metodo: POST, agrega un producto con una cantidad determinada al cart (ambos por id)", async function () {
+        // post
+        it("endpoint: /api/cartsDB/:cartId/product/:productId || metodo: POST, agrega un producto con una cantidad determinada al cart (ambos por id)", async function () {
+            this.timeout(15000);
 
-            const response = await requester.post("/api/cartsDB/testing/6586edafb7dc291112c7f9af/product/6586d47bd7c76a66e55718b4").send({ quantity: 3 });
+            // para este caso pone un usuario premium o user para q te llegue el mail (osea pone el tuyo si pones un mail q no existe no va a llegar nada XD)
+            const mockUser = {
+                email: "uliisesrodriguez809@gmail.com",
+                password: "asd"
+            }
+
+            // le pegas al endpoint de login para poder setear la cookie y poder obtener la info para pasarsela al endpoint de crear un producto
+            const responseLogin = await requester.post("/api/sessions/login").send(mockUser);
+
+            // obtener del header de la respuesta la cookie
+            const cookieResult = responseLogin.headers["set-cookie"][0];
+
+            // obtenes el nombre y value para simular lo mismo de como estaria en el navegador
+            cookie = {
+                name: cookieResult.split("=")[0],
+                value: cookieResult.split("=")[1]
+            }
+
+            const response = await requester.post("/api/cartsDB/65db398406c13a531c3b92c9/product/6586d47bd7c76a66e55718b4").set("Cookie", [`${cookie.name}=${cookie.value}`]).send({ quantity: 3 });
 
             const { statusCode, _body } = response;
             const { status, message } = _body;
@@ -386,32 +347,30 @@ describe('super test de los endpoints del ecommerce', () => {
         })
 
         // tikcet queda en espera xq tambien necesita del token
-        // it("endpoint: /api/cartsDB/:cartId/purchase || metodo: POST, realiza la compra y envia el ticket", async function () {
+        it("endpoint: /api/cartsDB/:cartId/purchase || metodo: POST, realiza la compra y envia el ticket", async function () {
+            this.timeout(15000);
 
-        //     const response = await requester.post("/api/cartsDB");
+            const response = await requester.post("/api/cartsDB/65db398406c13a531c3b92c9/purchase").set("Cookie", [`${cookie.name}=${cookie.value}`]);
 
-        //     const { statusCode, _body } = response;
-        //     const { status, cart } = _body;
-        //     const { _id, products } = cart;
+            const { statusCode, _body } = response;
+            const {payload} = _body;
+            const {ticket} = payload;
 
-        //     expect(response).to.be.an("object");
+            expect(response).to.be.an("object");
 
-        //     expect(statusCode).to.be.deep.equal(200);
+            expect(statusCode).to.be.deep.equal(200);
 
-        //     expect(_body).to.be.an("object");
-        //     expect(_body).to.have.property("status");
-        //     expect(_body).to.have.property("cart");
+            expect(_body).to.be.an("object");
+            expect(_body).to.have.property("status");
+            expect(_body).to.have.property("payload");
 
-        //     expect(status).to.be.deep.equal("success");
 
-        //     expect(cart).to.be.an("object");
-        //     expect(cart).to.have.property("_id");
-        //     expect(cart).to.have.property("products");
-
-        //     expect(products).to.be.an("array");
-
-        //     await cartsModel.deleteOne({ _id });
-        // })
+            expect(ticket).to.be.an("object");
+            expect(ticket).to.have.property("code");
+            expect(ticket).to.have.property("purchase_datetime");
+            expect(ticket).to.have.property("amount");
+            expect(ticket).to.have.property("purchaser");
+        })
 
         // put
         it("endpoint: /api/cartsDB/:cartId || metodo: PUT, actualiza toda la lista de productos con una lista nueva", async function () {
@@ -574,7 +533,6 @@ describe('super test de los endpoints del ecommerce', () => {
 
             const response = await requester.post("/api/sessions/login").send(mockUser);
 
-            // console.log(response.headers);
             expect(response).to.be.an("object");
 
             const cookieResult = response.headers["set-cookie"][0];
@@ -589,6 +547,7 @@ describe('super test de los endpoints del ecommerce', () => {
                 value: cookieResult.split("=")[1]
             }
 
+            // este ejem de q podes hasta decodificar el token 
             // console.log(cookie);
 
             // const tokenInfo = cookie.value.split(";")[0];
@@ -608,10 +567,6 @@ describe('super test de los endpoints del ecommerce', () => {
 
             const { statusCode, _body } = response;
 
-            console.log("body corrent");
-            console.log(statusCode);
-            console.log(_body);
-
             const { status, payload } = _body
 
             expect(response).to.be.an("object");
@@ -625,18 +580,14 @@ describe('super test de los endpoints del ecommerce', () => {
             this.timeout(15000);
 
             const mockUserNewPassword = {
-                email: "pepito@gmail.com", 
-                password: "123456", 
+                email: "pepito@gmail.com",
+                password: "123456",
                 confirmPassword: "123456"
             }
 
             const response = await requester.post("/api/sessions/resetPassword").send(mockUserNewPassword);
 
             const { statusCode, _body } = response;
-
-            console.log("body corrent");
-            console.log(statusCode);
-            console.log(_body);
 
             const { status, payload } = _body
 
@@ -653,9 +604,6 @@ describe('super test de los endpoints del ecommerce', () => {
             const response = await requester.get("/api/sessions/current").set("Cookie", [`${cookie.name}=${cookie.value}`]);
 
             const { _body } = response;
-
-            console.log("body corrent");
-            console.log(_body);
 
             const { status, payload } = _body
 

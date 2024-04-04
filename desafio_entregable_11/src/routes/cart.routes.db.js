@@ -16,11 +16,6 @@ router.post('/', CartsControllers.addCart);
 //añadir un producto (id y quantity) a un cart (por el id)
 router.post('/:cartId/product/:productId',  checkRole(["user","premium"]),CartsControllers.addProductToCart);
 
-// enpoint original
-router.post('/testing/:cartId/product/:productId',CartsControllers.addProductToCart);
-// endpoint para probar el testing (ya q sino por el tema del chckrol no anda xq no estas autenticado)
-router.post('/testing/:cartId/product/:productId', CartsControllers.addProductToCart);
-
 // realizar compra
 router.post("/:cartId/purchase", CartsControllers.purchase);
 
