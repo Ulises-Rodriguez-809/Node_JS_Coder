@@ -7,8 +7,6 @@ import { sendRecoverPassword } from '../config/gmail.js';
 class SessionControler {
     static register = async (req, res) => {
         try {
-            console.log(req.user);
-
             const { first_name, last_name, email } = req.user;
 
             const full_name = first_name.concat(" ", last_name);
@@ -51,6 +49,50 @@ class SessionControler {
         })
     }
 
+    // upLogin puede usar el req.user xq lo estas llamando dentro del login, el cual cuenta con passport, el cual le agrega el req.user
+    static updateLastLogin = async (req, res) => {
+        const date = new Date();
+        const year = date.getFullYear();
+        const month = date.getMonth();
+        const day = date.getDate();
+        const hour = date.getHours();
+        const minuts = date.getMinutes();
+        const seconds = date.getSeconds();
+
+        const last_login = `Hora: ${hour}:${minuts}:${seconds} - Dia: ${day} - Mes: ${month} - Año: ${year}`;
+
+        req.user.last_connection.login = last_login;
+
+        const userUpdated = await userService.update(req.user.id, req.user);
+
+        return userUpdated;
+    }
+
+    // mientras q upLogout no puede usar req.user ya q loguot no cuenta con passport como middleware pero lo cual te va a dar error si intentas usarlo (recordatorio por el error del logout)
+    static updateLastLogout = async (req, res) => {
+        const date = new Date();
+        const year = date.getFullYear();
+        const month = date.getMonth();
+        const day = date.getDate();
+        const hour = date.getHours();
+        const minuts = date.getMinutes();
+        const seconds = date.getSeconds();
+
+        const last_logout = `Hora: ${hour}:${minuts}:${seconds} - Dia: ${day} - Mes: ${month} - Año: ${year}`;
+
+        const tokenInfo = req.cookies["jwt-cookie"];
+
+        const decodedToken = jwt.decode(tokenInfo);
+
+        const userInfo = await userService.getWhitoutFilter(decodedToken);
+
+        userInfo.last_connection.logout = last_logout;
+
+        const userUpdated = await userService.update(userInfo.id, userInfo);
+
+        return userUpdated;
+    }
+
     static login = async (req, res) => {
         try {
             // DATA: el req.user te lo agrega el passport por defecto cuando hace la autenticacion 
@@ -62,6 +104,8 @@ class SessionControler {
                     message: "Usuario no encontrado"
                 })
             }
+
+            const userUpdated = await this.updateLastLogin(req, res);
 
             let user = {};
 
@@ -142,7 +186,6 @@ class SessionControler {
             }
 
             const { first_name, last_name, age, email, rol, cart } = req.user;
-
 
             if (!first_name || !last_name || !age || !email || !cart) {
                 req.logger.error("Error, no se logro obtener los datos del usuario desde github");
@@ -256,19 +299,30 @@ class SessionControler {
     }
 
     static logout = async (req, res) => {
-        if (req.cookies[options.COOKIE_WORD]) {
-            res.clearCookie(options.COOKIE_WORD);
+        try {
+            // al igual q el update de last_login no te hace falta guardar el resultado del update pero como en el repository de user retornas algo, es para mantener la misma estrucura
+            const userUpdated = await this.updateLastLogout(req, res);
 
-            req.logger.info("Cookie limpiada con exito");
+            if (req.cookies[options.COOKIE_WORD]) {
 
-            res.redirect('/');
+                res.clearCookie(options.COOKIE_WORD);
 
-        } else {
-            req.logger.error("No se logro cerrar la sesion del usuario");
+                req.logger.info("Cookie limpiada con exito");
 
-            res.status(401).send({
+                res.redirect('/');
+
+            } else {
+                req.logger.error("No se logro cerrar la sesion del usuario");
+
+                res.status(401).send({
+                    status: "error",
+                    payload: "No se logro desloguear con exito"
+                })
+            }
+        } catch (error) {
+            res.status(500).send({
                 status: "error",
-                payload: "No se logro desloguear con exito"
+                message: "No se logro cerrar sesion"
             })
         }
     }
@@ -308,36 +362,6 @@ class SessionControler {
             error: "fallo en obtener los datos del usuario"
         })
     }
-
-    // static premiumUser = async (req, res) => {
-    //     try {
-    //         const { rol } = req.body;
-
-    //         const tokenInfo = req.cookies["jwt-cookie"];
-    //         const decodedToken = jwt.decode(tokenInfo);
-
-    //         const user = await userService.getWhitoutFilter(decodedToken);
-
-    //         user.rol = rol;
-
-    //         const updateUser = await userService.update(user.id, user);
-
-    //         res.clearCookie(options.COOKIE_WORD);
-
-    //         res.send({
-    //             status: "success",
-    //             payload: "Rol cambiado de USER a PREMIUM con exito"
-    //         })
-
-    //     } catch (error) {
-    //         req.logger.error("No se logro cambiar el rol del usuario de : user a premium");
-
-    //         res.status(400).send({
-    //             status: "error",
-    //             payload: "Error al intentar modificar el rol del usuario"
-    //         })
-    //     }
-    // }
 }
 
 export { SessionControler };

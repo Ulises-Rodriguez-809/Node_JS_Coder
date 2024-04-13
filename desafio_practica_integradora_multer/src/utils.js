@@ -5,7 +5,7 @@ import { transporter } from './config/gmail.js';
 import { Faker, en } from '@faker-js/faker';
 import jwt from 'jsonwebtoken';
 import { options } from './config/config.js';
-import multer from 'multer'
+import multer from 'multer';
 
 export const customFaker = new Faker({
     locale: [en]

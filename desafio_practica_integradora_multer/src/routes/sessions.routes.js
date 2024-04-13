@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import passport from 'passport';
 
-import { SessionControler } from '../controlador/sessions.controllers.js'
+import { SessionControler } from '../controlador/sessions.controllers.js';
 
 const router = Router();
 
@@ -33,8 +33,5 @@ router.post('/recoverPassword', SessionControler.revocerPassword);
 
 // resetPass
 router.post('/resetPassword', SessionControler.resetPassword);
-
-// change rol user to premium
-// router.post("/premiumUser",SessionControler.premiumUser);
 
 export default router;
