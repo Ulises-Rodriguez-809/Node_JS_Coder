@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import {ViewsControllers} from '../controlador/views.controllers.js'
+import { ViewsControllers } from '../controlador/views.controllers.js'
 import { checkRole, verifyEmailTokenMW } from '../middlewares/auth.js';
 
 // inicializamos Router
@@ -15,7 +15,7 @@ router.get('/register', ViewsControllers.register);
 router.get('/recoverPassword', ViewsControllers.recoverPass);
 
 // cambiar contraseña
-router.get('/resetPassword', verifyEmailTokenMW(),ViewsControllers.resetPass);
+router.get('/resetPassword', verifyEmailTokenMW(), ViewsControllers.resetPass);
 
 // ruta home donde podes moverte entre las diferentes opciones, tambien es de presentacion del e-commerce
 router.get('/home', ViewsControllers.home);
@@ -27,6 +27,8 @@ router.get('/products', ViewsControllers.productsGet);
 router.get('/carts/:cartId', ViewsControllers.cartId);
 
 // DB router --> esto usalo para q el admin pueda agregar productos
-router.get('/realtimeproducts', checkRole(["premium","admin"]), ViewsControllers.realtimeproducts);
+router.get('/realtimeproducts', checkRole(["premium", "admin"]), ViewsControllers.realtimeproducts);
+
+router.get('/preimum', checkRole(["user"]), ViewsControllers.premium);
 
 export default router;

@@ -27,27 +27,7 @@ const checkRol = () => {
         const btnChangeRol = document.getElementById("btnChangeRol");
 
         btnChangeRol.addEventListener("click", () => {
-            const endpoint = "/api/users/premiumUser";
-
-            fetch(endpoint, {
-                method: "POST",
-                body: JSON.stringify({ rol: "premium" }),
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            })
-                .then(result => result.json())
-                .then(json => {
-                    console.log(json);
-                    if (json.status === "error") {
-                        alert("No se logro obtener el rol premium, contacte con el servicio al cliente");
-                    }
-                    else {
-                        alert(`Felicidades ${userName} por obtener rol premium, ahora podras crear, actualizar y eliminar tus propios products, PARA VER LOS CAMBIOS VUELVA A INICAR SESSION`);
-
-                        location.replace("http://localhost:8080/");
-                    }
-                })
+            location.replace("/preimum");
         })
     }
 }

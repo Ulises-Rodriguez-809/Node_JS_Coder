@@ -37,8 +37,6 @@ const storage = multer.diskStorage({
         // ejem caso una img de perfil (.png, .jpg, etc)
         // lo guardas en una carpeta llamada profile
         // si es una img de producto en una carpeta llamada proeducto
-        console.log("FILE MULTER");
-        console.log(file);
         const {fieldname,mimetype} = file;
 
         if (mimetype.includes("/pdf") || mimetype.includes("/docx") || mimetype.includes("/xlsx") || mimetype.includes("/pptx")) {

@@ -7,7 +7,7 @@ import { sendRecoverPassword } from '../config/gmail.js';
 class SessionControler {
     static register = async (req, res) => {
         try {
-            const { first_name, last_name, email } = req.user;
+            const {id ,first_name, last_name, email } = req.user;
 
             const full_name = first_name.concat(" ", last_name);
 
@@ -15,6 +15,8 @@ class SessionControler {
 
             const template = `<div>
             <h1>Bienvenido ${full_name}!!</h1>
+            <h2>Tu id de usuario es: ${id}</h2>
+            <p>No perder este id ya que te servira para poder obtener el rol premium en caso de quererlo</p>
             <img src="https://www.ceupe.com/images/easyblog_articles/3625/b2ap3_large_que-es-un-tienda-online.png" style="width:250px; height : 250px"/>
             <p>Ya puedes empezar a usar nuestros servicios</p>
             <a href="http://localhost:8080/">Ir a la pagina</a>

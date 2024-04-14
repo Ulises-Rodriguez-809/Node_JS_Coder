@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { cartService, productService} from '../respository/index.repository.js';
+import { cartService, productService } from '../respository/index.repository.js';
 
 class ViewsControllers {
     static login = (req, res) => {
@@ -30,7 +30,7 @@ class ViewsControllers {
 
     static recoverPass = (req, res) => {
         try {
-            res.render("recoverPassword", {message : "No te preocupes nos sucede a todos!. Ingresa tu email y te ayudamos"});
+            res.render("recoverPassword", { message: "No te preocupes nos sucede a todos!. Ingresa tu email y te ayudamos" });
         } catch (error) {
             req.logger.error("Error, no se logro obtener la vista para recuperar contraseña");
 
@@ -46,7 +46,7 @@ class ViewsControllers {
 
             const tokenInfo = req.query.token;
 
-            res.render("resetPassword",{tokenInfo});
+            res.render("resetPassword", { tokenInfo });
         } catch (error) {
             req.logger.error("Error, al intentar obtener la vista resetPassword");
 
@@ -57,13 +57,13 @@ class ViewsControllers {
         }
     }
 
-    static home = async (req,res)=>{
+    static home = async (req, res) => {
         try {
             const tokenInfo = req.cookies["jwt-cookie"];
 
             const decodedToken = jwt.decode(tokenInfo);
 
-            const { full_name, cartID } = decodedToken;
+            const {full_name, cartID } = decodedToken;
 
             const cartUrl = `/carts/${cartID}`;
 
@@ -72,8 +72,8 @@ class ViewsControllers {
                 cartUrl
             }
 
-            res.render("home",{user});
-            
+            res.render("home", { user });
+
         } catch (error) {
             req.logger.error("Error, al intentar obtener la vista Home");
 
@@ -174,21 +174,21 @@ class ViewsControllers {
 
     static realtimeproducts = (req, res) => {
         try {
-            
+
             let owner = "";
 
             const tokenInfo = req.cookies["jwt-cookie"];
 
             const decodedToken = jwt.decode(tokenInfo);
 
-            const {rol, cartID} = decodedToken;
+            const { rol, cartID } = decodedToken;
 
             const cartUrl = `/carts/${cartID}`;
 
             if (rol === "admin") {
                 owner = rol;
             }
-            else{
+            else {
                 const email = decodedToken.email;
                 owner = email;
             }
@@ -197,8 +197,8 @@ class ViewsControllers {
                 owner,
                 cartUrl
             }
-            
-            res.render('realTimeProducts', {user});
+
+            res.render('realTimeProducts', { user });
 
         } catch (error) {
             req.logger.fatal("No se logro acceder al apartado para agregar/actualizar/eliminar productos o no cuenta con los permisos necesarios");
@@ -206,6 +206,19 @@ class ViewsControllers {
             res.status(400).send({
                 status: "error",
                 msg: "No se encontraron los productos"
+            })
+        }
+    }
+
+    static premium = async (req, res) => {
+        try {
+            res.render("premium");
+        } catch (error) {
+            req.logger.error("Error, al intentar obtener la vista Premium");
+
+            res.status(500).send({
+                status: "error",
+                message: "No se logro obtener la vista con el formulario para obtener el rol premium"
             })
         }
     }

@@ -14,6 +14,7 @@ export const checkRole = (roles)=>{
                 message:"necesitas inciar sesion"
             });
         }
+        
         if(!roles.includes(decodedToken.rol)){
             return res.status(401).json({
                 status:"error", 
