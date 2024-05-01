@@ -1,0 +1,25 @@
+<main>
+    <div class="loginContainer">
+        <div class="login">
+            <h1 class="loginTitle">Login</h1>
+            <form id="loginForm">
+                <div class="emailContainer">
+                    <label>Email</label>
+                    <input name="email"><br>
+                </div>
+                <div class="contraseñaContainer">
+                    <label>Contraseña</label>
+                    <input name="password" type="password" autocomplete="on">
+                </div>
+                <div class="loginBtnContainer">
+                    <input type="submit" class="loginInput">
+                </div>
+            </form>
+            <p>Si no estas registrado? <a href="/register">Registrate aqui</a></p>
+            <p>Si no estas registrado? <a href="/api/sessions/github">Entra con tu cuenta de GitHub</a></p>
+            <p>Olvidaste tu contraseña? <a href="/recoverPassword">Recuperar Contraseña</a></p>
+        </div>
+    </div>
+</main>
+<link rel="stylesheet" href="/css/login.css">
+<script src="/js/login.js"></script>

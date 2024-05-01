@@ -275,3 +275,4 @@
 {"level":"error","message":"No se logro crear el ticket"}
 {"level":"warning","message":"El ticket se creo con exito pero no se logro enviar el email"}
 {"level":"error","message":"No se logro crear el ticket"}
+{"level":"info","message":"usuario con rol user"}

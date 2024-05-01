@@ -1,0 +1,133 @@
+<header>
+    <nav>
+        <div>
+            <ul class="ulLinkContainer">
+                <li><a href="/home">Home</a></li>
+                <li><a href="/products">Products</a></li>
+                <li><a href="/realtimeproducts">New Products</a></li>
+                <li><a href="/profile">Perfil</a></li>
+            </ul>
+        </div>
+    </nav>
+</header>
+<main>
+    {{!-- recorda cambiar todos los "jwt-cokkie" por preccess.env.cok..... --}}
+    {{!-- recorda cambiar todos los options.ALGO pro process.env.ALGO (igual andan asi q a lo mejor no hace falta) --}}
+    {{!-- limpia el codigo fijate si podes reutilizar codigo y esas cosas podes mandar el codigo reutilizado a utils
+    como funcioness
+    agrega css a esta vistas--}}
+    <h1>Lista de productos comprados, productos sin stock e informacion de tickets de compra</h1>
+    <div id="cartContainer">
+        <div>
+            <div>
+                <button type="button" id="clearCart">Vacias carrito</button>
+            </div>
+        </div>
+        <div id="stockContainer">
+            <h2>Productos comprados:</h2>
+            <ul>
+                {{#each products}}
+                <li class="liProduct">
+                    <div>
+                        <span>id : {{this.id}}</span>
+                    </div>
+                    <div>
+                        <span>cantidad comprada : {{this.quantity}}</span>
+                    </div>
+                    <div>
+                        <span>titulo : {{this.title}}</span>
+                    </div>
+                    <div>
+                        <span>descripcion : {{this.description}}</span>
+                    </div>
+                    <div>
+                        <span>codigo : {{this.code}}</span>
+                    </div>
+                    <div>
+                        <span>precio : {{this.price}}</span>
+                    </div>
+                    <div>
+                        <span>status : {{this.status}}</span>
+                    </div>
+                    <div>
+                        <span>categoria : {{this.category}}</span>
+                    </div>
+                    <div>
+                        <span>miniaturas : {{this.thumbnails}}</span>
+                    </div>
+                    <div>
+                        <button type="button" id={{this.id}} class="removeProduct">Remover producto</button>
+                    </div>
+                </li><br>
+                {{/each}}
+            </ul>
+        </div>
+        <div id="notStockContainer">
+            <h3>Productos sin stock disponible</h3>
+            <ul>
+                {{#each notStock}}
+                <li class={{this.id}} id="notStockLi">
+                    <div>
+                        <span>id : {{this.id}}</span>
+                    </div>
+                    <div>
+                        <span>cantidad comprada : {{this.quantity}}</span>
+                    </div>
+                    <div>
+                        <span>titulo : {{this.title}}</span>
+                    </div>
+                    <div>
+                        <span>descripcion : {{this.description}}</span>
+                    </div>
+                    <div>
+                        <span>codigo : {{this.code}}</span>
+                    </div>
+                    <div>
+                        <span>precio : {{this.price}}</span>
+                    </div>
+                    <div>
+                        <span>status : {{this.status}}</span>
+                    </div>
+                    <div>
+                        <span>categoria : {{this.category}}</span>
+                    </div>
+                    <div>
+                        <span>miniaturas : {{this.thumbnails}}</span><br>
+                    </div>
+                    <div>
+                        <button type="button" id={{this.id}} class="removeProduct">Remover producto</button>
+                    </div>
+                </li><br>
+                {{/each}}
+            </ul>
+        </div>
+        <div id="ticketsContainer">
+            <h3>Todos tus tickets de compra informacion:</h3>
+            <ul id="ulTickets">
+                {{#each auxTickets}}
+                <li id="ticketLi">
+                    <div>
+                        <span>id : {{this.id}}</span>
+                    </div>
+                    <div>
+                        <span> codigo de compra : {{this.code}}</span>
+                    </div>
+                    <div>
+                        <span>Dia de la compra : {{this.purchase_datetime}}</span>
+                    </div>
+                    <div>
+                        <span>Total : {{this.amount}}</span>
+                    </div>
+                    <div>
+                        <span>Comprador : {{this.purchaser}}</span>
+                    </div>
+                </li>
+                {{/each}}
+            </ul>
+            <button id="prev">prev</button>
+            <button id="next">next</button>
+        </div>
+    </div>
+</main>
+<script src="/js/cart.js"></script>
+<link rel="stylesheet" href="/css/cart.css">
