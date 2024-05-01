@@ -27,24 +27,24 @@ class UsersControllers {
         }
     }
 
-    static getUser = async(req,res)=>{
+    static getUser = async (req, res) => {
         try {
             const userInfo = {
-                email : req.params.userEmail
+                email: req.params.userEmail
             };
-            
+
             const user = await userService.get(userInfo);
 
             if (!user) {
                 return res.status(500).send({
-                    status : "error",
-                    payload : "usuario no encontrado"
+                    status: "error",
+                    payload: "usuario no encontrado"
                 })
             }
 
             res.send({
-                status : "success",
-                payload : user
+                status: "success",
+                payload: user
             })
 
         } catch (error) {
@@ -144,11 +144,11 @@ class UsersControllers {
         }
     }
 
-    static adminChangeRolUser = async(req,res)=>{
+    static adminChangeRolUser = async (req, res) => {
         try {
-            const {id,rol} = req.body;
+            const { id, rol } = req.body;
 
-            const auxArray = ["admin","user","premium"];
+            const auxArray = ["admin", "user", "premium"];
 
             if (!auxArray.includes(rol)) {
                 return res.status(400).send({
@@ -156,9 +156,9 @@ class UsersControllers {
                     payload: "El rol asignado debe ser alguna de las opciones :  admin | user | premium"
                 })
             }
-            
-            const usersRolUpdated = await userService.changeRol(id,rol);
-            
+
+            const usersRolUpdated = await userService.changeRol(id, rol);
+
             if (!usersRolUpdated) {
                 return res.status(500).send({
                     status: "error",
@@ -167,8 +167,8 @@ class UsersControllers {
             }
 
             res.send({
-                status : "success",
-                payload : "El rol del usuario se modifico con exito"
+                status: "success",
+                payload: "El rol del usuario se modifico con exito"
             })
 
         } catch (error) {
@@ -179,7 +179,7 @@ class UsersControllers {
         }
     }
 
-    static deleteUser = async(req,res)=>{
+    static deleteUser = async (req, res) => {
         try {
             const id = req.params.userId;
 
@@ -193,8 +193,8 @@ class UsersControllers {
             }
 
             res.send({
-                status : "success",
-                payload : `Usuario con el id : ${id} eliminado con exito`
+                status: "success",
+                payload: `Usuario con el id : ${id} eliminado con exito`
             })
         } catch (error) {
             res.status(500).send({
@@ -228,19 +228,32 @@ class UsersControllers {
                 // obtengo la ultima ves q el usuario se deslogueo
                 const logoutDate = user.last_connection.logout;
 
-                // obtengo los numeros de dia,mes,año
-                const logoutDateArray = logoutDate.split("-");
-                const logoutDay = logoutDateArray["1"].split(":")[1];
-                const logoutMonth = logoutDateArray["2"].split(":")[1];
-                const logoutYear = logoutDateArray["3"].split(":")[1];
+                console.log(logoutDate);
+                console.log(logoutDate === "");
 
-                // logoutDate === "" tomo el q nunca haya entrado como condicion ya q si te registras pero nunca entras a la hora de borrar los usuarios inactivos tira error
-                if (logoutDate === "" || currentYear > logoutYear || currentMonth > logoutMonth || currentDay > logoutDay) {
+                if (logoutDate === "") {
                     const result = await userService.delete(user.id);
 
                     //si se borro el usuario envio mail
                     if (result) {
                         const email = emailSender(user.email, template, subject);
+                    }
+                }
+                else{
+                    // obtengo los numeros de dia,mes,año
+                    const logoutDateArray = logoutDate.split("-");
+                    const logoutDay = logoutDateArray["1"].split(":")[1];
+                    const logoutMonth = logoutDateArray["2"].split(":")[1];
+                    const logoutYear = logoutDateArray["3"].split(":")[1];
+    
+                    // logoutDate === "" tomo el q nunca haya entrado como condicion ya q si te registras pero nunca entras a la hora de borrar los usuarios inactivos tira error
+                    if (currentYear > logoutYear || currentMonth > logoutMonth || currentDay > logoutDay) {
+                        const result = await userService.delete(user.id);
+    
+                        //si se borro el usuario envio mail
+                        if (result) {
+                            const email = emailSender(user.email, template, subject);
+                        }
                     }
                 }
             }
